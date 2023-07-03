@@ -11,6 +11,6 @@
     min-height: 100dvh;
     flex-direction: column;
     align-items: center;
-    background: black;
+    background: $background;
 }
 </style>

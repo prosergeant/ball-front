@@ -4,31 +4,31 @@
             header
         </div>
         <div class="main-content">
-            <UIButton color="success-200">Смотреть все поля</UIButton>
+            <UIButton style="height: 48px">Смотреть все поля</UIButton>
 
-            <div class="d-flex sb center">
+            <div class="available">
                 <h3>Доступные поля сейчас</h3>
 
-                <div class="d-flex center">
-                    <p style="height: 20px">все поля</p>
-                    <UIIcon icon="chevron-down" class="deg270" color="blue-600" />
+                <div>
+                    <p>Все поля</p>
+                    <UIIcon icon="chevron-down" class="deg270" color="main-link" />
                 </div>
             </div>
 
             <div class="spinner">
-                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/field/${index}/`)" />
+                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />
             </div>
 
-            <div class="d-flex sb center">
+            <div class="available">
                 <h3>Доступные поля</h3>
 
-                <div class="d-flex center">
-                    <p style="height: 20px">все поля</p>
-                    <UIIcon icon="chevron-down" class="deg270" color="blue-600" />
+                <div>
+                    <p>Все поля</p>
+                    <UIIcon icon="chevron-down" class="deg270" color="main-link" />
                 </div>
             </div>
 
-            <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/field/${index}/`)" />
+            <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />
         </div>
     </div>
 </template>
@@ -39,20 +39,31 @@
     max-width: 420px;
     min-height: 100dvh;
 
-    &.d-flex.sb.center {
+    .available {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
         h3 {
-            font-weight: 600;
+            color: $dark;
+            font-weight: 700;
         }
 
         & > div {
+            display: flex;
+            align-items: center;
+
             p {
-                color: $blue-600;
+                height: 17px;
+                color: $main-link;
+                font-weight: 700;
+                font-size: 14px;
             }
         }
     }
 
     .header {
-        background: grey;
+        background: $background;
         border-bottom-left-radius: 30px;
         border-bottom-right-radius: 30px;
         width: 100%;
@@ -70,14 +81,14 @@
     .main-content {
         min-height: 800px;
         width: 100%;
-        background: blanchedalmond;
+        background: $light;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
         margin-top: 150px;
 
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        padding: 25px;
         gap: 20px;
 
         .btn {

@@ -1,5 +1,5 @@
 <template>
-    <div class="btn">
+    <div class="btn" >
         <slot></slot>
     </div>
 </template>
@@ -19,7 +19,12 @@ const props = defineProps<{
     align-items: center;
     width: 100px;
     border-radius: 8px;
-    background: $success-400;
+    background: $green-1;
     color: white;
+
+    &:hover {
+        background: $success-700;
+        cursor: pointer;
+    }
 }
 </style>

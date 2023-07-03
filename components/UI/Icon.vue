@@ -188,6 +188,10 @@ i.icon {
     background-color: $warning-900 !important;
 }
 
+.main-link {
+    background-color: $main-link !important;
+}
+
 // HOVERS
 // MASKS FOR ICONS
 // Navigation

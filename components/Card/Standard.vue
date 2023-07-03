@@ -1,7 +1,7 @@
 <template>
     <div class="card-wrapper">
         <div class="card-wrapper-img">
-            <img src="https://www.investopedia.com/thmb/T2DdeU_VWQIq2kX-fqCZa8qTUFU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Sample-Final-blue-6d294ab8024a4cdca8050cc58ab20c42.jpg">
+            <img src="/sample.png">
         </div>
         <div class="card-wrapper-info">
             <h3>Kifs на Шевченко игра в футбол</h3>
@@ -17,15 +17,17 @@
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    padding: 12px;
+    padding: 15px;
     gap: 10px;
 
     background: white;
 
     &-img {
-        height: 100px;
+        //height: 100px;
         border-radius: 10px;
         overflow: hidden;
+
+        height: 145px;
 
         img {
             width: 100%;
@@ -36,20 +38,21 @@
     &-info {
         display: flex;
         flex-direction: column;
-        gap: 10px;
         h3 {
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 700;
+            font-size: 15px;
         }
 
         p {
-            font-size: 10px;
+            font-size: 12px;
+            margin-top: 4px;
+            margin-bottom: 8px;
         }
 
         span {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 16px;
-            color: cornflowerblue;
+            color: $main-link;
         }
     }
 }
