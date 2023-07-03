@@ -4,9 +4,31 @@
             header
         </div>
         <div class="main-content">
-            <UIButton>btn</UIButton>
+            <UIButton color="success-200">Смотреть все поля</UIButton>
 
-            <CardStandard v-for="i in Array(4)" />
+            <div class="d-flex sb center">
+                <h3>Доступные поля сейчас</h3>
+
+                <div class="d-flex center">
+                    <p style="height: 20px">все поля</p>
+                    <UIIcon icon="chevron-down" class="deg270" color="blue-600" />
+                </div>
+            </div>
+
+            <div class="spinner">
+                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/field/${index}/`)" />
+            </div>
+
+            <div class="d-flex sb center">
+                <h3>Доступные поля</h3>
+
+                <div class="d-flex center">
+                    <p style="height: 20px">все поля</p>
+                    <UIIcon icon="chevron-down" class="deg270" color="blue-600" />
+                </div>
+            </div>
+
+            <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/field/${index}/`)" />
         </div>
     </div>
 </template>
@@ -17,12 +39,25 @@
     max-width: 420px;
     min-height: 100dvh;
 
+    &.d-flex.sb.center {
+        h3 {
+            font-weight: 600;
+        }
+
+        & > div {
+            p {
+                color: $blue-600;
+            }
+        }
+    }
+
     .header {
         background: grey;
-        border-radius: 30px;
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
         width: 100%;
         max-width: 420px;
-        height: 200px;
+        height: 150px;
         z-index: 2;
         position: fixed;
 
@@ -38,7 +73,7 @@
         background: blanchedalmond;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
-        margin-top: 200px;
+        margin-top: 150px;
 
         display: flex;
         flex-direction: column;
@@ -49,6 +84,23 @@
             width: 100%;
             height: 40px;
         }
+
+        .spinner {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            overflow-x: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
     }
+}
+
+.deg90 {
+    transform: rotate(90deg);
+}
+.deg270 {
+    transform: rotate(270deg);
 }
 </style>

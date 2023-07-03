@@ -4,8 +4,8 @@
             <img src="https://www.investopedia.com/thmb/T2DdeU_VWQIq2kX-fqCZa8qTUFU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/Sample-Final-blue-6d294ab8024a4cdca8050cc58ab20c42.jpg">
         </div>
         <div class="card-wrapper-info">
-            <h3>kifs asdasd asasddas saasd</h3>
-            <p>pole takoe to</p>
+            <h3>Kifs на Шевченко игра в футбол</h3>
+            <p>Поле «Uzbekistan на Аль-Фараби»</p>
             <span>7 сентября, 19:00</span>
         </div>
     </div>
@@ -13,6 +13,7 @@
 
 <style scoped lang="scss">
 .card-wrapper {
+    min-width: 300px;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
