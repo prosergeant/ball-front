@@ -4,6 +4,14 @@
     </div>
 </template>
 
+<script setup lang="ts">
+
+const props = defineProps<{
+    color?: string
+}>()
+
+</script>
+
 <style scoped lang="scss">
 .btn {
     display: flex;
@@ -11,7 +19,7 @@
     align-items: center;
     width: 100px;
     border-radius: 8px;
-    background: $green-1;
+    background: $success-400;
     color: white;
 }
 </style>

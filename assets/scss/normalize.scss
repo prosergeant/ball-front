@@ -5,3 +5,15 @@
   font-style: normal;
   font-family: 'Inter', sans-serif;
 }
+
+.d-flex {
+  display: flex;
+
+  &.sb {
+    justify-content: space-between;
+  }
+
+  &.center {
+    align-items: center;
+  }
+}
