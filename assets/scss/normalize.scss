@@ -3,7 +3,8 @@
   padding: 0;
   box-sizing: border-box;
   font-style: normal;
-  font-family: 'Inter', sans-serif;
+  font-family: DM Sans, sans-serif;
+  //font-family: DM Sans;
 }
 
 .d-flex {
@@ -16,4 +17,11 @@
   &.center {
     align-items: center;
   }
+}
+
+.deg90 {
+  transform: rotate(90deg);
+}
+.deg270 {
+  transform: rotate(270deg);
 }

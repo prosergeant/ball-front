@@ -206,9 +206,19 @@ i.icon {
     -webkit-mask-image: url(/icons/chevron-down.svg);
     mask-image: url(/icons/chevron-down.svg);
 }
+.chevron-left {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/chevron-left.svg);
+    mask-image: url(/icons/chevron-left.svg);
+}
 .offer-card-image {
     @extend i, .icon;
     -webkit-mask-image: url(/icons/offer-card-image.svg);
     mask-image: url(/icons/offer-card-image.svg);
+}
+.search {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/search.svg);
+    mask-image: url(/icons/search.svg);
 }
 </style>

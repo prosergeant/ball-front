@@ -73,7 +73,7 @@
         max-width: 420px;
         height: 150px;
         z-index: 2;
-        position: fixed;
+        //border: 2px solid red;
 
         display: flex;
         justify-content: center;
@@ -115,12 +115,5 @@
             }
         }
     }
-}
-
-.deg90 {
-    transform: rotate(90deg);
-}
-.deg270 {
-    transform: rotate(270deg);
 }
 </style>
