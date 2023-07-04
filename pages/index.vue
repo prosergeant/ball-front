@@ -1,7 +1,9 @@
 <template>
     <div class="main-page">
         <div class="header">
-            header
+            <div class="offer">
+                <CardNewOffer :ids="[0,1,2]" />
+            </div>
         </div>
         <div class="main-content">
             <UIButton style="height: 48px">Смотреть все поля</UIButton>
@@ -58,6 +60,7 @@
                 color: $main-link;
                 font-weight: 700;
                 font-size: 14px;
+                cursor: pointer;
             }
         }
     }
@@ -76,6 +79,13 @@
         justify-content: center;
         align-items: center;
         color: white;
+
+        position: relative;
+
+        .offer {
+            position: absolute;
+            top: 60px;
+        }
     }
 
     .main-content {
@@ -84,11 +94,10 @@
         background: $light;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
-        margin-top: 150px;
 
         display: flex;
         flex-direction: column;
-        padding: 25px;
+        padding: 45px 25px 25px 25px;
         gap: 20px;
 
         .btn {
