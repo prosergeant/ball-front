@@ -18,7 +18,7 @@ const props = defineProps<{
     justify-content: center;
     align-items: center;
     width: 100px;
-    border-radius: 8px;
+    border-radius: 10px;
     background: $green-1;
     color: white;
 
