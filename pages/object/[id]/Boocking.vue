@@ -6,27 +6,56 @@
         </div>
         <UIIcon icon="search" color="white" />
     </div>
-    <div class="object-info">
-        <span>активна</span>
-        <h3>Kifs на Шевченко игра в футболл 111</h3>
-    </div>
-    <div class="object-content">
-        <h4>Подробное описание локации</h4>
-        <p>Phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet. Vel quam elementum pulvinar etiamnim lobortis scelerisque. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur....</p>
-        <span>Show more</span>
-        <hr />
-        <h4>Смотреть поля на карте</h4>
-        <img src="/sample-map.png" alt="map" />
-        <h4>Адрес</h4>
-        <div class="address">
-            <h4>Байзакова 280</h4>
-            <p>г. Алматы</p>
+    <template v-if="step === 0">
+        <div class="step-1">
+            <div class="header">
+                <h4>Kifs на Шевченко игра в футболл</h4>
+                <p>Поле «Uzbekistan на Аль-Фараби»</p>
+            </div>
+
+            <div class="select-card">
+                <span>Выберите тип поля:</span>
+                <div class="card">
+                    <img src="/icons/booking-card-square.svg" alt="" />
+
+                    <div class="card-infos">
+                        <h3>не выбран тип поля</h3>
+                        <p>нужно выбрать крытое или открытое поле</p>
+                    </div>
+                    <UIIcon icon="chevron-right" />
+                </div>
+            </div>
+
+            <div class="select-card" @click="modalTime = true">
+                <span>Выберите дату и время:</span>
+                <div class="card">
+                    <img src="/icons/booking-card-square.svg" alt="" />
+
+                    <div class="card-infos">
+                        <h3>не выбрана дата и время</h3>
+                        <p>выберите дату и время в календаре</p>
+                    </div>
+                    <UIIcon icon="chevron-right" />
+                </div>
+            </div>
+
+            <UIButton>Продолжить бронирование</UIButton>
+
+            <UIModalBottom v-if="modalTime">
+                <div class="modal-time-fixed" v-click-outside="() => {(modalTime) && (modalTime = false)}">
+                    <div class="modal-time">
+                        <DateTime ref="DateTimeRef" />
+                    </div>
+                </div>
+            </UIModalBottom>
         </div>
-        <UIButton>Забронировать</UIButton>
-    </div>
+    </template>
 </template>
 
 <script setup lang="ts">
+const step = ref(0)
+const modalTime = ref(false)
+const DateTimeRef = ref()
 </script>
 
 <style scoped lang="scss">
@@ -43,7 +72,7 @@
     .mini-navigation {
         height: 40px;
         width: 335px;
-        padding: 10px 25px 10px 25px;
+        padding: 10px 25px;
         display: flex;
         align-items: center;
         gap: 20px;
@@ -61,55 +90,23 @@
         }
     }
 }
-.object-info {
-    height: 334px;
-    width: 100%;
-    max-width: 420px;
 
-    display: flex;
-    flex-direction: column-reverse;
-    padding: 0 44px 44px 29px;
-    gap: 17px;
-
-    h3 {
-        font-size: 24px;
-        font-weight: 700;
-        line-height: 31px;
-        color: $light;
-    }
-
-    span {
-        width: fit-content;
-        height: 30px;
-        padding: 12px;
-        border-radius: 30px;
-        background: $green-1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: $light;
-
-        font-size: 10px;
-        font-weight: 400;
-        line-height: 13px;
-
-    }
-}
-.object-content {
-    background: white;
-    min-height: 334px;
-    width: 100%;
-    max-width: 420px;
+.step-1 {
     position: relative;
-    padding: 0 33px 31px 26px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 32px;
+    padding: 5px 25px 35px 25px;
+    background: $light;
+    margin-top: 20px;
+    min-height: calc(100dvh - 40px);
+    width: 100%;
+    max-width: 420px;
 
     &::before {
         position: absolute;
         content: '';
-        background: white;
+        background: $light;
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
         top: -19px;
@@ -118,70 +115,99 @@
         width: 100%;
     }
 
-    h4 {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        letter-spacing: 0;
-        text-align: left;
-        color: $light3;
-    }
-
-    p {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 22px;
-        letter-spacing: 0;
-        text-align: left;
-
-    }
-
-    span {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        letter-spacing: 0;
-        text-align: left;
-        color: $primary;
-    }
-
-    hr {
-        border-top: 1px solid $grey-300;
-    }
-
-    img {
-        height: 158px;
-        width: 100%;
-    }
-
-    .address {
+    .header {
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        border-radius: 20px;
-        background: $light2;
-        padding: 15px 18px;
-
+        gap: 4px;
         h4 {
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        P {
+            color: #565656;
+            font-size: 13px;
+            font-style: normal;
             font-weight: 400;
-            line-height: 18px;
-            text-align: left;
+            line-height: normal;
+        }
+    }
+
+    .select-card {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+        cursor: pointer;
+
+        span {
+            color: $light3;
+
+            font-size: 10px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
         }
 
-        p {
-            font-size: 10px;
-            font-weight: 400;
-            line-height: 13px;
-            color: $light3;
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .card-infos {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
         }
     }
 
     .btn {
         width: 100%;
-        height: 46px;
-        margin-top: 34px;
+        padding: 15px 8px;
+        margin-top: auto;
     }
 }
 
+.modal-time-fixed {
+    position: fixed;
+    bottom: 0;
+    .modal-time {
+        width: 100%;
+        max-width: 420px;
+        height: 452px;
+        margin-top: auto;
+        background: white;
+        position: relative;
+        padding: 20px;
+
+        display: flex;
+        flex-direction: column;
+
+        &::before {
+            position: absolute;
+            content: '';
+            background: white;
+            border-top-left-radius: 30px;
+            border-top-right-radius: 30px;
+            top: -19px;
+            left: 0;
+            height: 20px;
+            width: 100%;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: calc(50% - 40px);
+            width: 80px;
+            height: 3px;
+            border-radius: 30px;
+            background: $light3;
+        }
+    }
+}
 </style>

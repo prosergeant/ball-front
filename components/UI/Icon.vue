@@ -201,10 +201,15 @@ i.icon {
     -webkit-mask-image: url(/icons/arrow-down.svg);
     mask-image: url(/icons/arrow-down.svg);
 }
-.chevron-down {
+.chevron-down-old {
     @extend i, .icon;
-    -webkit-mask-image: url(/icons/chevron-down.svg);
-    mask-image: url(/icons/chevron-down.svg);
+    -webkit-mask-image: url(/icons/chevron-down-old.svg);
+    mask-image: url(/icons/chevron-down-old.svg);
+}
+.chevron-right {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/chevron-right.svg);
+    mask-image: url(/icons/chevron-right.svg);
 }
 .chevron-left {
     @extend i, .icon;
@@ -220,5 +225,10 @@ i.icon {
     @extend i, .icon;
     -webkit-mask-image: url(/icons/search.svg);
     mask-image: url(/icons/search.svg);
+}
+.booking-card-square {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/booking-card-square.svg);
+    mask-image: url(/icons/booking-card-square.svg);
 }
 </style>

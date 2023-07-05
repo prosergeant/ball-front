@@ -13,7 +13,7 @@
 
                 <div>
                     <p>Все поля</p>
-                    <UIIcon icon="chevron-down" class="deg270" color="main-link" />
+                    <UIIcon icon="chevron-right" color="main-link" />
                 </div>
             </div>
 
@@ -26,7 +26,7 @@
 
                 <div>
                     <p>Все поля</p>
-                    <UIIcon icon="chevron-down" class="deg270" color="main-link" />
+                    <UIIcon icon="chevron-right" color="main-link" />
                 </div>
             </div>
 
@@ -54,6 +54,7 @@
         & > div {
             display: flex;
             align-items: center;
+            gap: 10px;
 
             p {
                 height: 17px;
@@ -61,6 +62,11 @@
                 font-weight: 700;
                 font-size: 14px;
                 cursor: pointer;
+            }
+
+            i {
+                width: 13px;
+                height: 11px;
             }
         }
     }

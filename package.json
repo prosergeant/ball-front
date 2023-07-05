@@ -11,9 +11,12 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@types/node": "^18",
-    "nuxt": "^3.6.1",
     "node-sass": "^7.0.1",
+    "nuxt": "^3.6.1",
     "sass": "^1.53.0",
     "sass-loader": "^10.2.1"
+  },
+  "dependencies": {
+    "click-outside-vue3": "^4.0.1"
   }
 }
