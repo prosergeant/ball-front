@@ -37,8 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "@vue/reactivity";
-import {ID} from "@vue/devtools-api";
+import getMontes from "~/composables/getMontes";
 
 const props = defineProps<{
     modelValue: {
@@ -63,7 +62,7 @@ const lastDayInPrevMonth = ref(new Date(currYear.value, currMonth.value, 0).getD
 const lastDayInCurrMonth = ref(new Date(currYear.value, currMonth.value, currDaysInMonth.value).getDate())
 
 const weekDays = ref(['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'])
-const months = ref(["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"])
+const months = ref(getMontes)
 interface IDateTime {
     id: number
     value: number | string
@@ -100,6 +99,7 @@ const calculateDays = () => {
         days.value.push({
             id: Math.random() * 100500 + i + currMonth.value + currDaysInMonth.value,
             value: i,
+            Class: i < currDay.value ? 'inactive' : undefined
         })
     }
 
@@ -144,6 +144,7 @@ const prev = () => {
 
 onMounted(() => {
     calculateDays()
+    emit('update:modelValue', {date: currDay.value as number, time: currTime.value})
 })
 </script>
 

@@ -13,19 +13,14 @@
                 <p>Поле «Uzbekistan на Аль-Фараби»</p>
             </div>
 
-            <div class="select-card type-card"> <!-- @click="modalType = true" -->
+            <div class="select-card" @click="modalType = true">
                 <span>Выберите тип поля:</span>
-                <div
-                    class="card type-card"
-                    v-for="cardType in fields"
-                    :key="cardType.id"
-                    :class="{active: cardType.id === selectedFieldType}"
-                    @click="selectedFieldType = cardType.id"
+                <div class="card"
                 >
                     <img src="/icons/booking-card-square.svg" alt="" />
 
                     <div class="card-infos">
-                        <h3>{{ cardType.name }}</h3>
+                        <h3>не выбран тип поля</h3>
                         <p>нужно выбрать крытое или открытое поле</p>
                     </div>
                     <UIIcon icon="chevron-right" />
@@ -37,9 +32,12 @@
                 <div class="card">
                     <img src="/icons/booking-card-square.svg" alt="" />
 
-                    <div class="card-infos">
+                    <div class="card-infos" v-if="dateTime.date === null || dateTime.time === null">
                         <h3>не выбрана дата и время</h3>
                         <p>выберите дату и время в календаре</p>
+                    </div>
+                    <div class="card-infos row" v-else>
+                        <h3 class="filled">{{ dateTime.date }} {{ getMontes[new Date().getMonth()] }} {{ dateTime.time}}</h3>
                     </div>
                     <UIIcon icon="chevron-right" />
                 </div>
@@ -48,21 +46,24 @@
             <UIButton>Продолжить бронирование</UIButton>
 
             <UIModalBottom v-if="modalTime">
-                <div class="modal-time-fixed" v-click-outside="() => {(modalTime) && (modalTime = false)}">
-                    <div class="modal-time">
+                <div class="modal-body-fixed" v-click-outside="() => {(modalTime) && (modalTime = false)}">
+                    <div class="modal-body">
                         <DateTime v-model="dateTime" />
                     </div>
                 </div>
             </UIModalBottom>
 
             <UIModalBottom v-if="modalType">
-                <div class="modal-time-fixed" v-click-outside="() => {(modalType) && (modalType = false)}">
-                    <div class="modal-time">
+                <div class="modal-body-fixed" v-click-outside="() => {(modalType) && (modalType = false)}">
+                    <div class="modal-body">
                         pupa
                     </div>
                 </div>
             </UIModalBottom>
         </div>
+    </template>
+    <template v-if="step === 1">
+
     </template>
 </template>
 
@@ -173,10 +174,6 @@ const fields = ref([
         gap: 13px;
         cursor: pointer;
 
-        &.type-card {
-            padding-left: 20px;
-        }
-
         span {
             color: $light3;
 
@@ -199,28 +196,16 @@ const fields = ref([
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
-            }
 
-            &.type-card {
-                position: relative;
+                &.row {
+                    margin-right: auto;
 
-                &.active {
-                    &::before {
-                        background: $green-1;
+                    .filled {
+                        font-size: 14px;
+                        font-style: normal;
+                        font-weight: 700;
+                        line-height: normal;
                     }
-                }
-
-                &::before {
-                    position: absolute;
-                    content: '';
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 50%;
-                    border: 3px solid $blue-500;
-                    left: -35px;
-                    top: calc(50% - 14px);
-
-
                 }
             }
         }
@@ -233,7 +218,7 @@ const fields = ref([
     }
 }
 
-.modal-time-fixed {
+.modal-body-fixed {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -252,7 +237,7 @@ const fields = ref([
         width: 100%;
     }
 
-    .modal-time {
+    .modal-body {
         width: 100%;
         max-width: 420px;
         min-height: 452px;
