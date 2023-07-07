@@ -1,4 +1,11 @@
-$background: #363636;
+$black1: #040404;
+$black2: #B9FD02;
+$grey1: #ECECEC;
+$grey2: #ECECEC;
+$green1: #B9FD02;
+
+// old
+$background: #010101;
 $dark: #161719;
 $light: #F1F1FA;
 $light2: #F1F1FA;
@@ -6,14 +13,13 @@ $light3: #91919F;
 $main-link: #6360FF;
 $primary: #6360FF;
 
-// old
+// old old
 $black: #1a1c1f;
 $black-default: #000000;
 $white: #ffffff;
 $white5:#F5F5F5;
 
 // gray color
-
 $grey-25: #FCFCFD;
 $grey-50: #F9FAFB;
 $grey-100: #F2F4F7;
@@ -25,12 +31,9 @@ $grey-600: #475467;
 $grey-700: #344054;
 $grey-800: #1D2939;
 $grey-900: #101828;
-
-
 $darkGray: #52637C;
 
 // error color
-
 $error-25: #FFFBFA;
 $error-50: #FEF3F2;
 $error-100: #FEE4E2;
@@ -44,7 +47,6 @@ $error-800: #912018;
 $error-900: #7A271A;
 
 // warning color
-
 $warning-25: #FFFCF5;
 $warning-50: #FFFAEB;
 $warning-100: #FEF0C7;
@@ -70,11 +72,9 @@ $success-600: #039855;
 $success-700: #027A48;
 $success-800: #05603A;
 $success-900: #054F31;
-
 $emergency_green: #13AF72;
 
 // blue color
-
 $blue-25: #F5FAFF;
 $blue-50: #EFF8FF;
 $blue-100: #D1E9FF;
@@ -90,7 +90,6 @@ $blue-045: #045fe7d4;
 $blue-98:#9880ff;
 
 // orange color
-
 $orange-25: #FFFAF5;
 $orange-50: #FFF6ED;
 $orange-100: #FFEAD5;

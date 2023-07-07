@@ -1,38 +1,52 @@
 <template>
-    <div class="main-page">
+    <div class="main-page-new">
+        <div class="ellipse" />
         <div class="header">
-            <div class="offer">
-                <CardNewOffer :ids="[0,1,2]" />
+            <div class="header-info">
+                <h3>Привет Альбина К</h3>
+                <p>Забонируй поля для игры, найди людей
+                    к себе в команду и много еще:)</p>
             </div>
+            <UIIcon icon="search" color="white" />
         </div>
-        <div class="main-content">
-            <UIButton style="height: 48px">Смотреть все поля</UIButton>
 
-            <div class="available">
-                <h3>Доступные поля сейчас</h3>
+        <CardNewOffer :ids="[0,1,2]" />
 
-                <div>
-                    <p>Все поля</p>
-                    <UIIcon icon="chevron-right" color="main-link" />
-                </div>
-            </div>
-
-            <div class="spinner">
-                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />
-            </div>
-
-            <div class="available">
-                <h3>Доступные поля</h3>
-
-                <div>
-                    <p>Все поля</p>
-                    <UIIcon icon="chevron-right" color="main-link" />
-                </div>
-            </div>
-
-            <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />
-        </div>
     </div>
+<!--    <div class="main-page">-->
+<!--        <div class="header">-->
+<!--            <div class="offer">-->
+<!--                <CardNewOffer :ids="[0,1,2]" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="main-content">-->
+<!--            <UIButton style="height: 48px">Смотреть все поля</UIButton>-->
+
+<!--            <div class="available">-->
+<!--                <h3>Доступные поля сейчас</h3>-->
+
+<!--                <div>-->
+<!--                    <p>Все поля</p>-->
+<!--                    <UIIcon icon="chevron-right" color="main-link" />-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <div class="spinner">-->
+<!--                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />-->
+<!--            </div>-->
+
+<!--            <div class="available">-->
+<!--                <h3>Доступные поля</h3>-->
+
+<!--                <div>-->
+<!--                    <p>Все поля</p>-->
+<!--                    <UIIcon icon="chevron-right" color="main-link" />-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--            <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />-->
+<!--        </div>-->
+<!--    </div>-->
 </template>
 
 <style scoped lang="scss">
@@ -122,4 +136,50 @@
         }
     }
 }
+
+.main-page-new {
+    position: relative;
+    width: 100%;
+    max-width: 342px;
+    min-height: 100dvh;
+    padding: 28px;
+
+    .header {
+        display: flex;
+        color: white;
+
+        i {
+            width: 22px !important;
+            height: 22px !important;
+            //margin-right: 20px;
+        }
+
+        &-info {
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 255px;
+            margin-right: auto;
+
+            h3 {
+                font-size: 18px;
+                font-weight: 800;
+                line-height: 21px;
+                letter-spacing: 0;
+                text-align: left;
+            }
+
+            p {
+                font-size: 13px;
+                font-weight: 400;
+                line-height: 16px;
+                letter-spacing: 0;
+                text-align: left;
+            }
+        }
+    }
+}
 </style>
+<script setup lang="ts">
+</script>

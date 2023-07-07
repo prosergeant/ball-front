@@ -1,6 +1,6 @@
 <template>
     <div class="mini-navigation-block">
-        <div class="mini-navigation">
+        <div class="mini-navigation" @click="$router.push(`/`)">
             <UIIcon icon="chevron-left" color="white" />
             <p>Kifs на Шевченко игра в футболл</p>
         </div>

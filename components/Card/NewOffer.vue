@@ -1,17 +1,14 @@
 <template>
     <div class="offer-card">
        <div class="info">
-           <div class="left">
-               <h3>Новая игра на Шевченко</h3>
-               <p>Бронируйте поля заранее!</p>
-           </div>
-           <div class="right">
-               <img src="/icons/offer-card-image.svg" alt="" />
+           <h2>Новая игра на Шевченко!</h2>
+           <p>Бронируте поля заранее, просим вас учитывать сезональность</p>
+           <UIButton>Посмотреть все поля</UIButton>
+
+           <div class="dots">
+               <span v-for="dot in ids" :key="dot" class="dot" :class="{active: curr_id === dot}" @click="curr_id=dot" />
            </div>
        </div>
-        <div class="dots">
-            <span v-for="dot in ids" :key="dot" class="dot" :class="{active: curr_id === dot}" @click="curr_id=dot" />
-        </div>
     </div>
 </template>
 
@@ -26,22 +23,23 @@ const curr_id = ref(0)
 
 <style scoped lang="scss">
 .offer-card {
-    width: 300px;
-    height: 115px;
-    padding: 20px;
+    //width: 319px;
+    height: 195px;
+    padding: 22px 17px 16px 24px;
     display: flex;
     flex-direction: column;
 
-    border-radius: 10px;
-    overflow: hidden;
-
-    background-image: url("/sample.png");
-    background-size: cover;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(20px);
 
     .info {
         display: flex;
-        gap: 16px;
-        h3 {
+        flex-direction: column;
+        gap: 10px;
+
+        h2 {
             font-size: 15px;
             font-weight: 700;
             line-height: 20px;
@@ -55,20 +53,12 @@ const curr_id = ref(0)
             line-height: 16px;
             letter-spacing: 0;
             text-align: left;
+
+            margin-bottom: 8px;
         }
 
-        .left {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            white-space: nowrap;
-        }
-
-        .right {
-            img {
-                width: 60px;
-                height: 60px;
-            }
+        .btn {
+            width: 100%;
         }
     }
 
