@@ -1,6 +1,6 @@
 <template>
     <div class="mini-navigation-block">
-        <div class="mini-navigation">
+        <div class="mini-navigation" @click="$router.push(`/object/${$route?.params?.id}/`)">
             <UIIcon icon="chevron-left" color="white" />
             <p>Выберите параметры</p>
         </div>
@@ -13,13 +13,19 @@
                 <p>Поле «Uzbekistan на Аль-Фараби»</p>
             </div>
 
-            <div class="select-card">
+            <div class="select-card type-card"> <!-- @click="modalType = true" -->
                 <span>Выберите тип поля:</span>
-                <div class="card">
+                <div
+                    class="card type-card"
+                    v-for="cardType in fields"
+                    :key="cardType.id"
+                    :class="{active: cardType.id === selectedFieldType}"
+                    @click="selectedFieldType = cardType.id"
+                >
                     <img src="/icons/booking-card-square.svg" alt="" />
 
                     <div class="card-infos">
-                        <h3>не выбран тип поля</h3>
+                        <h3>{{ cardType.name }}</h3>
                         <p>нужно выбрать крытое или открытое поле</p>
                     </div>
                     <UIIcon icon="chevron-right" />
@@ -44,7 +50,15 @@
             <UIModalBottom v-if="modalTime">
                 <div class="modal-time-fixed" v-click-outside="() => {(modalTime) && (modalTime = false)}">
                     <div class="modal-time">
-                        <DateTime ref="DateTimeRef" />
+                        <DateTime v-model="dateTime" />
+                    </div>
+                </div>
+            </UIModalBottom>
+
+            <UIModalBottom v-if="modalType">
+                <div class="modal-time-fixed" v-click-outside="() => {(modalType) && (modalType = false)}">
+                    <div class="modal-time">
+                        pupa
                     </div>
                 </div>
             </UIModalBottom>
@@ -55,7 +69,28 @@
 <script setup lang="ts">
 const step = ref(0)
 const modalTime = ref(false)
-const DateTimeRef = ref()
+const modalType = ref(false)
+const dateTime = ref({
+    date: null, //10,
+    time: null //'10:00'
+})
+
+const selectedFieldType = ref<number | null>(null)
+const fields = ref([
+    {
+        id: 1,
+        name: 'крытое поле'
+    },
+    {
+        id: 2,
+        name: 'открытое поле:'
+    },
+    {
+        id: 3,
+        name: 'открытое поле: 2'
+    },
+
+])
 </script>
 
 <style scoped lang="scss">
@@ -138,6 +173,10 @@ const DateTimeRef = ref()
         gap: 13px;
         cursor: pointer;
 
+        &.type-card {
+            padding-left: 20px;
+        }
+
         span {
             color: $light3;
 
@@ -161,6 +200,29 @@ const DateTimeRef = ref()
                 flex-direction: column;
                 gap: 8px;
             }
+
+            &.type-card {
+                position: relative;
+
+                &.active {
+                    &::before {
+                        background: $green-1;
+                    }
+                }
+
+                &::before {
+                    position: absolute;
+                    content: '';
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    border: 3px solid $blue-500;
+                    left: -35px;
+                    top: calc(50% - 14px);
+
+
+                }
+            }
         }
     }
 
@@ -174,10 +236,28 @@ const DateTimeRef = ref()
 .modal-time-fixed {
     position: fixed;
     bottom: 0;
+    width: 100%;
+    max-width: 420px;;
+
+    &::before {
+        overflow-y: unset;
+        position: absolute;
+        content: '';
+        background: white;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
+        top: -19px;
+        left: 0;
+        height: 20px;
+        width: 100%;
+    }
+
     .modal-time {
         width: 100%;
         max-width: 420px;
-        height: 452px;
+        min-height: 452px;
+        max-height: calc(100dvh - 40px);
+        overflow-y: auto;
         margin-top: auto;
         background: white;
         position: relative;
@@ -186,17 +266,7 @@ const DateTimeRef = ref()
         display: flex;
         flex-direction: column;
 
-        &::before {
-            position: absolute;
-            content: '';
-            background: white;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            top: -19px;
-            left: 0;
-            height: 20px;
-            width: 100%;
-        }
+
 
         &::after {
             content: '';
