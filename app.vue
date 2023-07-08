@@ -1,6 +1,8 @@
 <template>
   <div class="main-wrapper">
-    <NuxtPage />
+    <div class="maxwidth">
+        <NuxtPage />
+    </div>
   </div>
 </template>
 
@@ -12,6 +14,10 @@
     flex-direction: column;
     align-items: center;
     background: $background;
+
+    .maxwidth {
+        max-width: 420px;
+    }
 }
 </style>
 
