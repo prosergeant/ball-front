@@ -74,39 +74,6 @@
             border: 1px solid black;
             border-top: 1px solid #333;
         }
-
-        .playtime-info {
-            display: flex;
-            gap: 30px;
-
-            &-block {
-                width: 117px;
-                display: flex;
-                gap: 8px;
-
-                & > div {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 4px;
-
-                    p {
-                        all: initial;
-                        color: $green1;
-                        font-size: 16px;
-                        font-style: normal;
-                        font-weight: 500;
-                        line-height: 127.336%;
-                        white-space: nowrap;
-                    }
-
-                    span {
-                        font-weight: 400;
-                        font-size: 14px;
-                        white-space: nowrap;
-                    }
-                }
-            }
-        }
     }
 }
 </style>
