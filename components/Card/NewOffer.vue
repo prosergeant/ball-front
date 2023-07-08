@@ -67,6 +67,8 @@ const curr_id = ref(0)
             box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
             background: $green1;
             margin-bottom: 8px;
+            display: flex;
+            justify-content: center;
         }
     }
 
