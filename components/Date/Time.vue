@@ -99,7 +99,7 @@ const calculateDays = () => {
         days.value.push({
             id: Math.random() * 100500 + i + currMonth.value + currDaysInMonth.value,
             value: i,
-            Class: i < currDay.value ? 'inactive' : undefined
+            Class: i < date.value.getDate() ? 'inactive' : undefined
         })
     }
 
@@ -226,6 +226,7 @@ onMounted(() => {
 }
 
 .modal-time-month {
+    color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
