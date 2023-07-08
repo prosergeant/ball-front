@@ -186,4 +186,35 @@ i.icon {
     -webkit-mask-image: url(/icons/arrow-right.svg);
     mask-image: url(/icons/arrow-right.svg);
 }
+.checkbox-black {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/checkbox-black.svg);
+    mask-image: url(/icons/checkbox-black.svg);
+}
+.arrow-accept {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/arrow-accept.svg);
+    mask-image: url(/icons/arrow-accept.svg);
+}
+.ball {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/ball.svg);
+    mask-image: url(/icons/ball.svg);
+}
+.trash {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/trash.svg);
+    mask-image: url(/icons/trash.svg);
+}
+
+.map-pin {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/map-pin.svg);
+    mask-image: url(/icons/map-pin.svg);
+}
+.export {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/export.svg);
+    mask-image: url(/icons/export.svg);
+}
 </style>

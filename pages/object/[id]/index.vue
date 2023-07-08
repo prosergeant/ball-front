@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <UIButton icon="arrow-right" icon-color="black">Забронировать поле</UIButton>
+        <UIButton icon="arrow-right" icon-color="black" @click="$router.push('boocking/')">Забронировать поле</UIButton>
     </div>
 </template>
 
@@ -105,8 +105,8 @@ const tags = ref([
 }
 .object-info {
     height: 334px;
-    width: 100%;
-    max-width: 420px;
+    width: 90%;
+    margin: 0 auto;
 
     border-radius: 28px;
     //background: url('/cover-big.png'), lightgray 50% / cover no-repeat;
@@ -152,7 +152,6 @@ const tags = ref([
     flex-direction: column;
     gap: 29px;
     width: 100%;
-    max-width: 420px;
     padding: 28px;
 
     .btn {
