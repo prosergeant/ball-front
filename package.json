@@ -17,6 +17,7 @@
     "sass-loader": "^10.2.1"
   },
   "dependencies": {
-    "click-outside-vue3": "^4.0.1"
+    "click-outside-vue3": "^4.0.1",
+    "maska": "^2.1.9"
   }
 }
