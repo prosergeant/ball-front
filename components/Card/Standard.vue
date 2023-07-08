@@ -1,58 +1,35 @@
 <template>
     <div class="card-wrapper">
-        <div class="card-wrapper-img">
-            <img src="/sample.png">
-        </div>
+        <img src="/cover.png">
         <div class="card-wrapper-info">
             <h3>Kifs на Шевченко игра в футбол</h3>
             <p>Поле «Uzbekistan на Аль-Фараби»</p>
-            <span>7 сентября, 19:00</span>
         </div>
     </div>
 </template>
 
 <style scoped lang="scss">
 .card-wrapper {
-    min-width: 300px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    gap: 10px;
-
-    background: white;
-
-    &-img {
-        //height: 100px;
-        border-radius: 10px;
-        overflow: hidden;
-
-        height: 145px;
-
-        img {
-            width: 100%;
-            height: 100%;
-        }
-    }
+    background: rgba(255, 255, 255, 0.22);
+    color: white;
+    border-radius: 30px;
 
     &-info {
+        padding: 16px;
         display: flex;
         flex-direction: column;
+        gap: 3px;
         h3 {
-            font-weight: 700;
-            font-size: 15px;
+            max-width: 250px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow-x: hidden;
         }
-
         p {
-            font-size: 12px;
-            margin-top: 4px;
-            margin-bottom: 8px;
-        }
-
-        span {
-            font-weight: 700;
-            font-size: 16px;
-            color: $main-link;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
         }
     }
 }

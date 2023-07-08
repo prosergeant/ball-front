@@ -7,26 +7,68 @@
         <UIIcon icon="search" color="white" />
     </div>
     <div class="object-info">
+        <h3>Kfis на Аль-Фараби
+            и еще строчка текста</h3>
         <span>активна</span>
-        <h3>Kifs на Шевченко игра в футболл</h3>
     </div>
     <div class="object-content">
-        <h4>Подробное описание локации</h4>
-        <p>Phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet. Vel quam elementum pulvinar etiamnim lobortis scelerisque. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur....</p>
-        <span>Show more</span>
-        <hr />
-        <h4>Смотреть поля на карте</h4>
-        <img src="/sample-map.png" alt="map" />
-        <h4>Адрес</h4>
-        <div class="address">
-            <h4>Байзакова 280</h4>
-            <p>г. Алматы</p>
+        <div class="address-card">
+            <div class="info">
+                <p>Адрес поля</p>
+                <span>Гоголя, 28</span>
+            </div>
+
+            <UIButton>Смотреть на карте</UIButton>
         </div>
-        <UIButton @click="$router.push('boocking')">Забронировать</UIButton>
+
+        <div class="text-block">
+            <h3>Подробнее о поле</h3>
+            <p>Музей – это место, которое показывает настоящую картинку, а не рассказ из бумаги. Каждый может своими глазами посмотреть интересные факты и рукой прикоснуться</p>
+        </div>
+        <div class="text-block">
+            <h3>Что есть в комплекте?</h3>
+            <div class="tags-block">
+                <div class="tag" v-for="tag in tags" :key="tag.id">
+                    <UIIcon :icon="tag.icon" color="green1" />
+                    <p>{{ tag.name }}</p>
+                </div>
+            </div>
+        </div>
+
+        <UIButton icon="arrow-right" icon-color="black">Забронировать поле</UIButton>
     </div>
 </template>
 
 <script setup lang="ts">
+
+const tags = ref([
+    {
+        id: 1,
+        icon: 'car',
+        name: 'Парковка'
+    },
+    {
+        id: 2,
+        icon: 'closet',
+        name: 'Раздевалка'
+    },
+    {
+        id: 3,
+        icon: 'shower',
+        name: 'Душевая'
+    },
+    {
+        id: 4,
+        icon: 'appliances',
+        name: 'Столовая'
+    },
+    {
+        id: 5,
+        icon: 'lamp',
+        name: 'Ночное освещение'
+    }
+])
+
 </script>
 
 <style scoped lang="scss">
@@ -66,24 +108,29 @@
     width: 100%;
     max-width: 420px;
 
+    border-radius: 28px;
+    //background: url('/cover-big.png'), lightgray 50% / cover no-repeat;
+    background: linear-gradient(to top, black 5%, transparent 100%), url("/cover-big.png") no-repeat;
+    background-size: cover;
+
     display: flex;
     flex-direction: column-reverse;
     padding: 0 44px 44px 29px;
     gap: 17px;
 
     h3 {
-        font-size: 24px;
+        font-size: 28px;
         font-weight: 700;
-        line-height: 31px;
-        color: $light;
+        line-height: 33px;
+        letter-spacing: 0;
+        text-align: left;
+        color: white;
     }
 
     span {
         width: fit-content;
         height: 30px;
         padding: 12px;
-        border-radius: 30px;
-        background: $green-1;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -93,95 +140,117 @@
         font-weight: 400;
         line-height: 13px;
 
+        border-radius: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        background: rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(20px);
     }
 }
+
 .object-content {
-    background: white;
-    min-height: 334px;
-    width: 100%;
-    max-width: 420px;
-    position: relative;
-    padding: 0 33px 31px 26px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-
-    &::before {
-        position: absolute;
-        content: '';
-        background: white;
-        border-top-left-radius: 30px;
-        border-top-right-radius: 30px;
-        top: -19px;
-        left: 0;
-        height: 20px;
-        width: 100%;
-    }
-
-    h4 {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        letter-spacing: 0;
-        text-align: left;
-        color: $light3;
-    }
-
-    p {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 22px;
-        letter-spacing: 0;
-        text-align: left;
-
-    }
-
-    span {
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        letter-spacing: 0;
-        text-align: left;
-        color: $primary;
-    }
-
-    hr {
-        border-top: 1px solid $grey-300;
-    }
-
-    img {
-        height: 158px;
-        width: 100%;
-    }
-
-    .address {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        border-radius: 20px;
-        background: $light2;
-        padding: 15px 18px;
-
-        h4 {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 18px;
-            text-align: left;
-        }
-
-        p {
-            font-size: 10px;
-            font-weight: 400;
-            line-height: 13px;
-            color: $light3;
-        }
-    }
+    gap: 29px;
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
 
     .btn {
         width: 100%;
-        height: 46px;
-        margin-top: 34px;
+        padding: 15px 16px;
+        color: black;
+        font-weight: 600;
+        background: $green1;
+    }
+
+    .address-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.22);
+        backdrop-filter: blur(20px);
+        padding: 18px 19px;
+
+        .btn {
+            border-radius: 10px;
+            background: $green1;
+            color: black;
+            white-space: nowrap;
+            width: fit-content;
+            padding: 15px 16px;
+
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+        }
+
+        .info {
+            color: white;
+            p {
+                font-size: 11px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+            span {
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+            }
+        }
+    }
+
+    .text-block {
+        color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-right: 20px;
+        h3 {
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 800;
+            line-height: normal;
+        }
+        p {
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .tags-block {
+            padding: 15px 14px;
+            border-radius: 24px;
+            background: #3A3A3A;
+            backdrop-filter: blur(20px);
+
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+
+            .tag {
+                display: flex;
+                gap: 8px;
+                justify-content: center;
+                align-items: center;
+                border-radius: 18px;
+                border: 1px solid $green1;
+                background: #323232;
+                padding: 8px 12px;
+
+                p {
+                    color: $green1;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 127.336%;
+                }
+            }
+        }
     }
 }
-
 </style>

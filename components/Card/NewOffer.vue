@@ -24,7 +24,7 @@ const curr_id = ref(0)
 <style scoped lang="scss">
 .offer-card {
     //width: 319px;
-    height: 195px;
+    min-height: 195px;
     padding: 22px 17px 16px 24px;
     display: flex;
     flex-direction: column;
@@ -40,42 +40,53 @@ const curr_id = ref(0)
         gap: 10px;
 
         h2 {
-            font-size: 15px;
-            font-weight: 700;
-            line-height: 20px;
-            letter-spacing: 0;
-            text-align: left;
+            color: #FFF;
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 800;
+            line-height: normal;
         }
 
         p {
-            font-size: 12px;
+            color: #FFF;
+            font-size: 15px;
+            font-style: normal;
             font-weight: 400;
-            line-height: 16px;
-            letter-spacing: 0;
-            text-align: left;
+            line-height: normal;
 
             margin-bottom: 8px;
         }
 
         .btn {
             width: 100%;
+            padding: 8px 20px;
+            border-radius: 32px;
+            color: black;
+            font-size: 13px;
+            border: 2px solid var(--gray-m, #CCD2E3);
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+            background: $green1;
+            margin-bottom: 8px;
         }
     }
 
     .dots {
         display: flex;
         justify-content: center;
+        align-items: center;
         gap: 16px;
 
         .dot {
             background: white;
-            width: 12px;
-            height: 12px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             cursor: pointer;
 
             &.active {
-                background: $green-1;
+                background: $green1;
+                width: 10px;
+                height: 10px;
             }
         }
     }

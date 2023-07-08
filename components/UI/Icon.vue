@@ -91,105 +91,20 @@ i.icon {
     background-color: transparent !important;
 }
 
-// blue
-.blue-500 {
-    background-color: $blue-500 !important;
-}
-.blue-600 {
-    background-color: $blue-600 !important;
-}
-.blue-700 {
-    background-color: $blue-700 !important;
+.black {
+    background-color: black !important;
 }
 
-.blue-800 {
-    background-color: $blue-800 !important;
-}
-
-.blue-900 {
-    background-color: $blue-900 !important;
-}
-
-//
 .white {
     background-color: white !important;
-}
-.success-500 {
-    background-color: $success-500 !important ;
-}
-.success-700 {
-    background-color: $success-700 !important ;
-}
-
-// grey
-.grey-200 {
-    background-color: $grey-200 !important;
-}
-
-.grey-500 {
-    background-color: $grey-500 !important;
-    &:hover {
-        background-color: $grey-800 !important;
-    }
-}
-.grey-600 {
-    background-color: $grey-600 !important;
-    // &:hover {
-    //   background-color: $grey-800;
-    // }
-}
-.grey-700 {
-    background-color: $grey-700 !important;
-    &:hover {
-        background-color: $grey-900 !important;
-    }
-}
-.grey-800 {
-    background-color: $grey-800 !important;
-}
-
-.grey-900 {
-    background-color: $grey-900 !important;
-}
-
-.whatsapp-color {
-    background-color: #25D366 !important;
-}
-
-.telegram-color {
-    background: linear-gradient(180deg, #2AABEE 0%, #229ED9 99.26%) !important;
-}
-
-// error
-.error-100 {
-    background-color: $error-100 !important;
-}
-.error-500 {
-    background-color: $error-500 !important;
-}
-.error-700 {
-    background-color: $error-700 !important;
-}
-.error-900 {
-    background-color: $error-900 !important;
-}
-
-// warning
-.warning-500 {
-    background-color: $warning-500 !important;
-}
-.warning-400 {
-    background-color: $warning-400 !important;
-}
-.warning-600 {
-    background-color: $warning-600 !important;
-}
-.warning-900 {
-    background-color: $warning-900 !important;
 }
 
 .main-link {
     background-color: $main-link !important;
+}
+
+.green1 {
+    background-color: $green1 !important;
 }
 
 // HOVERS
@@ -230,5 +145,45 @@ i.icon {
     @extend i, .icon;
     -webkit-mask-image: url(/icons/booking-card-square.svg);
     mask-image: url(/icons/booking-card-square.svg);
+}
+.clock {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/clock.svg);
+    mask-image: url(/icons/clock.svg);
+}
+.calendar {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/calendar.svg);
+    mask-image: url(/icons/calendar.svg);
+}
+.car {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/car.svg);
+    mask-image: url(/icons/car.svg);
+}
+.closet {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/closet.svg);
+    mask-image: url(/icons/closet.svg);
+}
+.shower {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/shower.svg);
+    mask-image: url(/icons/shower.svg);
+}
+.appliances {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/appliances.svg);
+    mask-image: url(/icons/appliances.svg);
+}
+.lamp {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/lamp.svg);
+    mask-image: url(/icons/lamp.svg);
+}
+.arrow-right {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/arrow-right.svg);
+    mask-image: url(/icons/arrow-right.svg);
 }
 </style>

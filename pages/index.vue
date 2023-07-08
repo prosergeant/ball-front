@@ -12,6 +12,31 @@
 
         <CardNewOffer :ids="[0,1,2]" />
 
+        <div class="available-fields">
+            <div class="nav">
+                <h3>Доступные поля</h3>
+                <div>
+                    <p>Смотреть все</p>
+                    <UIIcon icon="chevron-right" color="green1" />
+                </div>
+            </div>
+            <div class="spinner">
+                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />
+            </div>
+        </div>
+
+        <div class="available-fields">
+            <div class="nav">
+                <h3>Ищем игроков</h3>
+                <div>
+                    <p>Смотреть все</p>
+                    <UIIcon icon="chevron-right" color="green1" />
+                </div>
+            </div>
+
+            <CardStandardInfo />
+            <CardStandardInfo />
+        </div>
     </div>
 <!--    <div class="main-page">-->
 <!--        <div class="header">-->
@@ -140,9 +165,13 @@
 .main-page-new {
     position: relative;
     width: 100%;
-    max-width: 342px;
+    max-width: 420px;
     min-height: 100dvh;
     padding: 28px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
 
     .header {
         display: flex;
@@ -177,6 +206,54 @@
                 letter-spacing: 0;
                 text-align: left;
             }
+        }
+    }
+
+    .available-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+
+            & > div {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+
+                i {
+                    width: 18px;
+                    height: 18px;
+                }
+            }
+
+            h3 {
+                color: white;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 800;
+                line-height: normal;
+            }
+            p {
+                color: $green1;
+                text-align: right;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+            }
+        }
+    }
+
+    .spinner {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+            display: none;
         }
     }
 }
