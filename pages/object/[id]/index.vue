@@ -2,20 +2,19 @@
     <div class="mini-navigation-block">
         <div class="mini-navigation" @click="$router.push(`/`)">
             <UIIcon icon="chevron-left" color="white" />
-            <p>Kifs на Шевченко игра в футболл</p>
+            <p>{{ data.name }}</p>
         </div>
         <UIIcon icon="search" color="white" />
     </div>
     <div class="object-info">
-        <h3>Kfis на Аль-Фараби
-            и еще строчка текста</h3>
+        <h3>{{ data.name }}</h3>
         <span>активна</span>
     </div>
     <div class="object-content">
         <div class="address-card">
             <div class="info">
                 <p>Адрес поля</p>
-                <span>Гоголя, 28</span>
+                <span>{{ data.address }}</span>
             </div>
 
             <UIButton>Смотреть на карте</UIButton>
@@ -23,7 +22,7 @@
 
         <div class="text-block">
             <h3>Подробнее о поле</h3>
-            <p>Музей – это место, которое показывает настоящую картинку, а не рассказ из бумаги. Каждый может своими глазами посмотреть интересные факты и рукой прикоснуться</p>
+            <p>{{ data.text }}</p>
         </div>
         <div class="text-block">
             <h3>Что есть в комплекте?</h3>
@@ -40,34 +39,43 @@
 </template>
 
 <script setup lang="ts">
+import {useRoute} from "vue-router";
 
-const tags = ref([
-    {
-        id: 1,
-        icon: 'car',
-        name: 'Парковка'
-    },
-    {
-        id: 2,
-        icon: 'closet',
-        name: 'Раздевалка'
-    },
-    {
-        id: 3,
-        icon: 'shower',
-        name: 'Душевая'
-    },
-    {
-        id: 4,
-        icon: 'appliances',
-        name: 'Столовая'
-    },
-    {
-        id: 5,
-        icon: 'lamp',
-        name: 'Ночное освещение'
-    }
-])
+const route = useRoute()
+const id = route.params?.id || -1
+
+const {data: data} = await useFetch(`${baseUrl}/fields/${id}/`)
+console.log(data.value)
+
+const tags = ref((data.value as IField).tags)
+
+// const tags = ref([
+//     {
+//         id: 1,
+//         icon: 'car',
+//         name: 'Парковка'
+//     },
+//     {
+//         id: 2,
+//         icon: 'closet',
+//         name: 'Раздевалка'
+//     },
+//     {
+//         id: 3,
+//         icon: 'shower',
+//         name: 'Душевая'
+//     },
+//     {
+//         id: 4,
+//         icon: 'appliances',
+//         name: 'Столовая'
+//     },
+//     {
+//         id: 5,
+//         icon: 'lamp',
+//         name: 'Ночное освещение'
+//     }
+// ])
 
 </script>
 

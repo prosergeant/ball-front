@@ -2,8 +2,8 @@
     <div class="card-wrapper">
         <img src="/cover.png">
         <div class="card-wrapper-info">
-            <h3>{{ data.name }}</h3>
-            <p>{{ data.text }}</p>
+            <h3>{{ data?.name }}</h3>
+            <p>{{ data?.text }}</p>
         </div>
     </div>
 </template>

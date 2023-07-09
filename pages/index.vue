@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-const {data: data} = await useFetch(`http://127.0.0.1:8000/fields/`)
+const {data: data} = await useFetch(`${baseUrl}/fields/`)
 </script>
 
 <style scoped lang="scss">

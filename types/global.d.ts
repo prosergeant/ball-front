@@ -11,4 +11,9 @@ interface IField {
     views: number
     num_phone_see: number
     text: string
+    tags: {
+        id: number
+        icon: string
+        name: string
+    }[]
 }

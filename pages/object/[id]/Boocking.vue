@@ -341,7 +341,7 @@ const passcode = ref([,,,,])
     backdrop-filter: blur(20px);    margin-top: 40px;
     border-radius: 28px;
     min-height: calc(100dvh - 40px);
-    width: 410px;
+    //width: 410px;
 
     .header {
         display: flex;
