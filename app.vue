@@ -1,9 +1,9 @@
 <template>
-  <div class="main-wrapper">
-    <div class="maxwidth">
-        <NuxtPage />
+    <div class="main-wrapper">
+        <div class="maxwidth" :style="`--width: ${deviceWidth}px`">
+            <NuxtPage />
+        </div>
     </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
@@ -16,12 +16,16 @@
     background: $background;
 
     .maxwidth {
-        max-width: 420px;
+        max-width: var(--width, 420px);
     }
 }
 </style>
 
 <script setup>
+const deviceWidth = ref(420)
+onMounted(() => {
+    deviceWidth.value = window.innerWidth < 420 ? window.innerWidth : 420
+})
 
 useHead({
     meta: [
