@@ -2,11 +2,17 @@
     <div class="card-wrapper">
         <img src="/cover.png">
         <div class="card-wrapper-info">
-            <h3>Kifs на Шевченко игра в футбол</h3>
-            <p>Поле «Uzbekistan на Аль-Фараби»</p>
+            <h3>{{ data.name }}</h3>
+            <p>{{ data.text }}</p>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+const props = defineProps<{
+    data: IField
+}>()
+</script>
 
 <style scoped lang="scss">
 .card-wrapper {

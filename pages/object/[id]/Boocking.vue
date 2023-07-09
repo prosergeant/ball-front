@@ -244,7 +244,7 @@
 
 <script setup lang="ts">
 
-const step = ref(5)
+const step = ref(0)
 const modalTime = ref(false)
 const modalType = ref(false)
 const dateTime = ref({

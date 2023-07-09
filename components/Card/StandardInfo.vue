@@ -3,8 +3,8 @@
         <img src="/cover.png" alt="" />
 
         <div class="inner-card">
-            <h3>Kfis на Шевченко игра...</h3>
-            <p>Поле «UZB на Аль-Фараби» —  левое поле крытое летнее/зимнее включительно» </p>
+            <h3>{{ data.name }}</h3>
+            <p>{{ data.text }}</p>
             <hr />
 
             <div class="playtime-info">
@@ -12,7 +12,7 @@
                     <UIIcon icon="clock" color="green1" />
                     <div>
                         <p>Время игры:</p>
-                        <span>19:00-21:00</span>
+                        <span>{{ data.time_start.slice(0, -3) }}-{{ data.time_end.slice(0, -3) }}</span>
                     </div>
                 </div>
 
@@ -27,6 +27,12 @@
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+const props = defineProps<{
+    data: IField
+}>()
+</script>
 
 <style scoped lang="scss">
 .card-wrapper {
@@ -77,5 +83,3 @@
     }
 }
 </style>
-<script setup lang="ts">
-</script>

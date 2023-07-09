@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="spinner">
-                <CardStandard v-for="(i, index) in Array(4)" @click="$router.push(`/object/${index}/`)" />
+                <CardStandard v-for="i in data" @click="$router.push(`/object/${i.id}/`)" :data="i" />
             </div>
         </div>
 
@@ -34,11 +34,14 @@
                 </div>
             </div>
 
-            <CardStandardInfo />
-            <CardStandardInfo />
+            <CardStandardInfo v-for="i in data" :key="i.id" :data="i" />
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+const {data: data} = await useFetch(`http://127.0.0.1:8000/fields/`)
+</script>
 
 <style scoped lang="scss">
 .main-page {
@@ -221,5 +224,3 @@
     }
 }
 </style>
-<script setup lang="ts">
-</script>
