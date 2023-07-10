@@ -41,14 +41,16 @@ import getMontes from "~/composables/getMontes";
 
 const props = defineProps<{
     modelValue: {
-        date: number | null
+        date: string | null
         time: string | null
-    }
+    },
+
+    fieldtype?: number
 }>()
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: {
-        date: number
+        date: string
         time: string
     }): void
 }>()
@@ -70,7 +72,7 @@ interface IDateTime {
 }
 const days = ref<IDateTime[]>([])
 const times = ref<IDateTime[]>([])
-const currDay = ref(props.modelValue.date || date.value.getDate() || 1)
+const currDay = ref(parseInt(props.modelValue.date?.split('.')?.[0] || '0'))//props.modelValue.date || date.value.getDate() || 1)
 const initTime = () => {
     const tempHour = date.value.getHours()
     if(tempHour < 9 || tempHour > 18) {
@@ -78,7 +80,7 @@ const initTime = () => {
     }
     return `${tempHour < 12 ? '0' + tempHour : tempHour}:00`
 }
-const currTime = ref(props.modelValue.time || initTime())
+const currTime = ref(props.modelValue.time || '') //props.modelValue.time || initTime())
 
 const calculateDays = () => {
     days.value.length = 0
@@ -111,24 +113,30 @@ const calculateDays = () => {
         })
     }
 
+    resetTime()
+}
+
+const resetTime = () => {
+    times.value.length = 0
     for(let i = 9; i <= 18; i++) {
         times.value.push({
             id: Math.random() * 100500 + i + currMonth.value + currDaysInMonth.value,
             value: `${ i < 10 ? '0' + i : i}:00`,
-            Class: i === 17 || i === 18 ? 'inactive' : undefined
+            // Class: i === 17 || i === 18 ? 'inactive' : undefined
         })
     }
 }
+
 const setDate = (day: IDateTime) => {
     if(day.Class !== 'inactive') {
         currDay.value = day.value as number
-        emit('update:modelValue', {date: currDay.value as number, time: props.modelValue.time as string})
+        emit('update:modelValue', {date: `${currDay.value}.${currMonth.value+1}`, time: props.modelValue.time as string})
     }
 }
 const setTime = (time: IDateTime) => {
     if(time.Class !== 'inactive') {
         currTime.value = time.value as string
-        emit('update:modelValue', {date: props.modelValue.date as number, time: currTime.value})
+        emit('update:modelValue', {date: props.modelValue.date as string, time: currTime.value})
     }
 }
 const next = () => {
@@ -142,9 +150,35 @@ const prev = () => {
     calculateDays()
 }
 
-onMounted(() => {
+watch(() => currDay.value, async (v) => {
+    if(!props.fieldtype)
+        return
+
+    const {data: bockedDays} = await useFetch(`${baseUrl}/requests/?fieldtype=${props.fieldtype}&date=${v}.${currMonth.value+1}`)
+    resetTime()
+    currTime.value = ''
+    emit('update:modelValue', {date: props.modelValue.date as string, time: currTime.value})
+
+    if(bockedDays.value)
+        for(const i of bockedDays.value as any[]) {
+            const temp_time = times.value.find(el => el.value === i?.time)
+            if(temp_time)
+                temp_time.Class = 'inactive'
+        }
+})
+
+onMounted(async () => {
     calculateDays()
-    emit('update:modelValue', {date: currDay.value as number, time: currTime.value})
+
+    if(props.fieldtype) {
+        const {data: bockedDays} = await useFetch(`${baseUrl}/requests/?fieldtype=${props.fieldtype}&date=${currDay.value}.${currMonth.value+1}`)
+        if(bockedDays.value)
+            for(const i of bockedDays.value as any[]) {
+                const temp_time = times.value.find(el => el.value === i?.time)
+                if(temp_time)
+                    temp_time.Class = 'inactive'
+            }
+    }
 })
 </script>
 
