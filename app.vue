@@ -17,6 +17,7 @@
 
     .maxwidth {
         max-width: var(--width, 420px);
+        width: var(--width);
         position: relative;
     }
 }
