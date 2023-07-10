@@ -244,6 +244,14 @@
 
 <script setup lang="ts">
 
+import {useRoute} from "vue-router";
+
+const route = useRoute()
+const id = route.params?.id || -1
+
+const {data: data} = await useFetch(`${baseUrl}/fieldstypes/?field=${id}`)
+console.log(data.value)
+
 const step = ref(0)
 const modalTime = ref(false)
 const modalType = ref(false)
