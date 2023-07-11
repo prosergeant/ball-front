@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "click-outside-vue3": "^4.0.1",
-    "maska": "^2.1.9"
+    "maska": "^2.1.9",
+    "vue3-otp-input": "^0.4.1"
   }
 }

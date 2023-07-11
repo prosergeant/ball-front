@@ -11,8 +11,8 @@
         <template v-if="step === 0">
             <div class="step-1">
                 <div class="header">
-                    <h4>Kifs на Шевченко игра</h4>
-                    <p>Поле «UZB на Аль-Фараби» —  левое поле крытое летнее/зимнее включительно»</p>
+                    <h4>{{ data.name }}</h4>
+                    <p>{{ data.text }}</p>
                 </div>
 
                 <div class="select-card" @click="modalType = true">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <UIButton icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
+                <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
 
                 <UIModalBottom v-if="modalTime">
                     <div class="modal-body-fixed" v-click-outside="() => {(modalTime) && (modalTime = false)}">
@@ -90,8 +90,8 @@
         <template v-if="step === 1">
             <div class="step-1">
                 <div class="header">
-                    <h4>Kifs на Шевченко игра</h4>
-                    <p>Поле «UZB на Аль-Фараби» —  левое поле крытое летнее/зимнее включительно»</p>
+                    <h4>{{ data.name }}</h4>
+                    <p>{{ data.text }}</p>
                 </div>
 
                 <div class="playtime-info-wrapper">
@@ -100,7 +100,7 @@
                             <UIIcon icon="clock" color="green1" />
                             <div>
                                 <p>Время игры:</p>
-                                <span>19:00-21:00</span>
+                                <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                             <UIIcon icon="calendar" color="green1" />
                             <div>
                                 <p>Дата игры:</p>
-                                <span>4 января 2023</span>
+                                <span>{{ getDateFromDateTime(dateTime.date) }}</span>
                             </div>
                         </div>
                     </div>
@@ -116,7 +116,7 @@
 
                 <div class="price">
                     <p>Сумма к оплате:</p>
-                    <span>12 699 ₸</span>
+                    <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
                 </div>
 
                 <div class="important-info">
@@ -156,15 +156,10 @@
                     <p>Мы отправили код подтверждения на номер + 7 ... .. {{phone.slice(-2)}}</p>
                 </div>
 
-                <div class="pass-code">
-                    <div class="pass-code-digit" v-for="i in passcode" :key="i">
-                        <input placeholder="0" :value="passcode[i]" maxlength="1" type="tel" inputmode="tel" />
-                        <!--                    <p :class="{inactive: i === 0}">{{ i }}</p>-->
-                    </div>
-                </div>
+                <UIPasscode @get-value="(e) => {passcode = e}" />
 
                 <p style="text-align: center; color: #B9FD02; margin-top: auto">Выслать код еще раз</p>
-                <UIButton style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 4">Продолжить бронирование</UIButton>
+                <UIButton :disabled="passcode !== `${otp}`" style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 4">Продолжить бронирование</UIButton>
             </div>
         </template>
         <template v-if="step === 4">
@@ -191,7 +186,7 @@
                             <UIIcon icon="clock" color="green1" />
                             <div>
                                 <p>Время игры:</p>
-                                <span>19:00-21:00</span>
+                                <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
                             </div>
                         </div>
 
@@ -199,14 +194,14 @@
                             <UIIcon icon="calendar" color="green1" />
                             <div>
                                 <p>Дата игры:</p>
-                                <span>4 января 2023</span>
+                                <span>{{ getDateFromDateTime(dateTime.date) }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="price">
-                    <p>Крытое поле (3 часа):</p>
-                    <span>12 699 ₸</span>
+                    <p> {{ resFieldType?.title }} ({{selectedFieldType.duration}} час):</p>
+                    <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
                 </div>
 
                 <div class="icon-group">
@@ -243,7 +238,6 @@
 </template>
 
 <script setup lang="ts">
-
 import {useRoute} from "vue-router";
 import {computed} from "@vue/reactivity";
 
@@ -251,6 +245,7 @@ const route = useRoute()
 const id = route.params?.id || -1
 
 const {data: fields} = await useFetch(`${baseUrl}/fieldstypes/?field=${id}`)
+const {data: data} = await useFetch(`${baseUrl}/fields/${id}/`)
 
 const step = ref(0)
 const modalTime = ref(false)
@@ -259,6 +254,18 @@ const dateTime = ref({
     date: null, //10,
     time: null //'10:00'
 })
+const getDateFromDateTime = (date: string) => {
+    const [day, month] = date.split('.').map(Number)
+    return `${day} ${getMontes?.[month-1]}`
+}
+const getTimeWithDuration = (time: string, duration: number) => {
+    let [minutes, ] = time.split(':').map(Number)
+    const sum = minutes + duration
+    let res = `${sum}`
+    if(sum < 10)
+        res = '0' + res
+    return res + ':00'
+}
 
 type TSelectedField = {
     id?: number
@@ -299,8 +306,55 @@ const cases = ref([
 
 const login = ref('')
 const phone = ref('')
+const passcode = ref('')
+const otp = ref(Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
-const passcode = ref([,,,,])
+watch(() => step.value, (v) => {
+    if(v === 3) {
+        console.log(otp.value)
+
+        let phoneForOtp = phone.value
+        phoneForOtp = phoneForOtp.replace('+7', '8')
+        phoneForOtp = phoneForOtp.replaceAll(' ', '')
+        phoneForOtp = phoneForOtp.replaceAll('(', '')
+        phoneForOtp = phoneForOtp.replaceAll(')', '')
+        phoneForOtp = phoneForOtp.replaceAll('-', '')
+
+        const {data: code} = useFetch(`${baseUrl}/send-otp/`, {
+            method: 'POST',
+            body: {
+                otp: otp.value,
+                phone: phoneForOtp
+            }
+        })
+    }
+
+    if(v === 5) {
+        //create user
+        useFetch(`${baseUrl}/users/`, {
+            method: 'POST',
+            body: {
+                "phone": phone.value,
+                "password": otp.value,
+                "name": login.value
+            }
+        })
+            .then((res) => {
+                console.log(res)
+                //create request
+                useFetch(`${baseUrl}/requests/`, {
+                    method: "POST",
+                    body: {
+                        "date": dateTime.value.date,
+                        "time": dateTime.value.time,
+                        "field_type": selectedFieldType.value.id,
+                        "user": (res.data.value as any).id
+                    }
+                })
+            })
+    }
+})
+
 </script>
 
 <style scoped lang="scss">
@@ -543,36 +597,6 @@ const passcode = ref([,,,,])
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-}
-
-.pass-code {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-
-    &-digit {
-        border-radius: 22px;
-        background: $black2;
-        padding: 18px;
-
-        input {
-            width: 36px;
-            background: $black2;
-            border: none;
-            outline: none;
-            text-align: center;
-            font-size: 46px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-            color: $green1;
-
-            &.inactive {
-                color: #5E5E5E;
-            }
-        }
-    }
 }
 
 .icon-group {

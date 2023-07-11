@@ -1,8 +1,8 @@
 <template>
-    <div class="btn" >
+    <button class="btn" :class="{disabled: disabled}" :disabled="disabled">
         <slot></slot>
         <UIIcon v-if="icon" :icon="icon" :color="iconColor || color || ''" />
-    </div>
+    </button>
 </template>
 
 <script setup lang="ts">
@@ -11,8 +11,8 @@ const props = defineProps<{
     color?: string
     icon?: string
     iconColor?: string
+    disabled?: boolean
 }>()
-
 </script>
 
 <style scoped lang="scss">
@@ -25,9 +25,15 @@ const props = defineProps<{
     border-radius: 10px;
     background: $green-1;
     color: white;
+    outline: none;
+    border: none;
 
     &:hover {
         cursor: pointer;
+    }
+
+    &.disabled {
+        background: grey !important;
     }
 }
 </style>
