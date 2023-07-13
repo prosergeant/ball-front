@@ -15,7 +15,7 @@
                     <p>{{ data.text }}</p>
                 </div>
 
-                <div class="select-card" @click="modalType = true">
+                <div class="select-card" @click.stop="modalType = !modalType">
                     <span>Выберите тип поля:</span>
                     <div class="card">
                         <span class="circle" />
@@ -32,7 +32,7 @@
                     </div>
                 </div>
 
-                <div class="select-card" @click="modalTime = true">
+                <div class="select-card" @click.stop="modalTime = !modalTime">
                     <span>Выберите дату и время:</span>
                     <div class="card">
                         <span class="circle" />
@@ -53,8 +53,8 @@
                 <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
 
                 <UIModalBottom v-if="modalTime">
-                    <div class="modal-body-fixed" v-click-outside="() => {(modalTime) && (modalTime = false)}">
-                        <div class="modal-body">
+                    <div class="modal-body-fixed">
+                        <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
                             <hr />
                             <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" />
                         </div>
@@ -62,8 +62,8 @@
                 </UIModalBottom>
 
                 <UIModalBottom v-if="modalType">
-                    <div class="modal-body-fixed" v-click-outside="() => {(modalType) && (modalType = false)}">
-                        <div class="modal-type-body">
+                    <div class="modal-body-fixed">
+                        <div class="modal-type-body" v-on-click-outside.bubble="() => {modalType = false}">
                             <hr />
                             <UIAccordion
                                 v-for="fieldtype in fields"
@@ -240,6 +240,7 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {computed} from "@vue/reactivity";
+import { vOnClickOutside } from '@vueuse/components'
 
 const route = useRoute()
 const id = route.params?.id || -1
@@ -254,6 +255,7 @@ const dateTime = ref({
     date: null, //10,
     time: null //'10:00'
 })
+
 const getDateFromDateTime = (date: string) => {
     const [day, month] = date.split('.').map(Number)
     return `${day} ${getMontes?.[month-1]}`
@@ -307,26 +309,21 @@ const cases = ref([
 const login = ref('')
 const phone = ref('')
 const passcode = ref('')
-const otp = ref(Math.floor(Math.random() * (9999 - 1000) + 1000 ))
+const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
 watch(() => step.value, (v) => {
     if(v === 3) {
-        console.log(otp.value)
-
         let phoneForOtp = phone.value
-        phoneForOtp = phoneForOtp.replace('+7', '8')
-        phoneForOtp = phoneForOtp.replaceAll(' ', '')
-        phoneForOtp = phoneForOtp.replaceAll('(', '')
-        phoneForOtp = phoneForOtp.replaceAll(')', '')
-        phoneForOtp = phoneForOtp.replaceAll('-', '')
+        phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
+        phoneForOtp = phoneForOtp.replace('7', '8')
 
-        const {data: code} = useFetch(`${baseUrl}/send-otp/`, {
-            method: 'POST',
-            body: {
-                otp: otp.value,
-                phone: phoneForOtp
-            }
-        })
+        // const {data: code} = useFetch(`${baseUrl}/send-otp/`, {
+        //     method: 'POST',
+        //     body: {
+        //         otp: otp.value,
+        //         phone: phoneForOtp
+        //     }
+        // })
     }
 
     if(v === 5) {
