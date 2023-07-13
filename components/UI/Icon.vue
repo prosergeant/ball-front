@@ -217,4 +217,19 @@ i.icon {
     -webkit-mask-image: url(/icons/export.svg);
     mask-image: url(/icons/export.svg);
 }
+.home {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/home.svg);
+    mask-image: url(/icons/home.svg);
+}
+.user {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/user.svg);
+    mask-image: url(/icons/user.svg);
+}
+.vertical-dots {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/vertical-dots.svg);
+    mask-image: url(/icons/vertical-dots.svg);
+}
 </style>

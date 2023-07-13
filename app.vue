@@ -2,6 +2,7 @@
     <div class="main-wrapper">
         <div class="maxwidth" :style="`--width: ${deviceWidth}px`">
             <NuxtPage />
+            <UIFooter v-if="onlyIn.includes($route.path)" :width="deviceWidth" />
         </div>
     </div>
 </template>
@@ -24,6 +25,7 @@
 </style>
 
 <script setup>
+const onlyIn = ref(['/', '/profile/my-games/'])
 const deviceWidth = ref(420)
 onMounted(() => {
     deviceWidth.value = window.innerWidth < 420 ? window.innerWidth : 420
