@@ -11,14 +11,18 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@types/node": "^18",
-    "node-sass": "^7.0.1",
+    "node-sass": "^9.0.0",
     "nuxt": "^3.6.1",
     "sass": "^1.53.0",
     "sass-loader": "^10.2.1"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.11",
+    "@vueuse/components": "^10.2.1",
+    "@vueuse/core": "^10.2.1",
     "click-outside-vue3": "^4.0.1",
     "maska": "^2.1.9",
+    "pinia": "^2.1.4",
     "vue3-otp-input": "^0.4.1"
   }
 }

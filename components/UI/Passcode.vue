@@ -30,9 +30,7 @@ const handleOnComplete = (value: string) => {
 };
 
 const handleOnChange = (value: string) => {
-    // console.log("OTP changed: ", value);
-    // console.log("OTP v-model:value: ", unref(bindValue));
-};
+}
 </script>
 
 <style scoped lang="scss">
