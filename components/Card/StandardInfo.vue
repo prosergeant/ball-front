@@ -1,6 +1,13 @@
 <template>
     <div class="card-wrapper">
-        <img src="/cover.png" alt="" />
+        <img src="/cover.png" alt=""/>
+        <span
+            v-if="data?.is_ended !== undefined"
+            class="is_ended"
+            :class="{ended: data?.is_ended, active: data?.is_ended === false}"
+        >
+            {{ data?.is_ended ? 'Завершена' : 'Активна' }}
+        </span>
 
         <div class="inner-card">
             <h3>{{ data.name }}</h3>
@@ -12,7 +19,7 @@
                     <UIIcon icon="clock" color="green1" />
                     <div>
                         <p>Время игры:</p>
-                        <span>{{ data.time_start.slice(0, -3) }}-{{ data.time_end.slice(0, -3) }}</span>
+                        <span>{{ data.time_start }}-{{ data.time_end }}</span>
                     </div>
                 </div>
 
@@ -20,7 +27,7 @@
                     <UIIcon icon="calendar" color="green1" />
                     <div>
                         <p>Дата игры:</p>
-                        <span>4 января 2023</span>
+                        <span>{{ getDateFromDateTime(data?.date) }}</span>
                     </div>
                 </div>
             </div>
@@ -30,7 +37,14 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-    data: IField
+    data: {
+        name: string
+        text: string
+        time_start: string
+        time_end: string
+        date: string
+        is_ended: boolean
+    }
 }>()
 </script>
 
@@ -46,8 +60,34 @@ const props = defineProps<{
     flex-direction: column;
     gap: 16px;
 
+    position: relative;
+    span.is_ended {
+        position: absolute;
+        top: calc(169px - 18px - 16px);
+        left: 17px;
+
+        border-radius: 28px;
+        backdrop-filter: blur(20px);
+        padding: 10px 19px;
+
+        color: $black1;
+        font-size: 11px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+
+        &.active {
+            background: $green1;
+        }
+        &.ended {
+            background: red;
+        }
+    }
+
     img {
         width: 100%;
+        min-height: 169px;
+        max-height: 169px;
     }
 
     .inner-card {

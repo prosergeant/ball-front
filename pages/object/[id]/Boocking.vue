@@ -241,6 +241,10 @@
 import {useRoute} from "vue-router";
 import {computed} from "@vue/reactivity";
 import { vOnClickOutside } from '@vueuse/components'
+import {storeToRefs} from "pinia";
+import {authStore} from "~/store/auth";
+
+const {is_auth, user_info} = storeToRefs(authStore())
 
 const route = useRoute()
 const id = route.params?.id || -1
@@ -255,19 +259,6 @@ const dateTime = ref({
     date: null, //10,
     time: null //'10:00'
 })
-
-const getDateFromDateTime = (date: string) => {
-    const [day, month] = date.split('.').map(Number)
-    return `${day} ${getMontes?.[month-1]}`
-}
-const getTimeWithDuration = (time: string, duration: number) => {
-    let [minutes, ] = time.split(':').map(Number)
-    const sum = minutes + duration
-    let res = `${sum}`
-    if(sum < 10)
-        res = '0' + res
-    return res + ':00'
-}
 
 type TSelectedField = {
     id?: number
@@ -312,6 +303,9 @@ const passcode = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
 watch(() => step.value, (v) => {
+    if(v === 2 && is_auth.value) {
+        step.value = 4
+    }
     if(v === 3) {
         let phoneForOtp = phone.value
         phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
@@ -327,28 +321,42 @@ watch(() => step.value, (v) => {
     }
 
     if(v === 5) {
-        //create user
-        useFetch(`${baseUrl}/users/`, {
-            method: 'POST',
-            body: {
-                "phone": phone.value,
-                "password": otp.value,
-                "name": login.value
-            }
-        })
-            .then((res) => {
-                console.log(res)
-                //create request
-                useFetch(`${baseUrl}/requests/`, {
-                    method: "POST",
-                    body: {
-                        "date": dateTime.value.date,
-                        "time": dateTime.value.time,
-                        "field_type": selectedFieldType.value.id,
-                        "user": (res.data.value as any).id
-                    }
-                })
+        if(is_auth.value) {
+            useFetch(`${baseUrl}/requests/`, {
+                method: "POST",
+                body: {
+                    "date": dateTime.value.date,
+                    "time": dateTime.value.time,
+                    "field_type": selectedFieldType.value.id,
+                    "user": user_info.value?.id,
+                    "paid": true
+                }
             })
+        } else {
+            //create user
+            useFetch(`${baseUrl}/users/`, {
+                method: 'POST',
+                body: {
+                    "phone": phone.value,
+                    "password": otp.value,
+                    "name": login.value
+                }
+            })
+                .then((res) => {
+                    console.log(res)
+                    //create request
+                    useFetch(`${baseUrl}/requests/`, {
+                        method: "POST",
+                        body: {
+                            "date": dateTime.value.date,
+                            "time": dateTime.value.time,
+                            "field_type": selectedFieldType.value.id,
+                            "user": (res.data.value as any).id,
+                            "paid": true
+                        }
+                    })
+                })
+        }
     }
 })
 
