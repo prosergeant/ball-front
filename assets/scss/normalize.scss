@@ -1,102 +1,102 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-style: normal;
-  font-family: SF Pro Display, sans-serif;
-  //font-family: DM Sans;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-style: normal;
+    font-family: SF Pro Display, sans-serif;
+    //font-family: DM Sans;
 }
 
 body{
-  touch-action: manipulation;
+    touch-action: manipulation;
 }
 
 .d-flex {
-  display: flex;
+    display: flex;
 
-  &.sb {
-    justify-content: space-between;
-  }
+    &.sb {
+        justify-content: space-between;
+    }
 
-  &.center {
-    align-items: center;
-  }
+    &.center {
+        align-items: center;
+    }
 }
 
 .d-column {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .deg90 {
-  transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 .deg270 {
-  transform: rotate(270deg);
+    transform: rotate(270deg);
 }
 
 .ellipse {
-  background: #B9FD0252;
-  filter: blur(69px);
+    background: #B9FD0252;
+    filter: blur(69px);
 
-  opacity: 0.8;
-  position: absolute;
-  top: -145px;
-  left: -124px;
-  width: 342px;
-  height: 342px;
-  border-radius: 50%;
+    opacity: 0.8;
+    position: absolute;
+    top: -145px;
+    left: -124px;
+    width: 342px;
+    height: 342px;
+    border-radius: 50%;
 }
 
 .checkbox-off {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 
-  border-radius: 6px;
-  border: 3px solid #91919F;
-  background: $black2;
+    border-radius: 6px;
+    border: 3px solid #91919F;
+    background: $black2;
 }
 
 .checkbox-on {
-  width: 24px;
-  height: 24px;
-  border-radius: 6px;
-  background: $green1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: $green1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .playtime-info {
-  display: flex;
-  gap: 30px;
-
-  &-block {
-    width: 117px;
     display: flex;
-    gap: 8px;
+    gap: 30px;
 
-    & > div {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+    &-block {
+        width: 117px;
+        display: flex;
+        gap: 8px;
 
-      p {
-        all: initial;
-        color: $green1;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 127.336%;
-        white-space: nowrap;
-      }
+        & > div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
 
-      span {
-        font-weight: 400;
-        font-size: 14px;
-        white-space: nowrap;
-      }
+            p {
+                all: initial;
+                color: $green1;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: 127.336%;
+                white-space: nowrap;
+            }
+
+            span {
+                font-weight: 400;
+                font-size: 14px;
+                white-space: nowrap;
+            }
+        }
     }
-  }
 }
