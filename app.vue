@@ -67,11 +67,6 @@ useHead({
 
 onMounted(() => {
     if(window) {
-        const scale = 'scale(1)';
-        document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
-        document.body.style.msTransform =   scale;       // IE 9
-        document.body.style.transform = scale;
-
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
             // special hack to prevent zoom-to-tabs gesture in safari
