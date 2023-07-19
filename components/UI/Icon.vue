@@ -232,4 +232,9 @@ i.icon {
     -webkit-mask-image: url(/icons/vertical-dots.svg);
     mask-image: url(/icons/vertical-dots.svg);
 }
+.logout {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/logout.svg);
+    mask-image: url(/icons/logout.svg);
+}
 </style>
