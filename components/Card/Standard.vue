@@ -19,6 +19,11 @@ const props = defineProps<{
     background: rgba(255, 255, 255, 0.22);
     color: white;
     border-radius: 30px;
+    width: 294px;
+
+    img {
+        max-width: 294px;
+    }
 
     &-info {
         padding: 16px;
