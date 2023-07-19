@@ -4,7 +4,7 @@
             v-for="icon in icons"
             :key="icon.id"
             class="icon-item"
-            @click="(!!icon?.key) && ($router.push(icon.key))"
+            @click="navigateTo(icon.key)"
         >
             <UIIcon
                 :icon="icon.icon"

@@ -58,13 +58,13 @@ const profileInfo = ref([
 
 const _logout = () => {
     logout()
-    router.push('/')
+    navigateTo('/')
 }
 
 onMounted(() => {
     setTimeout(() => {
         if(!is_auth.value) {
-            router.push('/auth/')
+            navigateTo('/auth/')
         }
     }, 0)
 })

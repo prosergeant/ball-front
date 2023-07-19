@@ -1,239 +1,258 @@
 <template>
-    <div class="ellipse" />
-    <div class="mini-navigation-block">
-        <div class="mini-navigation" @click="$router.push(`/object/${$route?.params?.id}/`)">
-            <UIIcon icon="chevron-left" color="white" />
-            <p>Выберите параметры</p>
+    <div>
+        <div class="ellipse" />
+        <div class="mini-navigation-block">
+            <div class="mini-navigation" @click="navigateTo(`/object/${$route?.params?.id}/`)">
+                <UIIcon icon="chevron-left" color="white" />
+                <p>Выберите параметры</p>
+            </div>
+            <UIIcon icon="search" color="white" />
         </div>
-        <UIIcon icon="search" color="white" />
-    </div>
-    <div style="padding: 0 10px">
-        <template v-if="step === 0">
-            <div class="step-1">
-                <div class="header">
-                    <h4>{{ data.name }}</h4>
-                    <p>{{ data.text }}</p>
-                </div>
-
-                <div class="select-card" @click.stop="modalType = !modalType">
-                    <span>Выберите тип поля:</span>
-                    <div class="card">
-                        <span class="circle" />
-                        <div class="card-infos">
-                            <template v-if="selectedFieldType.value">
-                                <h3 class="filled">{{ resFieldType?.title }} {{ selectedFieldType?.duration }} час</h3>
-                            </template>
-                            <template v-else>
-                                <h3>не выбран тип поля</h3>
-                                <p>выбрать тип поля</p>
-                            </template>
-                        </div>
-                        <UIIcon icon="chevron-right" color="green1" />
+        <div style="padding: 0 10px">
+            <template v-if="step === 0">
+                <div class="step-1">
+                    <div class="header">
+                        <h4>{{ data.name }}</h4>
+                        <p>{{ data.text }}</p>
                     </div>
-                </div>
 
-                <div class="select-card" @click.stop="modalTime = !modalTime">
-                    <span>Выберите дату и время:</span>
-                    <div class="card">
-                        <span class="circle" />
-
-                        <div class="card-infos">
-                            <template v-if="!dateTime.date || !dateTime.time">
-                                <h3>не выбрана дата и время</h3>
-                                <p>выберите дату и время в календаре</p>
-                            </template>
-                            <template v-else>
-                                <h3 class="filled">{{ dateTime.date.split('.')?.[0] }} {{ getMontes[new Date().getMonth()] }} {{ dateTime.time}}</h3>
-                            </template>
-                        </div>
-                        <UIIcon icon="chevron-right" color="green1" />
-                    </div>
-                </div>
-
-                <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
-
-                <UIModalBottom v-if="modalTime">
-                    <div class="modal-body-fixed">
-                        <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
-                            <hr />
-                            <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" />
+                    <div class="select-card" @click.stop="modalType = !modalType">
+                        <span>Выберите тип поля:</span>
+                        <div class="card">
+                            <span class="circle" />
+                            <div class="card-infos">
+                                <template v-if="selectedFieldType.value">
+                                    <h3 class="filled">{{ resFieldType?.title }} {{ selectedFieldType?.duration }} час</h3>
+                                </template>
+                                <template v-else>
+                                    <h3>не выбран тип поля</h3>
+                                    <p>выбрать тип поля</p>
+                                </template>
+                            </div>
+                            <UIIcon icon="chevron-right" color="green1" />
                         </div>
                     </div>
-                </UIModalBottom>
 
-                <UIModalBottom v-if="modalType">
-                    <div class="modal-body-fixed">
-                        <div class="modal-type-body" v-on-click-outside.bubble="() => {modalType = false}">
-                            <hr />
-                            <UIAccordion
-                                v-for="fieldtype in fields"
-                                :key="fieldtype.id"
-                                :title="fieldtype.title"
-                            >
-                                <div class="d-column">
-                                    <div
-                                        v-for="hour in fieldtype.hours" :key="hour"
-                                        class="type-card" @click="setFieldType(fieldtype.id, hour)">
-                                        <UICheckboxView :value="!!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id" />
-                                        <div>
-                                            <p>Аренда на {{ hour }} час</p>
-                                            <span>Любое примечание</span>
+                    <div class="select-card" @click.stop="modalTime = !modalTime">
+                        <span>Выберите дату и время:</span>
+                        <div class="card">
+                            <span class="circle" />
+
+                            <div class="card-infos">
+                                <template v-if="!dateTime.date || !dateTime.time">
+                                    <h3>не выбрана дата и время</h3>
+                                    <p>выберите дату и время в календаре</p>
+                                </template>
+                                <template v-else>
+                                    <h3 class="filled">{{ dateTime.date.split('.')?.[0] }} {{ getMontes[new Date().getMonth()] }} {{ dateTime.time}}</h3>
+                                </template>
+                            </div>
+                            <UIIcon icon="chevron-right" color="green1" />
+                        </div>
+                    </div>
+
+                    <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
+
+                    <UIModalBottom v-if="modalTime">
+                        <div class="modal-body-fixed">
+                            <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
+                                <hr />
+                                <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" />
+                            </div>
+                        </div>
+                    </UIModalBottom>
+
+                    <UIModalBottom v-if="modalType">
+                        <div class="modal-body-fixed">
+                            <div class="modal-type-body" v-on-click-outside.bubble="() => {modalType = false}">
+                                <hr />
+                                <UIAccordion
+                                    v-for="fieldtype in fields"
+                                    :key="fieldtype.id"
+                                    :title="fieldtype.title"
+                                >
+                                    <div class="d-column">
+                                        <div
+                                            v-for="hour in fieldtype.hours" :key="hour"
+                                            class="type-card" @click="setFieldType(fieldtype.id, hour)">
+                                            <UICheckboxView :value="!!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id" />
+                                            <div>
+                                                <p>Аренда на {{ hour }} час</p>
+                                                <span>Любое примечание</span>
+                                            </div>
                                         </div>
                                     </div>
+                                </UIAccordion>
+                            </div>
+                        </div>
+                    </UIModalBottom>
+                </div>
+            </template>
+            <template v-if="step === 1">
+                <div class="step-1">
+                    <div class="header">
+                        <h4>{{ data.name }}</h4>
+                        <p>{{ data.text }}</p>
+                    </div>
+
+                    <div class="playtime-info-wrapper">
+                        <div class="playtime-info">
+                            <div class="playtime-info-block">
+                                <UIIcon icon="clock" color="green1" />
+                                <div>
+                                    <p>Время игры:</p>
+                                    <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
                                 </div>
-                            </UIAccordion>
-                        </div>
-                    </div>
-                </UIModalBottom>
-            </div>
-        </template>
-        <template v-if="step === 1">
-            <div class="step-1">
-                <div class="header">
-                    <h4>{{ data.name }}</h4>
-                    <p>{{ data.text }}</p>
-                </div>
-
-                <div class="playtime-info-wrapper">
-                    <div class="playtime-info">
-                        <div class="playtime-info-block">
-                            <UIIcon icon="clock" color="green1" />
-                            <div>
-                                <p>Время игры:</p>
-                                <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
                             </div>
-                        </div>
 
-                        <div class="playtime-info-block">
-                            <UIIcon icon="calendar" color="green1" />
-                            <div>
-                                <p>Дата игры:</p>
-                                <span>{{ getDateFromDateTime(dateTime.date) }}</span>
+                            <div class="playtime-info-block">
+                                <UIIcon icon="calendar" color="green1" />
+                                <div>
+                                    <p>Дата игры:</p>
+                                    <span>{{ getDateFromDateTime(dateTime.date) }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="price">
-                    <p>Сумма к оплате:</p>
-                    <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
-                </div>
-
-                <div class="important-info">
-                    <p class="red">Важная информация:</p>
-
-                    <div class="cases">
-                        <div
-                            v-for="_case in cases"
-                            :key="_case.id"
-                            class="case"
-                        >
-                            <UIIcon :icon="_case.icon" color="white" />
-                            <p>{{ _case.name }}</p>
-                        </div>
+                    <div class="price">
+                        <p>Сумма к оплате:</p>
+                        <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
                     </div>
-                </div>
 
-                <UIButton style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 2">Продолжить бронирование</UIButton>
-            </div>
-        </template>
-        <template v-if="step === 2">
-            <div class="step-1">
-                <div class="header">
-                    <h4>Контактная информация:</h4>
-                </div>
+                    <div class="important-info">
+                        <p class="red">Важная информация:</p>
 
-                <UIInput v-model="login" label="Ваше имя:" />
-                <UIInput v-model="phone" label="Номер телефона:" type="tel" />
-
-                <UIButton icon="arrow-right" icon-color="black" @click="step = 3">Продолжить бронирование</UIButton>
-            </div>
-        </template>
-        <template v-if="step === 3">
-            <div class="step-1">
-                <div class="header">
-                    <h4>Введите код подтверждения</h4>
-                    <p>Мы отправили код подтверждения на номер + 7 ... .. {{phone.slice(-2)}}</p>
-                </div>
-
-                <UIPasscode @get-value="(e) => {passcode = e}" />
-
-                <p style="text-align: center; color: #B9FD02; margin-top: auto">Выслать код еще раз</p>
-                <UIButton :disabled="passcode !== `${otp}`" style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 4">Продолжить бронирование</UIButton>
-            </div>
-        </template>
-        <template v-if="step === 4">
-            <div class="step-1">
-                <div class="header">
-                    <h4>Эквайринг</h4>
-                </div>
-                <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>
-            </div>
-        </template>
-        <template v-if="step === 5">
-            <div class="step-1">
-                <div class="accepted">
-                    <UIIcon icon="arrow-accept" color="black" />
-                </div>
-                <div class="header">
-                    <h4 style="text-align: center">Оплачено!</h4>
-                    <p style="text-align: center">Спасибо! Ваша бронь активна, вы сможете посмотреть данные о ней во вкладке “мои игры”</p>
-                </div>
-
-                <div class="playtime-info-wrapper">
-                    <div class="playtime-info">
-                        <div class="playtime-info-block">
-                            <UIIcon icon="clock" color="green1" />
-                            <div>
-                                <p>Время игры:</p>
-                                <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
-                            </div>
-                        </div>
-
-                        <div class="playtime-info-block">
-                            <UIIcon icon="calendar" color="green1" />
-                            <div>
-                                <p>Дата игры:</p>
-                                <span>{{ getDateFromDateTime(dateTime.date) }}</span>
+                        <div class="cases">
+                            <div
+                                v-for="_case in cases"
+                                :key="_case.id"
+                                class="case"
+                            >
+                                <UIIcon :icon="_case.icon" color="white" />
+                                <p>{{ _case.name }}</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="price">
-                    <p> {{ resFieldType?.title }} ({{selectedFieldType.duration}} час):</p>
-                    <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
-                </div>
 
-                <div class="icon-group">
-                    <div>
-                        <div class="icon-holder">
-                            <UIIcon icon="map-pin" color="black" />
-                        </div>
-                        <h3>2 GIS</h3>
-                        <p>Посмотреть на карте</p>
+                    <UIButton style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 2">Продолжить бронирование</UIButton>
+                </div>
+            </template>
+            <template v-if="step === 2">
+                <div class="step-1">
+                    <div class="header">
+                        <h4>Контактная информация:</h4>
                     </div>
 
-                    <div>
-                        <div class="icon-holder">
-                            <UIIcon icon="calendar" color="black" />
-                        </div>
-                        <h3>В календарь</h3>
-                        <p>Добавить в Google-календарь</p>
+                    <UIInput v-model="login" label="Ваше имя:" />
+                    <UIInput v-model="phone" label="Номер телефона:" type="tel" />
+
+                    <div style="color: white; text-align: center;">
+                        <h3>Уже есть аккаунт?</h3>
+                        <p style="margin-bottom: 10px">Если у вас уже есть аккаунт перейдите на страницу авторизации</p>
+                        <UIButton class="btn-green-demi-outline" @click.stop="isNeedAuth = !isNeedAuth">Авторизоваться</UIButton>
                     </div>
 
-                    <div>
-                        <div class="icon-holder">
-                            <UIIcon icon="export" color="black" />
-                        </div>
-                        <h3>Поделиться</h3>
-                        <p>Поделиться с друзьями</p>
-                    </div>
+                    <UIButton :disabled="!login || !phone" icon="arrow-right" icon-color="black" @click="checkAccount">Продолжить бронирование</UIButton>
                 </div>
+            </template>
+            <template v-if="step === 3">
+                <div class="step-1">
+                    <div class="header">
+                        <h4>Введите код подтверждения</h4>
+                        <p>Мы отправили код подтверждения на номер + 7 ... .. {{phone.slice(-2)}}</p>
+                    </div>
 
-                <UIButton class="btn back-to-main" @click="$router.push('/')">Перейти на главную</UIButton>
-                <UIButton class="btn back-to-games" @click="$router.push('/')">Перейти в мои игры</UIButton>
-            </div>
-        </template>
+                    <UIPasscode @get-value="(e) => {passcode = e}" />
+
+                    <p style="text-align: center; color: #B9FD02; margin-top: auto">Выслать код еще раз</p>
+                    <UIButton :disabled="passcode !== `${otp}`" style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 4">Продолжить бронирование</UIButton>
+                </div>
+            </template>
+            <template v-if="step === 4">
+                <div class="step-1">
+                    <div class="header">
+                        <h4>Эквайринг</h4>
+                    </div>
+                    <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>
+                </div>
+            </template>
+            <template v-if="step === 5">
+                <div class="step-1">
+                    <div class="accepted">
+                        <UIIcon icon="arrow-accept" color="black" />
+                    </div>
+                    <div class="header">
+                        <h4 style="text-align: center">Оплачено!</h4>
+                        <p style="text-align: center">Спасибо! Ваша бронь активна, вы сможете посмотреть данные о ней во вкладке “мои игры”</p>
+                    </div>
+
+                    <div class="playtime-info-wrapper">
+                        <div class="playtime-info">
+                            <div class="playtime-info-block">
+                                <UIIcon icon="clock" color="green1" />
+                                <div>
+                                    <p>Время игры:</p>
+                                    <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
+                                </div>
+                            </div>
+
+                            <div class="playtime-info-block">
+                                <UIIcon icon="calendar" color="green1" />
+                                <div>
+                                    <p>Дата игры:</p>
+                                    <span>{{ getDateFromDateTime(dateTime.date) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="price">
+                        <p> {{ resFieldType?.title }} ({{selectedFieldType.duration}} час):</p>
+                        <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
+                    </div>
+
+                    <div class="icon-group">
+                        <div>
+                            <div class="icon-holder">
+                                <UIIcon icon="map-pin" color="black" />
+                            </div>
+                            <h3>2 GIS</h3>
+                            <p>Посмотреть на карте</p>
+                        </div>
+
+                        <div>
+                            <div class="icon-holder">
+                                <UIIcon icon="calendar" color="black" />
+                            </div>
+                            <h3>В календарь</h3>
+                            <p>Добавить в Google-календарь</p>
+                        </div>
+
+                        <div>
+                            <div class="icon-holder">
+                                <UIIcon icon="export" color="black" />
+                            </div>
+                            <h3>Поделиться</h3>
+                            <p>Поделиться с друзьями</p>
+                        </div>
+                    </div>
+
+                    <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>
+                    <UIButton class="btn back-to-games" @click="navigateTo('/')">Перейти в мои игры</UIButton>
+                </div>
+            </template>
+
+            <UIModalBottom v-if="isNeedAuth">
+                <div class="modal-body-fixed">
+                    <UIAuth
+                        no-redirect
+                        no-reg
+                        @status="(e) => ((e) && ((step = 4) && (isNeedAuth = false))) || ((!e) && (isNeedAuth = false))"
+                        @onOutside="() => {isNeedAuth = false}"
+                    />
+                </div>
+            </UIModalBottom>
+        </div>
     </div>
 </template>
 
@@ -297,10 +316,28 @@ const cases = ref([
     }
 ])
 
+const isNeedAuth = ref(false)
 const login = ref('')
 const phone = ref('')
 const passcode = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
+
+const checkAccount = () => {
+    useFetch(`${baseUrl}/find-user/`, {
+        method: 'POST',
+        body: {
+            phone: phone.value
+        }
+    })
+        .then((res) => {
+            console.log(res)
+            if(res?.status.value === 'success') {
+                step.value = 3
+            } else {
+                console.log('user already exist')
+            }
+        })
+}
 
 watch(() => step.value, (v) => {
     if(v === 2 && is_auth.value) {

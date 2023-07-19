@@ -2,7 +2,6 @@
     <div class="main-wrapper" :class="{greyground: isGreyground}">
         <div
             class="maxwidth"
-            :class="{'footer-padding': isFooter && isPadding}"
             :style="`--width: ${deviceWidth}px`"
         >
             <NuxtPage />
@@ -44,12 +43,10 @@ import {authStore} from "~/store/auth";
 const {is_auth} = storeToRefs(authStore())
 
 const route = useRoute()
-const padding = ref(['/profile/my-games/', '/profile/', '/auth/'])
 const greyground = ref(['/auth/', '/profile/'])
 const onlyIn = ref(['/', '/profile/', '/profile/my-games/', '/auth/'])
 const isFooter = computed(() => onlyIn.value.includes(route.path))
 const isGreyground = computed(() => greyground.value.includes(route.path))
-const isPadding = computed(() => !padding.value.includes(route.path))
 const deviceWidth = ref(420)
 
 onMounted(() => {

@@ -1,3 +1,5 @@
 <template>
-    <UIAuth />
+    <div>
+        <UIAuth />
+    </div>
 </template>

@@ -1,20 +1,31 @@
 <template>
     <div class="auth-wrapper">
-        <div class="auth">
+        <div class="auth" v-on-click-outside="() => {emit('onOutside', true)}">
             <h3>Уже есть аккаунт?</h3>
             <p>Если у вас уже есть аккаунт перейдите на страницу авторизации</p>
             <UIInput v-model="login" label="Номер" type="tel" />
             <UIInput v-model="password" label="Пароль" type="password" />
-            <UIButton class="register">Регистрация</UIButton>
+            <UIButton v-if="!noReg" class="btn-green-demi-outline">Регистрация</UIButton>
             <UIButton class="login" @click="authorize">Войти</UIButton>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import { vOnClickOutside } from '@vueuse/components'
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
+
+const props = defineProps<{
+    noRedirect?: boolean
+    noReg?: boolean
+}>()
+
+const emit = defineEmits<{
+    (e: 'status', value: boolean): void
+    (e: 'onOutside', value: boolean): void
+}>()
 
 const {is_auth, user_info, access_token} = storeToRefs(authStore())
 const router = useRouter()
@@ -34,7 +45,9 @@ const authorize = () => {
     })
         .then((res: any) => {
             if(res?.error?.value?.statusCode === 401) {
-                router.go(0)
+                if(!props.noRedirect)
+                    router.go(0)
+                emit('status', false)
                 return
             }
 
@@ -60,7 +73,10 @@ const authorize = () => {
                     userCookie.value = user_info.value
 
                     is_auth.value = true
-                    router.push('/profile/')
+                    if(!props.noRedirect)
+                        navigateTo('/profile/')
+
+                    emit('status', true)
                 })
         })
 }
@@ -109,28 +125,6 @@ const authorize = () => {
 
         button {
             width: 100%;
-
-            &.register {
-                display: flex;
-                height: 47px;
-                padding: 15px 16px;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 10px;
-                flex-shrink: 0;
-
-                border-radius: 10px;
-                border: 1px solid $green1;
-                background: rgba(185, 253, 2, 0.32);
-
-                color: $green1;
-                text-align: center;
-                font-size: 13px;
-                font-style: normal;
-                font-weight: 700;
-                line-height: normal;
-            }
             &.login {
                 display: flex;
                 height: 47px;

@@ -1,6 +1,6 @@
 <template>
     <div class="navigation">
-        <div class="left" @click="$router.push(goTo)">
+        <div class="left" @click="navigateTo(goTo)">
             <UIIcon icon="chevron-left" color="white" />
             <p>{{ title }}</p>
         </div>

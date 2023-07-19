@@ -1,15 +1,13 @@
 <template>
-    <template v-if="is_auth">
-        <div style="padding: 0 28px 68px 28px">
-            <UINavigation title="Мои игры" go-to="/" />
+    <div style="padding-bottom: 120px">
+        <UINavigation title="Мои игры" go-to="/" />
 
-            <div class="my-games">
-                <h3>Доступные поля</h3>
+        <div class="my-games">
+            <h3>Доступные поля</h3>
 
-                <CardStandardInfo v-for="i in requests" :key="i.id" :data="convertData(i)" />
-            </div>
+            <CardStandardInfo v-for="i in requests" :key="i.id" :data="convertData(i)" />
         </div>
-    </template>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -70,7 +68,7 @@ onMounted(() => {
                     requests.value = res.data.value as IField[]
                 })
         } else {
-            router.push('/auth/')
+            navigateTo('/auth/')
         }
     }, 0)
 })

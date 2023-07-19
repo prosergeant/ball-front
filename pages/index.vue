@@ -21,7 +21,7 @@
                 </div>
             </div>
             <div class="spinner">
-                <CardStandard v-for="i in data" @click="$router.push(`/object/${i.id}/`)" :data="i" />
+                <CardStandard v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" :data="i" />
             </div>
         </div>
 

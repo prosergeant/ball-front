@@ -1,40 +1,42 @@
 <template>
-    <div class="mini-navigation-block">
-        <div class="mini-navigation" @click="$router.push(`/`)">
-            <UIIcon icon="chevron-left" color="white" />
-            <p>{{ data.name }}</p>
+    <div>
+        <div class="mini-navigation-block">
+            <div class="mini-navigation" @click="navigateTo(`/`)">
+                <UIIcon icon="chevron-left" color="white" />
+                <p>{{ data.name }}</p>
+            </div>
+            <UIIcon icon="search" color="white" />
         </div>
-        <UIIcon icon="search" color="white" />
-    </div>
-    <div class="object-info">
-        <h3>{{ data.name }}</h3>
-        <span>активна</span>
-    </div>
-    <div class="object-content">
-        <div class="address-card">
-            <div class="info">
-                <p>Адрес поля</p>
-                <span>{{ data.address }}</span>
+        <div class="object-info">
+            <h3>{{ data.name }}</h3>
+            <span>активна</span>
+        </div>
+        <div class="object-content">
+            <div class="address-card">
+                <div class="info">
+                    <p>Адрес поля</p>
+                    <span>{{ data.address }}</span>
+                </div>
+
+                <UIButton>Смотреть на карте</UIButton>
             </div>
 
-            <UIButton>Смотреть на карте</UIButton>
-        </div>
-
-        <div class="text-block">
-            <h3>Подробнее о поле</h3>
-            <p>{{ data.text }}</p>
-        </div>
-        <div class="text-block">
-            <h3>Что есть в комплекте?</h3>
-            <div class="tags-block">
-                <div class="tag" v-for="tag in tags" :key="tag.id">
-                    <UIIcon :icon="tag.icon" color="green1" />
-                    <p>{{ tag.name }}</p>
+            <div class="text-block">
+                <h3>Подробнее о поле</h3>
+                <p>{{ data.text }}</p>
+            </div>
+            <div class="text-block">
+                <h3>Что есть в комплекте?</h3>
+                <div class="tags-block">
+                    <div class="tag" v-for="tag in tags" :key="tag.id">
+                        <UIIcon :icon="tag.icon" color="green1" />
+                        <p>{{ tag.name }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <UIButton icon="arrow-right" icon-color="black" @click="$router.push('boocking/')">Забронировать поле</UIButton>
+            <UIButton icon="arrow-right" icon-color="black" @click="navigateTo(`/object/${id}/boocking/`)">Забронировать поле</UIButton>
+        </div>
     </div>
 </template>
 
@@ -45,38 +47,8 @@ const route = useRoute()
 const id = route.params?.id || -1
 
 const {data: data} = await useFetch(`${baseUrl}/fields/${id}/`)
-console.log(data.value)
 
 const tags = ref((data.value as IField).tags)
-
-// const tags = ref([
-//     {
-//         id: 1,
-//         icon: 'car',
-//         name: 'Парковка'
-//     },
-//     {
-//         id: 2,
-//         icon: 'closet',
-//         name: 'Раздевалка'
-//     },
-//     {
-//         id: 3,
-//         icon: 'shower',
-//         name: 'Душевая'
-//     },
-//     {
-//         id: 4,
-//         icon: 'appliances',
-//         name: 'Столовая'
-//     },
-//     {
-//         id: 5,
-//         icon: 'lamp',
-//         name: 'Ночное освещение'
-//     }
-// ])
-
 </script>
 
 <style scoped lang="scss">
