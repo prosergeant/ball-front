@@ -46,7 +46,8 @@ const icons = ref<TIcon[]>([
     {
         id: 3,
         icon: 'user',
-        name: 'Мой профиль'
+        name: 'Мой профиль',
+        key: '/profile/'
     },
 ])
 

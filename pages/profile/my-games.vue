@@ -10,9 +10,6 @@
             </div>
         </div>
     </template>
-    <template v-else>
-        <UIAuth />
-    </template>
 </template>
 
 <script setup lang="ts">
@@ -72,6 +69,8 @@ onMounted(() => {
                     }
                     requests.value = res.data.value as IField[]
                 })
+        } else {
+            router.push('/auth/')
         }
     }, 0)
 })

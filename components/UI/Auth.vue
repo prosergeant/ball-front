@@ -1,5 +1,5 @@
 <template>
-    <div class="auth-wrapper no-main-padding">
+    <div class="auth-wrapper">
         <div class="auth">
             <h3>Уже есть аккаунт?</h3>
             <p>Если у вас уже есть аккаунт перейдите на страницу авторизации</p>
@@ -60,7 +60,7 @@ const authorize = () => {
                     userCookie.value = user_info.value
 
                     is_auth.value = true
-                    router.go(0)
+                    router.push('/profile/')
                 })
         })
 }
@@ -77,9 +77,12 @@ const authorize = () => {
     .auth {
         position: absolute;
         bottom: 0;
-        width: 87%;
+        left: 0;
+        width: 100%;
+        min-height: 585px;
 
-        border-radius: 30px;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
         display: flex;
         flex-direction: column;
         align-items: center;

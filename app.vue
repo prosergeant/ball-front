@@ -38,13 +38,17 @@
 
 <script setup>
 import {useRoute} from "vue-router";
+import {storeToRefs} from "pinia";
+import {authStore} from "~/store/auth";
+
+const {is_auth} = storeToRefs(authStore())
 
 const route = useRoute()
-const onlyIn = ref(['/', '/profile/my-games/'])
+const padding = ref(['/profile/my-games/', '/profile/', '/auth/'])
+const greyground = ref(['/auth/', '/profile/'])
+const onlyIn = ref(['/', '/profile/', '/profile/my-games/', '/auth/'])
 const isFooter = computed(() => onlyIn.value.includes(route.path))
-const greyground = ref(['/profile/my-games/'])
 const isGreyground = computed(() => greyground.value.includes(route.path))
-const padding = ref(['/profile/my-games/'])
 const isPadding = computed(() => !padding.value.includes(route.path))
 const deviceWidth = ref(420)
 
@@ -69,19 +73,16 @@ onMounted(() => {
     if(window) {
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
-            // special hack to prevent zoom-to-tabs gesture in safari
             document.body.style.zoom = 1;
         });
 
         document.addEventListener('gesturechange', function(e) {
             e.preventDefault();
-            // special hack to prevent zoom-to-tabs gesture in safari
             document.body.style.zoom = 1;
         });
 
         document.addEventListener('gestureend', function(e) {
             e.preventDefault();
-            // special hack to prevent zoom-to-tabs gesture in safari
             document.body.style.zoom = 1;
         });
 
