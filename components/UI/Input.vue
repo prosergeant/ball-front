@@ -68,6 +68,18 @@ const getMask = computed(() => {
             &:focus {
                 outline: none;
             }
+
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active{
+                -webkit-box-shadow: 0 0 0 30px $black2 inset !important;
+                color: white;
+            }
+
+            &:-webkit-autofill{
+                -webkit-text-fill-color: white !important;
+            }
         }
     }
 }
