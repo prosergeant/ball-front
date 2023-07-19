@@ -1,8 +1,12 @@
 <template>
-    <div class="main-wrapper">
-        <div class="maxwidth" :style="`--width: ${deviceWidth}px`">
+    <div class="main-wrapper" :class="{greyground: isGreyground}">
+        <div
+            class="maxwidth"
+            :class="{'footer-padding': isFooter && isPadding}"
+            :style="`--width: ${deviceWidth}px`"
+        >
             <NuxtPage />
-            <UIFooter v-if="onlyIn.includes($route.path)" :width="deviceWidth" />
+            <UIFooter v-if="isFooter" :width="deviceWidth" />
         </div>
     </div>
 </template>
@@ -21,12 +25,29 @@
         width: var(--width);
         position: relative;
     }
+
+    &.greyground {
+        background: #AFAFAF;
+    }
+}
+
+.footer-padding {
+    padding-bottom: 82px;
 }
 </style>
 
 <script setup>
+import {useRoute} from "vue-router";
+
+const route = useRoute()
 const onlyIn = ref(['/', '/profile/my-games/'])
+const isFooter = computed(() => onlyIn.value.includes(route.path))
+const greyground = ref(['/profile/my-games/'])
+const isGreyground = computed(() => greyground.value.includes(route.path))
+const padding = ref(['/profile/my-games/'])
+const isPadding = computed(() => !padding.value.includes(route.path))
 const deviceWidth = ref(420)
+
 onMounted(() => {
     deviceWidth.value = window.innerWidth < 420 ? window.innerWidth : 420
 })
@@ -46,6 +67,11 @@ useHead({
 
 onMounted(() => {
     if(window) {
+        const scale = 'scale(1)';
+        document.body.style.webkitTransform =  scale;    // Chrome, Opera, Safari
+        document.body.style.msTransform =   scale;       // IE 9
+        document.body.style.transform = scale;
+
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
             // special hack to prevent zoom-to-tabs gesture in safari

@@ -55,10 +55,10 @@ const icons = ref<TIcon[]>([
 <style scoped lang="scss">
 .footer {
     position: fixed;
-    bottom: 0;
-    left: calc(50% - (var(--width, 420px) / 2) + 30px);
+    bottom: 24px;
+    left: calc(50% - (var(--width, 420px) / 2) + 45px);
     height: 68px;
-    width: calc(var(--width, 420px) - 60px);
+    width: calc(var(--width, 420px) - 90px);
     border-radius: 49px;
     border: 1px solid rgba(255, 255, 255, 0.20);
     background: rgba(255, 255, 255, 0.22);
@@ -81,7 +81,7 @@ const icons = ref<TIcon[]>([
         p {
             color: rgba(255, 255, 255, 0.42);
             text-align: center;
-            font-size: 14px;
+            font-size: 10px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
