@@ -7,6 +7,7 @@ COPY . .
 
 EXPOSE 3000
 #CMD ["nginx", "-g", "daemon off;"]
-RUN npx browserslist@latest --update-db
+#RUN npx browserslist@latest --update-db
 RUN npm run build
-CMD ["npm", "run", "preview"]
+CMD ["node", ".output/server/index.mjs"]
+#CMD ["npm", "run", "preview"]
