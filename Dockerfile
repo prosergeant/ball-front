@@ -9,4 +9,4 @@ EXPOSE 3000
 #CMD ["nginx", "-g", "daemon off;"]
 RUN npx browserslist@latest --update-db
 RUN npm run build
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start"]
