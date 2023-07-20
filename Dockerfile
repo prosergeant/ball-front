@@ -5,6 +5,9 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
+RUN mkdir /app/server/.output
+COPY /app/.output/ /app/server/.output
+
 EXPOSE 3000
 #CMD ["nginx", "-g", "daemon off;"]
 #RUN npx browserslist@latest --update-db
