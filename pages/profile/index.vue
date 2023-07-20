@@ -1,5 +1,13 @@
 <template>
     <div class="profile-wrapper">
+        <div class="avatar-block">
+            <div class="avatar">
+                <div class="avatar-wrapper">
+                    <img src="/images/avatar.png" alt="avatar" />
+                </div>
+                <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" />
+            </div>
+        </div>
         <div class="profile">
             <h4>Обо мне</h4>
 
@@ -71,6 +79,36 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.avatar-block {
+    width: 100%;
+    height: calc(100% - var(--menu-block, 455px));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .avatar {
+        position: relative;
+        .edit-image {
+            position: absolute;
+            bottom: 0;
+            right: 10px;
+            width: 34px;
+            height: 34px;
+        }
+        .avatar-wrapper {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            overflow: hidden;
+            img {
+                object-fit: cover;
+                width: 110px;
+                height: 110px;
+            }
+        }
+    }
+}
+
 .profile-wrapper {
     padding: 0 28px;
     height: 100dvh;

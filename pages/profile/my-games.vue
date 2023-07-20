@@ -1,5 +1,5 @@
 <template>
-    <div style="padding-bottom: 120px">
+    <div style="padding: 0 28px 120px 28px">
         <UINavigation title="Мои игры" go-to="/" />
 
         <div class="my-games">

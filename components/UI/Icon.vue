@@ -237,4 +237,9 @@ i.icon {
     -webkit-mask-image: url(/icons/logout.svg);
     mask-image: url(/icons/logout.svg);
 }
+.edit-image {
+    @extend i, .icon;
+    -webkit-mask-image: url(/icons/edit-image.svg);
+    mask-image: url(/icons/edit-image.svg);
+}
 </style>

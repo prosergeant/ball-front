@@ -16,10 +16,23 @@
                         <p>{{ data.text }}</p>
                     </div>
 
+                    <!-- <div
+                        class="field-type-card"
+                        v-for="fieldtype in fields"
+                        :key="fieldtype.id"
+                    >
+                        <div class="field-checkbox" />
+                        <div class="field-info">
+                            <p>{{ fieldtype.title }}</p>
+                            <span>19:00-20:30</span>
+                        </div>
+                        <img src="/cover.png" alt="field-img" />
+                    </div> -->
+
                     <div class="select-card" @click.stop="modalType = !modalType">
                         <span>Выберите тип поля:</span>
                         <div class="card">
-                            <span class="circle" />
+                            <span class="circle" :class="{checked: selectedFieldType.value}" />
                             <div class="card-infos">
                                 <template v-if="selectedFieldType.value">
                                     <h3 class="filled">{{ resFieldType?.title }} {{ selectedFieldType?.duration }} час</h3>
@@ -36,7 +49,7 @@
                     <div class="select-card" @click.stop="modalTime = !modalTime">
                         <span>Выберите дату и время:</span>
                         <div class="card">
-                            <span class="circle" />
+                            <span class="circle" :class="{checked: dateTime.date && dateTime.time}"/>
 
                             <div class="card-infos">
                                 <template v-if="!dateTime.date || !dateTime.time">
@@ -434,6 +447,57 @@ watch(() => step.value, (v) => {
     }
 }
 
+.field-type-card {
+    display: flex;
+    align-items: center;
+
+    .field-checkbox {
+        margin-right: 20px;
+        margin-left: 27px;
+        width: 20px;
+        height: 20px;
+        border-radius: 22px;
+        border: 2px solid #B9FD02;
+        background: #373C34;
+    }
+
+    .field-info {
+        margin-right: auto;
+        p {
+            color: white;
+            font-feature-settings: 'clig' off, 'liga' off;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+        span {
+            color: white;
+            font-feature-settings: 'clig' off, 'liga' off;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
+
+    img {
+        width: 68px;
+        height: 68px;
+        border-radius: 21px;
+        overflow: hidden;
+        object-fit: cover;
+        border: 2px solid $black2;
+    }
+
+    //width: 319px;
+    height: 68px;
+
+    border-radius: 22px;
+    background: $black2;
+    backdrop-filter: blur(20px);
+}
+
 .step-1 {
     position: relative;
     display: flex;
@@ -498,10 +562,25 @@ watch(() => step.value, (v) => {
             }
 
             .circle {
-                background: $green1;
+                background: $black2; //$green1;
+                border: 2px solid #B9FD02;
                 min-width: 42px;
                 min-height: 42px;
                 border-radius: 50%;
+
+                position: relative;
+                &.checked {
+                    &::after {
+                        position: absolute;
+                        content: '';
+                        width: 24px;
+                        height: 24px;
+                        background: #B9FD02;
+                        border-radius: 50%;
+                        top: 7px;
+                        left: 7px;
+                    }
+                }
             }
 
             .card-infos {
