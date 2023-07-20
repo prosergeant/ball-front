@@ -1,27 +1,22 @@
 FROM node:16.20.0-alpine3.17 as develop-stage
 
-# create work directory in app folder
 WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
 
-# install required packages for node image
-RUN apk --no-cache add openssh g++ make python3 git
+# этап сборки (build stage)
+FROM develop-stage as build-stage
+#ENV API_URL "http://10.10.77.11:8086/api"
+RUN npm run generate
 
-# copy over package.json files
-COPY package.json /app/
-COPY package-lock.json /app/
-
-# install all depencies
-RUN npm ci && npm cache clean --force
-
-# copy over all files to the work directory
-ADD . /app
-
-# build the project
-RUN npm run build
-
-# expose the host and port 3000 to the server
-ENV HOST 0.0.0.0
-EXPOSE 3000
-
-# run the build project with node
-ENTRYPOINT ["node", ".output/server/index.mjs"]
+# этап production (production-stage)
+FROM nginx:stable-alpine as production-stage
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+EXPOSE 80
+#EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
+#RUN npx browserslist@latest --update-db
+#RUN npm run build
+#CMD ["npm", "run", "start"]
