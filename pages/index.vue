@@ -3,7 +3,7 @@
         <div class="ellipse" />
         <div class="header">
             <div class="header-info">
-                <h3>Привет Альбина К</h3>
+                <h3>Привет {{getName}}</h3>
                 <p>Забонируй поля для игры, найди людей
                     к себе в команду и много еще:)</p>
             </div>
@@ -40,7 +40,18 @@
 </template>
 
 <script setup lang="ts">
+import {storeToRefs} from "pinia";
+import {authStore} from "~/store/auth";
+
+const {is_auth, user_info} = storeToRefs(authStore())
+
 const {data: data} = await useFetch(`${baseUrl}/fields/`)
+
+const getName = computed(() => {
+    if(is_auth.value && user_info.value?.name)
+        return user_info.value.name
+    return 'Гость'
+})
 </script>
 
 <style scoped lang="scss">
