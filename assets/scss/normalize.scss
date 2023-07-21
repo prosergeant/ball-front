@@ -53,6 +53,7 @@ body{
 }
 
 .ellipse {
+    pointer-events: none;
     background: #B9FD0252;
     filter: blur(69px);
 

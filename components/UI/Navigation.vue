@@ -26,6 +26,7 @@ const props = defineProps<{
     margin-top: 10px;
 
     .left {
+        z-index: 2;
         display: flex;
         align-items: center;
         gap: 12px;

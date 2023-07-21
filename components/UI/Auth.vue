@@ -1,12 +1,21 @@
 <template>
     <div class="auth-wrapper">
+        <div class="avatar-block" v-if="!noReg">
+            <div class="avatar">
+                <div class="avatar-wrapper">
+                    <img src="/icons/logo-black.svg" alt="avatar" />
+                </div>
+            </div>
+        </div>
         <div class="auth" v-on-click-outside="() => {emit('onOutside', true)}">
             <h3>Уже есть аккаунт?</h3>
             <p>Если у вас уже есть аккаунт перейдите на страницу авторизации</p>
-            <UIInput v-model="login" label="Номер" type="tel" />
-            <UIInput v-model="password" label="Пароль" type="password" />
-            <UIButton v-if="!noReg" class="btn-green-demi-outline">Регистрация</UIButton>
-            <UIButton class="login" @click="authorize">Войти</UIButton>
+            <template v-if="noReg">
+                <UIInput v-model="login" label="Номер" type="tel" />
+                <UIInput v-model="password" label="Пароль" type="password" />
+            </template>
+            <UIButton v-if="!noReg" class="btn-green-demi-outline" @click="navigateTo('/reg-only/')">Регистрация</UIButton>
+            <UIButton class="login" @click="authHandler">Авторизоваться</UIButton>
         </div>
     </div>
 </template>
@@ -26,6 +35,13 @@ const emit = defineEmits<{
     (e: 'status', value: boolean): void
     (e: 'onOutside', value: boolean): void
 }>()
+
+const authHandler = () => {
+    if(props.noReg)
+        authorize()
+    else
+        navigateTo('/auth-only/')
+}
 
 const {is_auth, user_info, access_token} = storeToRefs(authStore())
 const router = useRouter()
@@ -88,6 +104,36 @@ const authorize = () => {
 </script>
 
 <style scoped lang="scss">
+.avatar-block {
+    width: 100%;
+    height: calc(100% - var(--menu-block, 385px));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .avatar {
+        position: relative;
+        .edit-image {
+            position: absolute;
+            bottom: 0;
+            right: 10px;
+            width: 34px;
+            height: 34px;
+        }
+        .avatar-wrapper {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            overflow: hidden;
+            img {
+                object-fit: cover;
+                width: 110px;
+                height: 110px;
+            }
+        }
+    }
+}
+
 .auth-wrapper {
     padding: 0 28px;
     //display: flex;
@@ -100,7 +146,7 @@ const authorize = () => {
         bottom: 0;
         left: 0;
         width: 100%;
-        min-height: 585px;
+        min-height: 385px;
 
         border-top-left-radius: 30px;
         border-top-right-radius: 30px;
