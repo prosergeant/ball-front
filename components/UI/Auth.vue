@@ -53,24 +53,29 @@ const authorize = () => {
 
             const keys = {...res.data.value}
 
-            const access = useCookie('access')
-            access.value = keys.access
-            access_token.value = access.value || ''
-            const refresh = useCookie('refresh')
-            refresh.value = keys.refresh
-            const auth = useCookie('is_auth')
-            auth.value = 'true'
+            // const access = useCookie('access')
+            // access.value = keys.access
+            // access_token.value = access.value || ''
+            access_token.value = keys.access
+            localStorage.setItem('access', access_token.value)
+            // const refresh = useCookie('refresh')
+            // refresh.value = keys.refresh
+            localStorage.setItem('refresh', keys.refresh)
+            // const auth = useCookie('is_auth')
+            // auth.value = 'true'
+            localStorage.setItem('is_auth', 'true')
 
             useFetch(`${baseUrl}/user-info/`, {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${access.value}`
+                    Authorization: `Bearer ${keys.access}`
                 }
             })
                 .then((res: any) => {
                     user_info.value = res.data.value
-                    const userCookie = useCookie('user')
-                    userCookie.value = user_info.value
+                    // const userCookie = useCookie('user')
+                    // userCookie.value = user_info.value
+                    localStorage.setItem('user', JSON.stringify(user_info.value))
 
                     is_auth.value = true
                     if(!props.noRedirect)

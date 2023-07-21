@@ -40,7 +40,7 @@ import {useRoute} from "vue-router";
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 
-const {is_auth} = storeToRefs(authStore())
+const {is_auth, access_token, user_info} = storeToRefs(authStore())
 
 const route = useRoute()
 const greyground = ref(['/auth/', '/profile/'])
@@ -68,6 +68,10 @@ useHead({
 
 onMounted(() => {
     if(window) {
+        is_auth.value = localStorage.getItem('is_auth') === 'true'
+        access_token.value = localStorage.getItem('access')
+        user_info.value = JSON.parse(localStorage.getItem('user') || '{}')
+
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
             document.body.style.zoom = 1;

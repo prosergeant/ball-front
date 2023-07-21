@@ -49,7 +49,7 @@ onMounted(() => {
                         useFetch(`${baseUrl}/api-token-refresh/`, {
                             method: 'POST',
                             body: {
-                                refresh: useCookie('refresh').value
+                                refresh: localStorage.getItem('refresh')
                             }
                         })
                             .then(res => {
@@ -59,9 +59,11 @@ onMounted(() => {
                                     router.go(0)
                                     return
                                 }
-                                const access = useCookie('access')
-                                access.value = res.data.value?.access
-                                access_token.value = access.value || ''
+                                // const access = useCookie('access')
+                                // access.value = res.data.value?.access
+                                // access_token.value = access.value || ''
+                                access_token.value = res.data.value?.access
+                                localStorage.setItem('access', access_token.value)
                                 getData().then(res => requests.value = res.data.value as IField[])
                             })
                     }
