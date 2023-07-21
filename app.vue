@@ -44,7 +44,7 @@ const {is_auth, access_token, user_info} = storeToRefs(authStore())
 
 const route = useRoute()
 const greyground = ref(['/auth/', '/profile/'])
-const onlyIn = ref(['/', '/profile/', '/profile/my-games/', '/auth/'])
+const onlyIn = ref(['/', '/profile/', '/profile', '/profile/my-games/', '/profile/my-games', '/auth/', '/auth'])
 const isFooter = computed(() => onlyIn.value.includes(route.path))
 const isGreyground = computed(() => greyground.value.includes(route.path))
 const deviceWidth = ref(420)
