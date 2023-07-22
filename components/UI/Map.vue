@@ -9,6 +9,12 @@ const layerGroup = ref(null)
 
 onMounted(async () => {
     const L = await import('leaflet/dist/leaflet')
+
+    const icon = L.icon({
+        iconUrl: '/images/marker.svg',
+        iconSize: [20, 20],
+    })
+
     map.value = L.map('map').setView([43.23, 76.9], 14)
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map.value);
     layerGroup.value = L.layerGroup().addTo(map.value)
@@ -22,7 +28,7 @@ onMounted(async () => {
         ll[0].style.display = 'none'
     }
 
-    const marker = L.marker([43.23, 76.9]).addTo(layerGroup.value);
+    const marker = L.marker([43.23, 76.9], {icon: icon}).addTo(layerGroup.value);
     marker.on('click', (e) => {
         console.log('marker', e.latlng)
     })
