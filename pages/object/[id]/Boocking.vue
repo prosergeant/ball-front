@@ -507,7 +507,7 @@ watch(() => step.value, (v) => {
     background: rgba(255, 255, 255, 0.22);
     backdrop-filter: blur(20px);
     border-radius: 28px;
-    min-height: calc(100dvh - 140px);
+    min-height: 655px; //calc(100dvh - 140px);
     margin-top: 40px;
 
     .header {
