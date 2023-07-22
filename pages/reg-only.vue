@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="ellipse" />
-        <UINavigation title="Зарегистрироваться" go-to="/auth/" />
+        <UINavigation title="Зарегистрироваться" go-to="/auth/" :padding-x="24" />
 
         <div class="auth-wrapper">
             <div class="auth">

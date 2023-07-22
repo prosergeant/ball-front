@@ -1,5 +1,5 @@
 <template>
-    <div class="navigation">
+    <div class="navigation" :style="`--padding-x: ${paddingX}px`">
         <div class="left" @click="navigateTo(goTo)">
             <UIIcon icon="chevron-left" color="white" />
             <p>{{ title }}</p>
@@ -12,6 +12,7 @@
 const props = defineProps<{
     title: string
     goTo: string
+    paddingX?: number
 }>()
 </script>
 
@@ -22,6 +23,7 @@ const props = defineProps<{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 var(--padding-x, 0px);
 
     margin-top: 10px;
 
@@ -32,12 +34,12 @@ const props = defineProps<{
         gap: 12px;
 
         p {
+            color: #FFF;
+            font-feature-settings: 'clig' off, 'liga' off;
             font-size: 20px;
-            font-weight: 400;
-            line-height: 24px;
-            letter-spacing: 0;
-            text-align: left;
-            color: white;
+            font-style: normal;
+            font-weight: 300;
+            line-height: normal;
         }
         i {
             width: 14px;
