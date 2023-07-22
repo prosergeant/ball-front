@@ -243,6 +243,7 @@ const isMap = ref(false)
 }
 
 .map {
+    overflow: hidden;
     border-radius: 30px;
     margin-top: auto;
     width: 420px;
