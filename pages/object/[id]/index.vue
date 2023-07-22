@@ -18,7 +18,7 @@
                     <span>{{ data.address }}</span>
                 </div>
 
-                <UIButton>Смотреть на карте</UIButton>
+                <UIButton @click="isMap = !isMap">Смотреть на карте</UIButton>
             </div>
 
             <div class="text-block">
@@ -37,10 +37,17 @@
 
             <UIButton icon="arrow-right" icon-color="black" @click="navigateTo(`/object/${id}/boocking/`)">Забронировать поле</UIButton>
         </div>
+
+        <UIModalBottom v-if="isMap">
+            <div class="map" v-on-click-outside="() => {isMap = false}">
+                <UIMap  />
+            </div>
+        </UIModalBottom>
     </div>
 </template>
 
 <script setup lang="ts">
+import { vOnClickOutside } from '@vueuse/components'
 import {useRoute} from "vue-router";
 
 const route = useRoute()
@@ -49,6 +56,8 @@ const id = route.params?.id || -1
 const {data: data} = await useFetch(`${baseUrl}/fields/${id}/`)
 
 const tags = ref((data.value as IField).tags)
+
+const isMap = ref(false)
 </script>
 
 <style scoped lang="scss">
@@ -231,5 +240,12 @@ const tags = ref((data.value as IField).tags)
             }
         }
     }
+}
+
+.map {
+    border-radius: 30px;
+    margin-top: auto;
+    width: 420px;
+    height: calc(100dvh - 60px);
 }
 </style>
