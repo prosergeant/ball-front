@@ -5,7 +5,11 @@
         <div class="my-games">
             <h3>Доступные поля</h3>
 
-            <CardStandardInfo v-for="i in requests" :key="i.id" :data="convertData(i)" />
+            <CardStandardInfo
+                v-for="i in requests"
+                :key="i.id" :data="convertData(i)"
+                @click="navigateTo(`/object/${i?.field_type?.field?.id}/`)"
+            />
         </div>
     </div>
 </template>
