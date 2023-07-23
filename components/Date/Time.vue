@@ -118,11 +118,13 @@ const calculateDays = () => {
 
 const resetTime = () => {
     times.value.length = 0
+    const currTime = parseInt(date.value.toLocaleTimeString().split(':')?.[0])
+    const currentDay = date.value.getDate()
     for(let i = 9; i <= 18; i++) {
         times.value.push({
             id: Math.random() * 100500 + i + currMonth.value + currDaysInMonth.value,
             value: `${ i < 10 ? '0' + i : i}:00`,
-            // Class: i === 17 || i === 18 ? 'inactive' : undefined
+            Class: i < currTime && currDay.value === currentDay ? 'inactive' : undefined
         })
     }
 }
