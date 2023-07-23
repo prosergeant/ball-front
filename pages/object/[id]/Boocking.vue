@@ -302,6 +302,7 @@ const setFieldType = (id: number, duration: number) => {
     selectedFieldType.value.id = id
     selectedFieldType.value.value = true //selectedFieldType.value.value !== undefined ? !selectedFieldType.value.value : true
     selectedFieldType.value.duration = duration
+    modalType.value = false
 }
 const resFieldType = computed(() => {
     if(selectedFieldType.value?.value && (fields.value as any[])?.length) {
