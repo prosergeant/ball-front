@@ -3,7 +3,7 @@
         <div class="ellipse" />
         <div class="header">
             <div class="header-info">
-                <h3>Привет {{getName}}</h3>
+                <h3>Салам {{getName}}</h3>
                 <p>Забонируй поля для игры, найди людей
                     к себе в команду и много еще:)</p>
             </div>
@@ -144,7 +144,7 @@ const getName = computed(() => {
     position: relative;
     width: 100%;
     min-height: 100dvh;
-    padding: 28px;
+    padding: 28px 28px 104px 28px;
 
     display: flex;
     flex-direction: column;
