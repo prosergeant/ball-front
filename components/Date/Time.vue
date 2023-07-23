@@ -53,6 +53,7 @@ const emit = defineEmits<{
         date: string
         time: string
     }): void
+    (e: 'closeModal', value: boolean): void
 }>()
 
 const date = ref(new Date())
@@ -73,6 +74,7 @@ interface IDateTime {
 const days = ref<IDateTime[]>([])
 const times = ref<IDateTime[]>([])
 const currDay = ref(parseInt(props.modelValue.date?.split('.')?.[0] || '0'))//props.modelValue.date || date.value.getDate() || 1)
+const isDaySet = ref(false)
 const initTime = () => {
     const tempHour = date.value.getHours()
     if(tempHour < 9 || tempHour > 18) {
@@ -133,12 +135,15 @@ const setDate = (day: IDateTime) => {
     if(day.Class !== 'inactive') {
         currDay.value = day.value as number
         emit('update:modelValue', {date: `${currDay.value}.${currMonth.value+1}`, time: props.modelValue.time as string})
+        isDaySet.value = true
     }
 }
 const setTime = (time: IDateTime) => {
     if(time.Class !== 'inactive') {
         currTime.value = time.value as string
         emit('update:modelValue', {date: props.modelValue.date as string, time: currTime.value})
+        if(isDaySet.value)
+            emit('closeModal', true)
     }
 }
 const next = () => {
