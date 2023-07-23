@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="available-fields">
+        <!-- <div class="available-fields">
             <div class="nav">
                 <h3>Ищем игроков</h3>
                 <div>
@@ -35,7 +35,7 @@
             </div>
 
             <CardStandardInfo v-for="i in data" :key="i.id" :data="i" />
-        </div>
+        </div> -->
     </div>
 </template>
 
