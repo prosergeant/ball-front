@@ -13,7 +13,7 @@
                 <template v-else>
                     <div class="auth-passcode">
                         <UIPasscode @get-value="(e) => {passcode = e}" />
-                        <UIButton :disabled="passcode !== `${otp}`" icon="arrow-right" icon-color="black" @click.stop="authorize">Войти</UIButton>
+                        <UIButton :disabled="passcode !== `${otp}` || isAuthBtnDisabled" icon="arrow-right" icon-color="black" @click.stop="authorize">Войти</UIButton>
                     </div>
                 </template>
             </div>
@@ -31,6 +31,7 @@ const codeNotSent = ref(true)
 const passcode = ref('')
 const phone = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
+const isAuthBtnDisabled = ref(false)
 
 const getPassCode = () => {
     codeNotSent.value = false
@@ -50,6 +51,7 @@ const getPassCode = () => {
 }
 
 const authorize = () => {
+    isAuthBtnDisabled.value = true
     useFetch(`${baseUrl}/change-password/`, {
         lazy: true,
         method: 'post',
@@ -100,6 +102,9 @@ const authorize = () => {
                             navigateTo('/profile/')
                         })
                 })
+        })
+        .finally(() => {
+            isAuthBtnDisabled.value = false
         })
 }
 </script>
