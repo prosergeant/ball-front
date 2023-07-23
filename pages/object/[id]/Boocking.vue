@@ -2,7 +2,7 @@
     <div>
         <div class="ellipse" />
         <div class="mini-navigation-block">
-            <div class="mini-navigation" @click="navigateTo(`/object/${$route?.params?.id}/`)">
+            <div class="mini-navigation" @click="navigationHandler">
                 <UIIcon icon="chevron-left" color="white" />
                 <p>Выберите параметры</p>
             </div>
@@ -353,6 +353,20 @@ const checkAccount = () => {
         })
 }
 
+const navigationHandler = () => {
+    if (step.value === 0)
+        navigateTo(`/object/${route?.params?.id}/`)
+    else {
+        if(!is_auth.value)
+            step.value--
+        else if(is_auth.value) {
+            if(step.value === 4)
+                step.value = 1
+            else
+                step.value--
+        }
+    }
+}
 watch(() => step.value, (v) => {
     if(v === 2 && is_auth.value) {
         step.value = 4
