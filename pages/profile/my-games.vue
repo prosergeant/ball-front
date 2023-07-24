@@ -1,6 +1,6 @@
 <template>
     <div style="padding: 0 28px 120px 28px">
-        <UINavigation title="Мои игры" go-to="/" />
+        <UINavigation title="Мои игры" go-to="/" :padding-x="28" />
 
         <div class="my-games">
             <h3>Доступные поля</h3>
