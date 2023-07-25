@@ -5,7 +5,8 @@
                 <div class="avatar-wrapper">
                     <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
                 </div>
-                <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" />
+                <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
+                <input id="file" name="file" type="file" @change="postAvatar" />
             </div>
         </div>
         <div class="profile">
@@ -38,7 +39,7 @@ import {useRouter} from "vue-router";
 
 const {logout} = authStore()
 
-const {is_auth, user_info} = storeToRefs(authStore())
+const {is_auth, user_info, access_token} = storeToRefs(authStore())
 const router = useRouter()
 
 const profileInfo = ref([
@@ -69,6 +70,28 @@ const _logout = () => {
     navigateTo('/')
 }
 
+const uploadFile = () => {
+    const fileEl = document.getElementById('file')
+    if(!fileEl) return
+    fileEl.click()
+}
+
+const postAvatar = (e: HTMLInputElement) => {
+    const fileEl = document.getElementById('file') as HTMLInputElement
+    if(!fileEl) return
+
+    const formData = new FormData();
+    const img = fileEl.files?.[0];
+    if(!img) return
+
+    formData.append('image', img, img.name);
+    useFetch(`${baseUrl}/set-new-image/`, {
+        method: 'POST',
+        body: formData,
+        // headers: {Authorization: `Bearer ${access_token.value}`}
+    })
+}
+
 onMounted(() => {
     setTimeout(() => {
         if(!is_auth.value) {
@@ -79,6 +102,11 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+#file {
+    visibility: hidden;
+    position: absolute;
+    z-index: -1;
+}
 .avatar-block {
     width: 100%;
     height: calc(100% - var(--menu-block, 455px));
