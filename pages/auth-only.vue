@@ -75,6 +75,7 @@ const authorize = () => {
                     const keys = {...res.data.value}
 
                     access_token.value = keys.access
+                    is_auth.value = true
                     localStorage.setItem('access', access_token.value)
                     localStorage.setItem('refresh', keys.refresh)
                     localStorage.setItem('is_auth', 'true')
@@ -84,7 +85,7 @@ const authorize = () => {
                             user_info.value = res.data.value
                             localStorage.setItem('user', JSON.stringify(user_info.value))
 
-                            is_auth.value = true
+                            // is_auth.value = true
                             navigateTo('/profile')
                         })
                 })
