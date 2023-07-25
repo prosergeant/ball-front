@@ -85,11 +85,22 @@ const postAvatar = (e: HTMLInputElement) => {
     if(!img) return
 
     formData.append('image', img, img.name);
-    useFetch(`${baseUrl}/set-new-image/`, {
+    useFetch(`/set-new-image/`, {
         method: 'POST',
         body: formData,
-        headers: {Authorization: `Bearer ${access_token.value}`}
     })
+        .then(res => {
+            if(res.error.value === null) {
+                useFetch(`/user-info/`, {
+                    lazy: true,
+                    method: 'GET'
+                })
+                    .then((res: any) => {
+                        user_info.value = res.data.value
+                        localStorage.setItem('user', JSON.stringify(user_info.value))
+                    })
+            }
+        })
 }
 
 onMounted(() => {
