@@ -6,6 +6,7 @@ export default defineNuxtPlugin((_nuxtApp) => {
     globalThis.$fetch = ofetch.create({
         baseURL: baseUrl,
         onRequest ({ request, options }) {
+            console.log(request, options)
             const _authStore = authStore()
             if (_authStore.is_auth)
                 options.headers = { Authorization: `Bearer ${_authStore.access_token}` }
