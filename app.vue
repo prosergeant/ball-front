@@ -43,7 +43,7 @@ import {authStore} from "~/store/auth";
 const {is_auth, access_token, user_info} = storeToRefs(authStore())
 
 const route = useRoute()
-const greyground = ref(['/auth/', '/profile/'])
+const greyground = ref(['/auth/', '/profile/', "/auth", "/profile"])
 const onlyIn = ref(['/', '/profile/', '/profile', '/profile/my-games/', '/profile/my-games', '/auth/', '/auth'])
 const isFooter = computed(() => onlyIn.value.includes(route.path))
 const isGreyground = computed(() => greyground.value.includes(route.path))

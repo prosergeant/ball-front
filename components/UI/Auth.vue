@@ -95,7 +95,7 @@ const authorize = () => {
 
                     is_auth.value = true
                     if(!props.noRedirect)
-                        navigateTo('/profile/')
+                        navigateTo('/profile')
 
                     emit('status', true)
                 })

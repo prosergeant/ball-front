@@ -251,7 +251,7 @@
                     </div>
 
                     <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>
-                    <UIButton class="btn back-to-games" @click="navigateTo('/profile/my-games/')">Перейти в мои игры</UIButton>
+                    <UIButton class="btn back-to-games" @click="navigateTo('/profile/my-games')">Перейти в мои игры</UIButton>
                 </div>
             </template>
 
