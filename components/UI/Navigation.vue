@@ -4,7 +4,8 @@
             <UIIcon icon="chevron-left" color="white" />
             <p>{{ title }}</p>
         </div>
-        <UIIcon icon="search" color="white" />
+        <div v-if="noSearch"/>
+        <UIIcon v-else icon="search" color="white" />
     </div>
 </template>
 
@@ -13,6 +14,7 @@ const props = defineProps<{
     title: string
     goTo?: string
     paddingX?: number
+    noSearch?: boolean
 }>()
 </script>
 

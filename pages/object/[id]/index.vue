@@ -40,7 +40,7 @@
 
         <UIModalBottom v-if="isMap">
             <div class="d-column">
-                <UINavigation :title="data.name" @click="isMap = false" />
+                <UINavigation :title="data.name" @click="isMap = false" :padding-x=28 no-search />
                 <div class="map" v-on-click-outside="() => {isMap = false}">
                     <UIMap  />
                 </div>
