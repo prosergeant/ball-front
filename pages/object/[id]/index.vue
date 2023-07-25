@@ -56,7 +56,7 @@ import {useRoute} from "vue-router";
 const route = useRoute()
 const id = route.params?.id || -1
 
-const {data: data} = await useFetch(`${baseUrl}/fields/${id}/`)
+const {data: data} = await useFetch(`/fields/${id}/`)
 
 const tags = ref((data.value as IField).tags)
 

@@ -281,8 +281,8 @@ const {is_auth, user_info} = storeToRefs(authStore())
 const route = useRoute()
 const id = route.params?.id || -1
 
-const {data: fields} = await useFetch(`${baseUrl}/fieldstypes/?field=${id}`)
-const {data: data} = await useFetch(`${baseUrl}/fields/${id}/`)
+const {data: fields} = await useFetch(`/fieldstypes/?field=${id}`)
+const {data: data} = await useFetch(`/fields/${id}/`)
 
 const step = ref(0)
 const modalTime = ref(false)
@@ -337,7 +337,7 @@ const passcode = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
 const checkAccount = () => {
-    useFetch(`${baseUrl}/find-user/`, {
+    useFetch(`/find-user/`, {
         method: 'POST',
         body: {
             phone: phone.value
@@ -387,7 +387,7 @@ watch(() => step.value, (v) => {
 
     if(v === 5) {
         if(is_auth.value) {
-            useFetch(`${baseUrl}/requests/`, {
+            useFetch(`/requests/`, {
                 method: "POST",
                 body: {
                     "date": dateTime.value.date,
@@ -399,7 +399,7 @@ watch(() => step.value, (v) => {
             })
         } else {
             //create user
-            useFetch(`${baseUrl}/users/`, {
+            useFetch(`/users/`, {
                 method: 'POST',
                 body: {
                     "phone": phone.value,
@@ -410,7 +410,7 @@ watch(() => step.value, (v) => {
                 .then((res) => {
                     console.log(res)
                     //create request
-                    useFetch(`${baseUrl}/requests/`, {
+                    useFetch(`/requests/`, {
                         method: "POST",
                         body: {
                             "date": dateTime.value.date,

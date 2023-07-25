@@ -52,7 +52,7 @@ const getPassCode = () => {
 }
 
 const authorize = () => {
-    useFetch(`${baseUrl}/users/`, {
+    useFetch(`/users/`, {
         lazy: true,
         method: 'post',
         body: {
@@ -62,7 +62,7 @@ const authorize = () => {
         }
     })
         .then(res => {
-            useFetch(`${baseUrl}/api-token/`, {
+            useFetch(`/api-token/`, {
                 lazy: true,
                 method: 'post',
                 body: {
@@ -86,7 +86,7 @@ const authorize = () => {
                     localStorage.setItem('refresh', keys.refresh)
                     localStorage.setItem('is_auth', 'true')
 
-                    useFetch(`${baseUrl}/user-info/`, {
+                    useFetch(`/user-info/`, {
                         lazy: true,
                         method: 'GET',
                         headers: {

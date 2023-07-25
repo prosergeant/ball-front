@@ -52,7 +52,7 @@ const getPassCode = () => {
 
 const authorize = () => {
     isAuthBtnDisabled.value = true
-    useFetch(`${baseUrl}/change-password/`, {
+    useFetch(`/change-password/`, {
         lazy: true,
         method: 'post',
         body: {
@@ -63,7 +63,7 @@ const authorize = () => {
         .then(res => {
             console.log(res)
 
-            useFetch(`${baseUrl}/api-token/`, {
+            useFetch(`/api-token/`, {
                 lazy: true,
                 method: 'post',
                 body: {
@@ -72,14 +72,6 @@ const authorize = () => {
                 }
             })
                 .then((res: any) => {
-                    if (res?.error?.value?.statusCode === 401) {
-                        // if(!props.noRedirect)
-                        //     router.go(0)
-                        // emit('status', false)
-                        console.log('user does not exist')
-                        return
-                    }
-
                     const keys = {...res.data.value}
 
                     access_token.value = keys.access
@@ -87,13 +79,7 @@ const authorize = () => {
                     localStorage.setItem('refresh', keys.refresh)
                     localStorage.setItem('is_auth', 'true')
 
-                    useFetch(`${baseUrl}/user-info/`, {
-                        lazy: true,
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${keys.access}`
-                        }
-                    })
+                    useFetch(`/user-info/`, {lazy: true})
                         .then((res: any) => {
                             user_info.value = res.data.value
                             localStorage.setItem('user', JSON.stringify(user_info.value))

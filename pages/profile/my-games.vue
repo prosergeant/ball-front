@@ -27,12 +27,7 @@ const requests = ref<IField[]>([])
 
 // todo: добавить интерцепторы и вообще сделать кастомный фетч с базовым урлом
 const getData = () => {
-    return useFetch(`${baseUrl}/requests/?user=${user_info.value?.id}`, {
-        method: 'GET',
-        headers: {
-            Authorization: `Bearer ${access_token.value || useCookie('access').value}`
-        }
-    })
+    return useFetch(`/requests/?user=${user_info.value?.id}`)
 }
 
 const convertData = (data: any) => ({
@@ -49,28 +44,6 @@ onMounted(() => {
         if(is_auth.value && user_info.value?.id) {
             getData()
                 .then(res => {
-                    if(res?.error?.value?.statusCode === 401) {
-                        useFetch(`${baseUrl}/api-token-refresh/`, {
-                            method: 'POST',
-                            body: {
-                                refresh: localStorage.getItem('refresh')
-                            }
-                        })
-                            .then(res => {
-                                if(res?.error?.value?.statusCode === 401
-                                    || res?.error?.value?.statusCode === 400) {
-                                    logout()
-                                    router.go(0)
-                                    return
-                                }
-                                // const access = useCookie('access')
-                                // access.value = res.data.value?.access
-                                // access_token.value = access.value || ''
-                                access_token.value = res.data.value?.access
-                                localStorage.setItem('access', access_token.value)
-                                getData().then(res => requests.value = res.data.value as IField[])
-                            })
-                    }
                     requests.value = res.data.value as IField[]
                 })
         } else {

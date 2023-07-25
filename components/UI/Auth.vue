@@ -81,12 +81,7 @@ const authorize = () => {
             // auth.value = 'true'
             localStorage.setItem('is_auth', 'true')
 
-            useFetch(`${baseUrl}/user-info/`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${keys.access}`
-                }
-            })
+            useFetch(`/user-info/`)
                 .then((res: any) => {
                     user_info.value = res.data.value
                     // const userCookie = useCookie('user')

@@ -45,7 +45,7 @@ import {authStore} from "~/store/auth";
 
 const {is_auth, user_info} = storeToRefs(authStore())
 
-const {data} = await useFetch(`${baseUrl}/fields/`, {server: false})
+const {data} = await useFetch(`/fields/`, {server: false})
 
 const getName = computed(() => {
     if(is_auth.value && user_info.value?.name)

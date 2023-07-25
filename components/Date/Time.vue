@@ -161,7 +161,7 @@ watch(() => currDay.value, async (v) => {
     if(!props.fieldtype)
         return
 
-    const {data: bockedDays} = await useFetch(`${baseUrl}/requests/?fieldtype=${props.fieldtype}&date=${v}.${currMonth.value+1}`)
+    const {data: bockedDays} = await useFetch(`/requests/?fieldtype=${props.fieldtype}&date=${v}.${currMonth.value+1}`)
     resetTime()
     currTime.value = ''
     emit('update:modelValue', {date: props.modelValue.date as string, time: currTime.value})
@@ -178,7 +178,7 @@ onMounted(async () => {
     calculateDays()
 
     if(props.fieldtype) {
-        const {data: bockedDays} = await useFetch(`${baseUrl}/requests/?fieldtype=${props.fieldtype}&date=${currDay.value}.${currMonth.value+1}`)
+        const {data: bockedDays} = await useFetch(`/requests/?fieldtype=${props.fieldtype}&date=${currDay.value}.${currMonth.value+1}`)
         if(bockedDays.value)
             for(const i of bockedDays.value as any[]) {
                 const temp_time = times.value.find(el => el.value === i?.time)
