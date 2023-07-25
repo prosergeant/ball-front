@@ -88,7 +88,7 @@ const postAvatar = (e: HTMLInputElement) => {
     useFetch(`${baseUrl}/set-new-image/`, {
         method: 'POST',
         body: formData,
-        // headers: {Authorization: `Bearer ${access_token.value}`}
+        headers: {Authorization: `Bearer ${access_token.value}`}
     })
 }
 
