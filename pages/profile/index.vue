@@ -3,7 +3,7 @@
         <div class="avatar-block">
             <div class="avatar">
                 <div class="avatar-wrapper">
-                    <img src="/images/avatar.png" alt="avatar" />
+                    <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
                 </div>
                 <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" />
             </div>
@@ -38,7 +38,7 @@ import {useRouter} from "vue-router";
 
 const {logout} = authStore()
 
-const {is_auth} = storeToRefs(authStore())
+const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
 
 const profileInfo = ref([
