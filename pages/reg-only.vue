@@ -98,7 +98,7 @@ const authorize = () => {
                             localStorage.setItem('user', JSON.stringify(user_info.value))
 
                             is_auth.value = true
-                            navigateTo('/profile/')
+                            navigateTo('/profile')
                         })
                 })
         })
