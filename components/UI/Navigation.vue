@@ -1,6 +1,6 @@
 <template>
     <div class="navigation" :style="`--padding-x: ${paddingX}px`">
-        <div class="left" @click="navigateTo(goTo)">
+        <div class="left" @click="(goTo) && (navigateTo(goTo))">
             <UIIcon icon="chevron-left" color="white" />
             <p>{{ title }}</p>
         </div>
@@ -11,7 +11,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     title: string
-    goTo: string
+    goTo?: string
     paddingX?: number
 }>()
 </script>

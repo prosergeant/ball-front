@@ -39,8 +39,11 @@
         </div>
 
         <UIModalBottom v-if="isMap">
-            <div class="map" v-on-click-outside="() => {isMap = false}">
-                <UIMap  />
+            <div class="d-column">
+                <UINavigation :title="data.name" @click="isMap = false" />
+                <div class="map" v-on-click-outside="() => {isMap = false}">
+                    <UIMap  />
+                </div>
             </div>
         </UIModalBottom>
     </div>
