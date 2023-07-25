@@ -91,14 +91,7 @@ const postAvatar = (e: HTMLInputElement) => {
     })
         .then(res => {
             if(res.error.value === null) {
-                useFetch(`/user-info/`, {
-                    lazy: true,
-                    method: 'GET'
-                })
-                    .then((res: any) => {
-                        user_info.value = res.data.value
-                        localStorage.setItem('user', JSON.stringify(user_info.value))
-                    })
+                window.location.reload()
             }
         })
 }
@@ -107,6 +100,15 @@ onMounted(() => {
     setTimeout(() => {
         if(!is_auth.value) {
             navigateTo('/auth/')
+        } else {
+            useFetch(`/user-info/`, {
+                lazy: true,
+                method: 'GET'
+            })
+                .then((res: any) => {
+                    user_info.value = res.data.value
+                    localStorage.setItem('user', JSON.stringify(user_info.value))
+                })
         }
     }, 0)
 })
