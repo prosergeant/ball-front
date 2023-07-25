@@ -79,7 +79,7 @@ const authorize = () => {
                     localStorage.setItem('refresh', keys.refresh)
                     localStorage.setItem('is_auth', 'true')
 
-                    useFetch(`/user-info/`, {lazy: true})
+                    useFetch(`/user-info/`)
                         .then((res: any) => {
                             user_info.value = res.data.value
                             localStorage.setItem('user', JSON.stringify(user_info.value))
