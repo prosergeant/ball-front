@@ -19,17 +19,12 @@ import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
 
-const {is_auth, user_info, access_token} = storeToRefs(authStore())
-const {logout} = authStore()
+const {is_auth, user_info} = storeToRefs(authStore())
 
 const router = useRouter()
 const requests = ref<IField[]>([])
 
 // todo: добавить интерцепторы и вообще сделать кастомный фетч с базовым урлом
-const getData = () => {
-    return useFetch(`/requests/?user=${user_info.value?.id}`)
-}
-
 const convertData = (data: any) => ({
     name: data?.field_type?.field?.name,
     text: data?.field_type?.field?.text,
@@ -40,12 +35,9 @@ const convertData = (data: any) => ({
 })
 
 onMounted(() => {
-    setTimeout(() => {
+    setTimeout(async () => {
         if(is_auth.value && user_info.value?.id) {
-            getData()
-                .then(res => {
-                    requests.value = res.data.value as IField[]
-                })
+            requests.value = (await myFetch<IField[]>(`/requests/?user=${user_info.value?.id}`))._data || []
         } else {
             navigateTo('/auth/')
         }

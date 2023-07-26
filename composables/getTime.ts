@@ -1,4 +1,6 @@
 export const getTimeWithDuration = (time: string, duration: number) => {
+    if(!time) return ''
+
     let [minutes, ] = time.split(':').map(Number)
     const sum = minutes + duration
     let res = `${sum}`

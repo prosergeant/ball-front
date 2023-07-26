@@ -52,8 +52,7 @@ const getPassCode = () => {
 }
 
 const authorize = () => {
-    useFetch(`/users/`, {
-        lazy: true,
+    myFetch(`/users/`, {
         method: 'post',
         body: {
             "phone": phone.value,
@@ -61,40 +60,30 @@ const authorize = () => {
             "password": `${otp.value}`
         }
     })
-        .then(res => {
-            useFetch(`/api-token/`, {
-                lazy: true,
+        .then(() => {
+            myFetch(`/api-token/`, {
                 method: 'post',
                 body: {
                     'phone': phone.value,
                     "password": otp.value
                 }
             })
-                .then((res: any) => {
-                    if (res?.error?.value?.statusCode === 401) {
-                        // if(!props.noRedirect)
-                        //     router.go(0)
-                        // emit('status', false)
-                        console.log('user does not exist')
-                        return
-                    }
+                .then((res) => {
+                    // if (res?.error?.value?.statusCode === 401) {
+                    //     console.log('user does not exist')
+                    //     return
+                    // }
 
-                    const keys = {...res.data.value}
+                    const keys = res._data as {access: string, refresh: string}
 
                     access_token.value = keys.access
                     localStorage.setItem('access', access_token.value)
                     localStorage.setItem('refresh', keys.refresh)
                     localStorage.setItem('is_auth', 'true')
 
-                    useFetch(`/user-info/`, {
-                        lazy: true,
-                        method: 'GET',
-                        headers: {
-                            Authorization: `Bearer ${keys.access}`
-                        }
-                    })
-                        .then((res: any) => {
-                            user_info.value = res.data.value
+                    myFetch(`/user-info/`)
+                        .then((res) => {
+                            user_info.value = res._data as typeof user_info.value
                             localStorage.setItem('user', JSON.stringify(user_info.value))
 
                             is_auth.value = true

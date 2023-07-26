@@ -3,19 +3,19 @@
         <div class="mini-navigation-block">
             <div class="mini-navigation" @click="navigateTo(`/`)">
                 <UIIcon icon="chevron-left" color="white" />
-                <p>{{ data.name }}</p>
+                <p>{{ data?.name }}</p>
             </div>
             <UIIcon icon="search" color="white" />
         </div>
         <div class="object-info">
-            <h3>{{ data.name }}</h3>
+            <h3>{{ data?.name }}</h3>
             <span>активна</span>
         </div>
         <div class="object-content">
             <div class="address-card">
                 <div class="info">
                     <p>Адрес поля</p>
-                    <span>{{ data.address }}</span>
+                    <span>{{ data?.address }}</span>
                 </div>
 
                 <UIButton @click="isMap = !isMap">Смотреть на карте</UIButton>
@@ -23,7 +23,7 @@
 
             <div class="text-block">
                 <h3>Подробнее о поле</h3>
-                <p>{{ data.text }}</p>
+                <p>{{ data?.text }}</p>
             </div>
             <div class="text-block">
                 <h3>Что есть в комплекте?</h3>
@@ -40,9 +40,9 @@
 
         <UIModalBottom v-if="isMap">
             <div class="d-column">
-                <UINavigation :title="data.name" @click="isMap = false" :padding-x=28 no-search />
+                <UINavigation :title="data?.name || ''" @click="isMap = false" :padding-x=28 no-search />
                 <div class="map" v-on-click-outside="() => {isMap = false}">
-                    <UIMap  />
+                    <UIMap />
                 </div>
             </div>
         </UIModalBottom>
@@ -56,10 +56,8 @@ import {useRoute} from "vue-router";
 const route = useRoute()
 const id = route.params?.id || -1
 
-const {data: data} = await useFetch(`/fields/${id}/`)
-
-const tags = ref((data.value as IField).tags)
-
+const data = ref((await myFetch<IField>(`/fields/${id}/`))._data)
+const tags = ref(data.value?.tags || [])
 const isMap = ref(false)
 </script>
 

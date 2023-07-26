@@ -52,22 +52,22 @@ const password = ref('')
 const authorize = () => {
     if(!login.value || !password.value) return
 
-    useFetch(`${baseUrl}/api-token/`, {
+    myFetch(`/api-token/`, {
         method: 'POST',
         body: {
             phone: login.value,
             password: password.value
         }
     })
-        .then((res: any) => {
-            if(res?.error?.value?.statusCode === 401) {
-                if(!props.noRedirect)
-                    router.go(0)
-                emit('status', false)
-                return
-            }
+        .then((res) => {
+            // if(res?.error?.value?.statusCode === 401) {
+            //     if(!props.noRedirect)
+            //         router.go(0)
+            //     emit('status', false)
+            //     return
+            // }
 
-            const keys = {...res.data.value}
+            const keys = res._data as {access: string, refresh: string}
 
             // const access = useCookie('access')
             // access.value = keys.access
@@ -81,9 +81,9 @@ const authorize = () => {
             // auth.value = 'true'
             localStorage.setItem('is_auth', 'true')
 
-            useFetch(`/user-info/`)
-                .then((res: any) => {
-                    user_info.value = res.data.value
+            myFetch(`/user-info/`)
+                .then((res) => {
+                    user_info.value = res._data as typeof user_info.value
                     // const userCookie = useCookie('user')
                     // userCookie.value = user_info.value
                     localStorage.setItem('user', JSON.stringify(user_info.value))

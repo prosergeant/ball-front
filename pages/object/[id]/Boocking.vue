@@ -276,13 +276,14 @@ import { vOnClickOutside } from '@vueuse/components'
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 
+const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())
 
 const route = useRoute()
 const id = route.params?.id || -1
 
-const {data: fields} = await useFetch(`/fieldstypes/?field=${id}`)
-const {data: data} = await useFetch(`/fields/${id}/`)
+const fields = ref((await myFetch(`/fieldstypes/?field=${id}`))._data)
+const data = ref((await myFetch(`/fields/${id}/`))._data)
 
 const step = ref(0)
 const modalTime = ref(false)
@@ -337,19 +338,17 @@ const passcode = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
 const checkAccount = () => {
-    useFetch(`/find-user/`, {
+    myFetch(`/find-user/`, {
         method: 'POST',
         body: {
             phone: phone.value
         }
     })
         .then((res) => {
-            console.log(res)
-            if(res?.status.value === 'success') {
-                step.value = 3
-            } else {
-                console.log('user already exist')
-            }
+            step.value = 3
+        })
+        .catch(() => {
+            console.log('user already exist')
         })
 }
 
@@ -387,7 +386,7 @@ watch(() => step.value, (v) => {
 
     if(v === 5) {
         if(is_auth.value) {
-            useFetch(`/requests/`, {
+            myFetch(`/requests/`, {
                 method: "POST",
                 body: {
                     "date": dateTime.value.date,
@@ -399,7 +398,7 @@ watch(() => step.value, (v) => {
             })
         } else {
             //create user
-            useFetch(`/users/`, {
+            myFetch(`/users/`, {
                 method: 'POST',
                 body: {
                     "phone": phone.value,
@@ -408,17 +407,18 @@ watch(() => step.value, (v) => {
                 }
             })
                 .then((res) => {
-                    console.log(res)
                     //create request
-                    useFetch(`/requests/`, {
+                    myFetch(`/requests/`, {
                         method: "POST",
                         body: {
                             "date": dateTime.value.date,
                             "time": dateTime.value.time,
                             "field_type": selectedFieldType.value.id,
-                            "user": (res.data.value as any).id,
+                            "user": res._data?.id,
                             "paid": true
                         }
+                    }).then(() => {
+                        auth(phone.value, `${otp.value}`)
                     })
                 })
         }

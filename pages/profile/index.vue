@@ -1,45 +1,47 @@
 <template>
-    <div class="profile-wrapper">
-        <div class="avatar-block">
-            <div class="avatar">
-                <div class="avatar-wrapper">
-                    <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
-                </div>
-                <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
-                <input id="file" name="file" type="file" @change="postAvatar" />
-            </div>
-        </div>
-        <div class="profile">
-            <h4>Обо мне</h4>
-
-            <div class="info-blocks">
-                <div class="block"
-                     v-for="i in profileInfo"
-                     :key="i.id"
-                >
-                    <span>{{ i.value }}</span>
-                    <p>{{ i.name }}</p>
+    <template v-if="is_auth">
+        <div class="profile-wrapper">
+            <div class="avatar-block">
+                <div class="avatar">
+                    <div class="avatar-wrapper">
+                        <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
+                    </div>
+                    <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
+                    <input id="file" name="file" type="file" @change="postAvatar" />
                 </div>
             </div>
+            <div class="profile">
+                <h4>Обо мне</h4>
 
-            <div class="logout" @click="_logout">
-                <UIIcon icon="logout" color="green1" />
-                <p>Выйти из аккаунта</p>
-                <UIIcon icon="chevron-right" color="green1" />
+                <div class="info-blocks">
+                    <div class="block"
+                         v-for="i in profileInfo"
+                         :key="i.id"
+                    >
+                        <span>{{ i.value }}</span>
+                        <p>{{ i.name }}</p>
+                    </div>
+                </div>
+
+                <div class="logout" @click="_logout">
+                    <UIIcon icon="logout" color="green1" />
+                    <p>Выйти из аккаунта</p>
+                    <UIIcon icon="chevron-right" color="green1" />
+                </div>
             </div>
         </div>
-    </div>
+    </template>
+    <div v-else></div>
 </template>
 
 <script setup lang="ts">
-
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
 
 const {logout} = authStore()
 
-const {is_auth, user_info, access_token} = storeToRefs(authStore())
+const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
 
 const profileInfo = ref([
@@ -85,14 +87,12 @@ const postAvatar = (e: HTMLInputElement) => {
     if(!img) return
 
     formData.append('image', img, img.name);
-    useFetch(`/set-new-image/`, {
+    myFetch(`/set-new-image/`, {
         method: 'POST',
         body: formData,
     })
-        .then(res => {
-            if(res.error.value === null) {
-                window.location.reload()
-            }
+        .then(() => {
+            window.location.reload()
         })
 }
 
@@ -101,12 +101,9 @@ onMounted(() => {
         if(!is_auth.value) {
             navigateTo('/auth/')
         } else {
-            useFetch(`/user-info/`, {
-                lazy: true,
-                method: 'GET'
-            })
-                .then((res: any) => {
-                    user_info.value = res.data.value
+            myFetch(`/user-info/`)
+                .then((res) => {
+                    user_info.value = res._data as typeof user_info.value
                     localStorage.setItem('user', JSON.stringify(user_info.value))
                 })
         }

@@ -1,25 +1,40 @@
 import {defineStore} from 'pinia'
 
 export const authStore = defineStore('auth', () => {
-    // const auth_coockie = useCookie('is_auth')
-    // const user_coockie = useCookie('user')
     const is_auth = ref(false)
     const user_info = ref({})
     const access_token = ref('')
 
     function logout() {
-        // const _refresh = useCookie('refresh')
-        // const _access = useCookie('access')
-        // auth_coockie.value = null
-        // user_coockie.value = null
-        // is_auth.value = false
-        // _refresh.value = null
-        // _access.value = null
-        // access_token.value = ''
         localStorage.clear()
         is_auth.value = false
         user_info.value = {}
         access_token.value = ''
+    }
+
+    function auth(phone: string, password: string) {
+        myFetch(`/api-token/`, {
+            method: 'post',
+            body: {
+                'phone': phone,
+                "password": password
+            }
+        })
+            .then((res) => {
+                const keys = res._data as {access: string, refresh: string}
+
+                access_token.value = keys.access
+                is_auth.value = true
+                localStorage.setItem('access', access_token.value)
+                localStorage.setItem('refresh', keys.refresh)
+                localStorage.setItem('is_auth', 'true')
+
+                myFetch(`/user-info/`)
+                    .then((res) => {
+                        user_info.value = res._data as typeof user_info.value
+                        localStorage.setItem('user', JSON.stringify(user_info.value))
+                    })
+            })
     }
 
     return {
@@ -27,6 +42,7 @@ export const authStore = defineStore('auth', () => {
         user_info,
         access_token,
 
-        logout
+        logout,
+        auth
     }
 })

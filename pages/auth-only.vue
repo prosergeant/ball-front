@@ -52,27 +52,23 @@ const getPassCode = () => {
 
 const authorize = () => {
     isAuthBtnDisabled.value = true
-    useFetch(`/change-password/`, {
-        lazy: true,
+    myFetch(`/change-password/`, {
         method: 'post',
         body: {
             "phone": phone.value,
             "password": `${otp.value}`
         }
     })
-        .then(res => {
-            console.log(res)
-
-            useFetch(`/api-token/`, {
-                lazy: true,
+        .then(() => {
+            myFetch(`/api-token/`, {
                 method: 'post',
                 body: {
                     'phone': phone.value,
                     "password": otp.value
                 }
             })
-                .then((res: any) => {
-                    const keys = {...res.data.value}
+                .then((res) => {
+                    const keys = res._data as {access: string, refresh: string}
 
                     access_token.value = keys.access
                     is_auth.value = true
@@ -80,9 +76,9 @@ const authorize = () => {
                     localStorage.setItem('refresh', keys.refresh)
                     localStorage.setItem('is_auth', 'true')
 
-                    useFetch(`/user-info/`)
-                        .then((res: any) => {
-                            user_info.value = res.data.value
+                    myFetch(`/user-info/`)
+                        .then((res) => {
+                            user_info.value = res._data as typeof user_info.value
                             localStorage.setItem('user', JSON.stringify(user_info.value))
 
                             // is_auth.value = true
