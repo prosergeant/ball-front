@@ -37,7 +37,7 @@ const fetcher = ofetch.create({
 
 export const myFetch = async <T>(request: FetchRequest, options?: FetchOptions) => {
     const _authStore = authStore()
-    return new Promise(async (resolve, reject) => {
+    return new Promise<FetchResponse<T>>(async (resolve, reject) => {
         try {
             const response = await fetcher.raw(request, options);
             return resolve(response as FetchResponse<T>)
