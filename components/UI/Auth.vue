@@ -53,47 +53,36 @@ const authorize = () => {
     if(!login.value || !password.value) return
 
     myFetch(`/api-token/`, {
-        method: 'POST',
+        method: 'post',
         body: {
-            phone: login.value,
-            password: password.value
+            'phone': login.value,
+            "password": password.value
         }
     })
         .then((res) => {
-            // if(res?.error?.value?.statusCode === 401) {
-            //     if(!props.noRedirect)
-            //         router.go(0)
-            //     emit('status', false)
-            //     return
-            // }
-
             const keys = res._data as {access: string, refresh: string}
 
-            // const access = useCookie('access')
-            // access.value = keys.access
-            // access_token.value = access.value || ''
             access_token.value = keys.access
+            is_auth.value = true
             localStorage.setItem('access', access_token.value)
-            // const refresh = useCookie('refresh')
-            // refresh.value = keys.refresh
             localStorage.setItem('refresh', keys.refresh)
-            // const auth = useCookie('is_auth')
-            // auth.value = 'true'
             localStorage.setItem('is_auth', 'true')
 
             myFetch(`/user-info/`)
                 .then((res) => {
                     user_info.value = res._data as typeof user_info.value
-                    // const userCookie = useCookie('user')
-                    // userCookie.value = user_info.value
                     localStorage.setItem('user', JSON.stringify(user_info.value))
 
-                    is_auth.value = true
                     if(!props.noRedirect)
                         navigateTo('/profile')
 
                     emit('status', true)
                 })
+        })
+        .catch(() => {
+            if(!props.noRedirect)
+                router.go(0)
+            emit('status', false)
         })
 }
 </script>
