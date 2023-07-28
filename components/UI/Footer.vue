@@ -1,5 +1,5 @@
 <template>
-    <div class="footer" :style="`--width: ${width}px`">
+    <footer class="footer" :style="`--width: ${width}px`">
         <div
             v-for="icon in icons"
             :key="icon.id"
@@ -12,7 +12,7 @@
             />
             <p v-if="icon?.name" :class="{green: route.path === icon?.key}">{{ icon.name }}</p>
         </div>
-    </div>
+    </footer>
 </template>
 
 <script setup lang="ts">
@@ -56,11 +56,12 @@ const icons = ref<TIcon[]>([
 <style scoped lang="scss">
 .footer {
     position: fixed;
-    bottom: 24px;
-    left: calc(50% - (var(--width, 420px) / 2) + 45px);
+    bottom: 0;
+    left: 0; //calc(50% - (var(--width, 420px) / 2) + 45px);
     height: 68px;
-    width: calc(var(--width, 420px) - 90px);
-    border-radius: 49px;
+    width: 100%; //calc(var(--width, 420px) - 90px);
+    //border-bottom-left-radius: 49px;
+    //border-bottom-right-radius: 49px;
     border: 1px solid rgba(255, 255, 255, 0.20);
     background: rgba(255, 255, 255, 0.22);
     backdrop-filter: blur(20px);
