@@ -28,6 +28,10 @@ body{
     height: 100%;
 }
 
+.fix-ios-footer {
+    min-height: 200dvh !important;
+}
+
 .d-flex {
     display: flex;
 

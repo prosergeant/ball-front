@@ -35,10 +35,6 @@
 .footer-padding {
     padding-bottom: 82px;
 }
-
-.fix-ios-footer {
-    min-height: 200dvh;
-}
 </style>
 
 <script setup>
@@ -58,7 +54,6 @@ const fixFooter = ref(true)
 
 onMounted(() => {
     deviceWidth.value = window.innerWidth < 420 ? window.innerWidth : 420
-
     fixFooter.value = false
 })
 
