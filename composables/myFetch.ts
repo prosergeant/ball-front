@@ -44,7 +44,7 @@ export const myFetch = async <T>(request: FetchRequest, options?: FetchOptions) 
         } catch (error: any) {
             if (error.response?.status === 401 && localStorage.getItem('refresh')) {
                 const response = await fetcher.raw(request, options);
-                return response as FetchResponse<T>;
+                return resolve(response as FetchResponse<T>)
             } else if(error.response?.status === 401 && !localStorage.getItem('refresh')) {
                 _authStore.logout()
                 navigateTo('/')
