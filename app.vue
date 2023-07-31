@@ -5,8 +5,10 @@
             :style="`--width: ${deviceWidth}px`"
         >
             <NuxtPage />
-            <div style="margin-bottom: -68px;" />
-            <UIFooter v-if="isFooter" :width="deviceWidth" />
+            <template v-if="isFooter">
+                <div style="margin-bottom: -68px;" />
+                <UIFooter :width="deviceWidth" />
+            </template>
         </div>
     </div>
 </template>
