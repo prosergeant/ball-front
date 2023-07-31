@@ -24,12 +24,10 @@ html {
 }
 
 body{
+    -webkit-overflow-scrolling: touch;
+
     touch-action: manipulation;
     height: 100%;
-}
-
-.fix-ios-footer {
-    min-height: 200dvh !important;
 }
 
 .d-flex {
