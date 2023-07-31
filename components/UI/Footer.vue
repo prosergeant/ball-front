@@ -66,9 +66,9 @@ const icons = ref<TIcon[]>([
     background: rgba(255, 255, 255, 0.22);
     backdrop-filter: blur(20px);
 
-    padding: 0 29px;
+    padding: 10px 29px 0 29px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     gap: 32px;
 
