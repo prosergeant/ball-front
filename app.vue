@@ -6,7 +6,7 @@
         >
             <NuxtPage />
             <template v-if="isFooter">
-                <div style="margin-bottom: -68px;" />
+<!--                <div style="margin-bottom: -68px;" />-->
                 <UIFooter :width="deviceWidth" />
             </template>
         </div>

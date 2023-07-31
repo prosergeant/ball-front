@@ -55,7 +55,7 @@ const icons = ref<TIcon[]>([
 
 <style scoped lang="scss">
 .footer {
-    position: sticky;
+    position: fixed;
     bottom: 0;
     left: 0; //calc(50% - (var(--width, 420px) / 2) + 45px);
     height: 68px;
