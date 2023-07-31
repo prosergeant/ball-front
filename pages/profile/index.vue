@@ -7,7 +7,7 @@
                         <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
                     </div>
                     <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
-                    <input id="file" name="file" type="file" @change="postAvatar" />
+                    <input id="file" name="file" type="file" accept="image/*" @change="postAvatar" />
                 </div>
             </div>
             <div class="profile">
