@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer" :style="`--width: ${width}px`">
+    <footer class="footer" id="footer" :style="`--width: ${width}px`">
         <div
             v-for="icon in icons"
             :key="icon.id"
