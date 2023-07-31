@@ -186,6 +186,9 @@ onMounted(async () => {
                     temp_time.Class = 'inactive'
             }
     }
+    if(props.modelValue?.date !== null) {
+        isDaySet.value = true
+    }
 })
 </script>
 
