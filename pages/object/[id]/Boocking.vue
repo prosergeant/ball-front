@@ -70,7 +70,7 @@
                         <div class="modal-body-fixed">
                             <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
                                 <hr />
-                                <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" @closeModal="() => {modalTime = false}" />
+                                <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" :startFrom="selectedFieldType?.startFrom" :endTo="selectedFieldType?.endTo" @closeModal="() => {modalTime = false}" />
                             </div>
                         </div>
                     </UIModalBottom>
@@ -282,7 +282,7 @@ const {is_auth, user_info} = storeToRefs(authStore())
 const route = useRoute()
 const id = route.params?.id || -1
 
-const fields = ref((await myFetch(`/fieldstypes/?field=${id}`))._data)
+const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const data = ref((await myFetch(`/fields/${id}/`))._data)
 
 const step = ref(0)
@@ -297,12 +297,17 @@ type TSelectedField = {
     id?: number
     value?: boolean
     duration?: number
+    startFrom?: number
+    endTo?: number
 }
 const selectedFieldType = ref<TSelectedField>({} as TSelectedField)
 const setFieldType = (id: number, duration: number) => {
+    const temp_field_type = fields.value?.find(el => el.id === id)
     selectedFieldType.value.id = id
     selectedFieldType.value.value = true //selectedFieldType.value.value !== undefined ? !selectedFieldType.value.value : true
     selectedFieldType.value.duration = duration
+    selectedFieldType.value.startFrom = parseInt(temp_field_type?.field.time_start.slice(0, 2) || '0')
+    selectedFieldType.value.endTo = parseInt(temp_field_type?.field.time_end.slice(0, 2) || '0')
     modalType.value = false
 }
 const resFieldType = computed(() => {

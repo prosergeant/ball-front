@@ -1,3 +1,10 @@
+interface IFieldType {
+    id: number
+    title: string
+    hours: number
+    coast: number
+    field: IField
+}
 interface IField {
     id: number
     photo: any

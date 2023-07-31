@@ -45,6 +45,9 @@ const props = defineProps<{
         time: string | null
     },
 
+    startFrom?: number,
+    endTo?: number
+
     fieldtype?: number
 }>()
 
@@ -122,13 +125,14 @@ const resetTime = () => {
     times.value.length = 0
     const currTime = parseInt(date.value.toLocaleTimeString().split(':')?.[0])
     const currentDay = date.value.getDate()
-    for(let i = 9; i <= 18; i++) {
-        times.value.push({
-            id: Math.random() * 100500 + i + currMonth.value + currDaysInMonth.value,
-            value: `${ i < 10 ? '0' + i : i}:00`,
-            Class: i < currTime && currDay.value === currentDay ? 'inactive' : undefined
-        })
-    }
+    if(props.startFrom && props.endTo)
+        for(let i = props.startFrom; i <= props.endTo; i++) {
+            times.value.push({
+                id: Math.random() * 100500 + i + currMonth.value + currDaysInMonth.value,
+                value: `${ i < 10 ? '0' + i : i}:00`,
+                Class: i < currTime && currDay.value === currentDay ? 'inactive' : undefined
+            })
+        }
 }
 
 const setDate = (day: IDateTime) => {
