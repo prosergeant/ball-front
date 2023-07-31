@@ -1,5 +1,5 @@
 <template>
-    <div class="main-wrapper" :class="{greyground: isGreyground}">
+    <div class="main-wrapper" :class="{greyground: isGreyground, 'fix-ios-footer': fixFooter}">
         <div
             class="maxwidth"
             :style="`--width: ${deviceWidth}px`"
@@ -35,6 +35,10 @@
 .footer-padding {
     padding-bottom: 82px;
 }
+
+.fix-ios-footer {
+    min-height: 200dvh;
+}
 </style>
 
 <script setup>
@@ -50,9 +54,12 @@ const onlyIn = ref(['/', '/profile/', '/profile', '/profile/my-games/', '/profil
 const isFooter = computed(() => onlyIn.value.includes(route.path))
 const isGreyground = computed(() => greyground.value.includes(route.path))
 const deviceWidth = ref(420)
+const fixFooter = ref(true)
 
 onMounted(() => {
     deviceWidth.value = window.innerWidth < 420 ? window.innerWidth : 420
+
+    fixFooter.value = false
 })
 
 useHead({

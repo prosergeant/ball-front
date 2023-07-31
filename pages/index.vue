@@ -143,7 +143,7 @@ const getName = computed(() => {
 .main-page-new {
     position: relative;
     width: 100%;
-    min-height: 101dvh;
+    min-height: 100dvh;
     padding: 28px 28px 104px 28px;
 
     display: flex;
