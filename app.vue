@@ -12,6 +12,9 @@
 
 <style scoped lang="scss">
 .main-wrapper {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: scroll;
+
     display: flex;
     width: 100%;
     min-height: 100dvh;
