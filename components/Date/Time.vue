@@ -216,6 +216,7 @@ onMounted(async () => {
     .day {
         padding: 12px 13px;
         background: $light;
+        border: 2px solid $light;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -231,11 +232,13 @@ onMounted(async () => {
         &.active {
             background: #474747;
             color: white;
+            border: 2px solid $green1;
         }
 
         &.inactive {
             background: #F6F6F6;
             color: #DFDEFF;
+            border: none;
         }
     }
 }
@@ -264,11 +267,13 @@ onMounted(async () => {
         &.active {
             background: #474747;
             color: white;
+            border: 2px solid $green1;
         }
 
         &.inactive {
             background: #F6F6F6;
             color: #DFDEFF;
+            border: none;
         }
     }
 }

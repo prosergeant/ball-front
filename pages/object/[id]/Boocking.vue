@@ -801,14 +801,16 @@ watch(() => step.value, (v) => {
         max-height: calc(100dvh - 40px);
         overflow-y: auto;
         margin-top: auto;
-        background: black;
+
+        border: 1px solid rgba(255, 255, 255, 0.20);
+        background: rgba(75, 73, 73, 0.9);
+        backdrop-filter: blur(20px);
+
         position: relative;
         padding: 22px;
 
         display: flex;
         flex-direction: column;
-
-
     }
 
     .modal-type-body {
