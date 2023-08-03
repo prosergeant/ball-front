@@ -10,22 +10,22 @@
             <UIIcon icon="search" color="white" />
         </div>
 
-        <CardNewOffer :ids="[0,1,2]" />
+<!--        <CardNewOffer :ids="[0,1,2]" />-->
+
+<!--        <div class="available-fields">-->
+<!--            <div class="nav">-->
+<!--                <h3>Доступные поля</h3>-->
+<!--                <div>-->
+<!--                    <p>Смотреть все</p>-->
+<!--                    <UIIcon icon="chevron-right" color="green1" />-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="spinner">-->
+<!--                <CardStandard v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" :data="i" />-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="available-fields">
-            <div class="nav">
-                <h3>Доступные поля</h3>
-                <div>
-                    <p>Смотреть все</p>
-                    <UIIcon icon="chevron-right" color="green1" />
-                </div>
-            </div>
-            <div class="spinner">
-                <CardStandard v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" :data="i" />
-            </div>
-        </div>
-
-        <!-- <div class="available-fields">
             <div class="nav">
                 <h3>Ищем игроков</h3>
                 <div>
@@ -34,8 +34,11 @@
                 </div>
             </div>
 
-            <CardStandardInfo v-for="i in data" :key="i.id" :data="i" />
-        </div> -->
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 20px">
+                <CardStandard v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" :data="i" />
+            </div>
+<!--            <CardStandardInfo v-for="i in data" :key="i.id" :data="i" />-->
+        </div>
     </div>
 </template>
 
