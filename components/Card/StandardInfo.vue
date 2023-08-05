@@ -83,7 +83,7 @@ const CancelModal = (modalIs: boolean) => {
 }
 const cancel = () => {
     myFetch(`/requests/${props.data.id}/`, {
-        method: 'patch',
+        method: 'PATCH',
         body: {
             paid: false
         }
