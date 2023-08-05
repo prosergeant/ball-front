@@ -26,12 +26,14 @@ const requests = ref<IField[]>([])
 
 // todo: добавить интерцепторы и вообще сделать кастомный фетч с базовым урлом
 const convertData = (data: any) => ({
+    id: data?.id,
     name: data?.field_type?.field?.name,
     text: data?.field_type?.field?.text,
     time_start: data?.time,
     time_end: getTimeWithDuration(data?.time, data?.duration),
     date: data?.date,
-    is_ended: data?.is_ended
+    is_ended: data?.is_ended,
+    paid: data?.paid
 })
 
 onMounted(() => {
