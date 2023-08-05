@@ -75,9 +75,11 @@ const CancelModal = (modalIs: boolean) => {
     const body = document.body
     if(modalIs) {
         body.addEventListener('wheel', disableParentScroll, {passive: false})
+        body.addEventListener('touchmove', disableParentScroll, {passive: false})
         isCancelModal.value = true
     } else {
         body.removeEventListener('wheel', disableParentScroll)
+        body.removeEventListener('touchmove', disableParentScroll)
         isCancelModal.value = false
     }
 }
@@ -201,6 +203,8 @@ const cancel = () => {
     backdrop-filter: blur(15px);
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 100%;
 
     .cancel-modal {
         border-radius: 24px;
@@ -212,9 +216,8 @@ const cancel = () => {
         align-items: center;
         gap: 12px;
         width: 300px;
-        top: calc(50% - 125px);
-        left: calc(50% - 150px);
         padding: 30px 15px;
+        position: relative;
 
         hr {
             border: none;
