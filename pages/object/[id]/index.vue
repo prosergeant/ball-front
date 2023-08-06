@@ -42,7 +42,7 @@
             <div class="d-column">
                 <UINavigation :title="data?.name || ''" @click="isMap = false" :padding-x=28 no-search />
                 <div class="map" v-on-click-outside="() => {isMap = false}">
-                    <UIMap :marker="marker" />
+                    <UIMap :field-data="fieldData" />
                 </div>
             </div>
         </UIModalBottom>
@@ -57,9 +57,9 @@ const route = useRoute()
 const id = route.params?.id || -1
 
 const data = ref((await myFetch<IField>(`/fields/${id}/`))._data)
+const fieldData = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const tags = ref(data.value?.tags || [])
 const isMap = ref(false)
-const marker = ref([43.223609438970875, 76.94274097681046])
 </script>
 
 <style scoped lang="scss">
