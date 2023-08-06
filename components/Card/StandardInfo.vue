@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="data?.paid && !data?.is_ended" class="cancel" @click.stop="CancelModal(true)">
+        <div v-if="data?.paid && !data?.is_ended" class="cancel" @click.stop="isCancelModal = true">
             <p>Отменить запись</p>
         </div>
 
@@ -44,7 +44,7 @@
                     <hr />
                     <span>Отменяя бронь вы рискуете упустить поле и его забронирует другая команда</span>
                     <p class="green-bg" @click="cancel">Да, отменить бронь</p>
-                    <p @click="CancelModal(false)">Не отменять бронь</p>
+                    <p @click="isCancelModal = false">Не отменять бронь</p>
                 </div>
             </div>
         </ModalBottom>
@@ -68,21 +68,6 @@ const props = defineProps<{
 }>()
 
 const isCancelModal = ref(false)
-const disableParentScroll = (e: Event) => {
-    e.preventDefault();
-}
-const CancelModal = (modalIs: boolean) => {
-    const body = document.body
-    if(modalIs) {
-        body.addEventListener('wheel', disableParentScroll, {passive: false})
-        body.addEventListener('touchmove', disableParentScroll, {passive: false})
-        isCancelModal.value = true
-    } else {
-        body.removeEventListener('wheel', disableParentScroll)
-        body.removeEventListener('touchmove', disableParentScroll)
-        isCancelModal.value = false
-    }
-}
 const cancel = () => {
     myFetch(`/requests/${props.data.id}/`, {
         method: 'PATCH',
@@ -95,7 +80,7 @@ const cancel = () => {
             props.data.paid = false
         })
         .finally(() => {
-            CancelModal(false)
+            isCancelModal.value = false
         })
 }
 </script>

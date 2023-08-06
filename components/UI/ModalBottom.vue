@@ -6,6 +6,22 @@
     </teleport>
 </template>
 
+<script setup lang="ts">
+const disableParentScroll = (e: Event) => {
+    e.preventDefault();
+}
+
+onMounted(() => {
+    document.body.addEventListener('wheel', disableParentScroll, {passive: false})
+    document.body.addEventListener('touchmove', disableParentScroll, {passive: false})
+})
+
+onUnmounted(() => {
+    document.body.removeEventListener('wheel', disableParentScroll)
+    document.body.removeEventListener('touchmove', disableParentScroll)
+})
+</script>
+
 <style scoped lang="scss">
 .modal-wrapper {
     position: fixed;
