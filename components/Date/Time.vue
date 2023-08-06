@@ -191,7 +191,13 @@ onMounted(async () => {
         const bockedDays = ref((await myFetch(`/requests/?fieldtype=${props.fieldtype}&date=${currDay.value}.${currMonth.value+1}`))._data)
         if(bockedDays.value)
             for(const i of bockedDays.value as any[]) {
-                const temp_time = times.value.find(el => el.value === i?.time)
+                const index = times.value.findIndex(el => el.value === i?.time)
+                const temp_time = times.value[index]
+                if(i?.duration > 1) {
+                    for(let k = 0; k < i.duration-1; k++) {
+                        times.value[index + k + 1].Class = 'inactive'
+                    }
+                }
                 if(temp_time)
                     temp_time.Class = 'inactive'
             }

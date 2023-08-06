@@ -16,35 +16,23 @@
                         <p>{{ data.text }}</p>
                     </div>
 
-                    <!-- <div
-                        class="field-type-card"
+                    <template
                         v-for="fieldtype in fields"
                         :key="fieldtype.id"
                     >
-                        <div class="field-checkbox" />
-                        <div class="field-info">
-                            <p>{{ fieldtype.title }}</p>
-                            <span>19:00-20:30</span>
-                        </div>
-                        <img src="/cover.png" alt="field-img" />
-                    </div> -->
-
-                    <div class="select-card" @click.stop="modalType = !modalType">
-                        <span>Выберите тип поля:</span>
-                        <div class="card">
-                            <span class="circle" :class="{checked: selectedFieldType.value}" />
-                            <div class="card-infos">
-                                <template v-if="selectedFieldType.value">
-                                    <h3 class="filled">{{ resFieldType?.title }} {{ selectedFieldType?.duration }} час</h3>
-                                </template>
-                                <template v-else>
-                                    <h3>не выбран тип поля</h3>
-                                    <p>выбрать тип поля</p>
-                                </template>
+                        <div
+                            class="field-type-card"
+                            v-for="hour in fieldtype.hours" :key="hour"
+                            @click="setFieldType(fieldtype.id, hour)"
+                        >
+                            <div class="field-checkbox" :class="{active: !!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id}" />
+                            <div class="field-info">
+                                <p>{{ fieldtype.title }}</p>
+                                <span>{{ hour }} час</span>
                             </div>
-                            <UIIcon icon="chevron-right" color="green1" />
+                            <img src="/cover.png" alt="field-img" />
                         </div>
-                    </div>
+                    </template>
 
                     <div class="select-card" @click.stop="modalTime = !modalTime">
                         <span>Выберите дату и время:</span>
@@ -71,31 +59,6 @@
                             <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
                                 <hr />
                                 <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" :startFrom="selectedFieldType?.startFrom" :endTo="selectedFieldType?.endTo" @closeModal="() => {modalTime = false}" />
-                            </div>
-                        </div>
-                    </UIModalBottom>
-
-                    <UIModalBottom v-if="modalType">
-                        <div class="modal-body-fixed">
-                            <div class="modal-type-body" v-on-click-outside.bubble="() => {modalType = false}">
-                                <hr />
-                                <UIAccordion
-                                    v-for="fieldtype in fields"
-                                    :key="fieldtype.id"
-                                    :title="fieldtype.title"
-                                >
-                                    <div class="d-column">
-                                        <div
-                                            v-for="hour in fieldtype.hours" :key="hour"
-                                            class="type-card" @click="setFieldType(fieldtype.id, hour)">
-                                            <UICheckboxView :value="!!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id" />
-                                            <div>
-                                                <p>Аренда на {{ hour }} час</p>
-                                                <span>Любое примечание</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </UIAccordion>
                             </div>
                         </div>
                     </UIModalBottom>
@@ -480,6 +443,20 @@ watch(() => step.value, (v) => {
         border-radius: 22px;
         border: 2px solid #B9FD02;
         background: #373C34;
+        position: relative;
+
+        &.active {
+            &:after {
+                position: absolute;
+                content: '';
+                width: 12px;
+                height: 12px;
+                background: $green1;
+                border-radius: 50%;
+                left: 2px;
+                top: 2px;
+            }
+        }
     }
 
     .field-info {
