@@ -397,6 +397,7 @@ watch(() => step.value, (v) => {
                     "date": dateTime.value.date,
                     "time": dateTime.value.time,
                     "field_type": selectedFieldType.value.id,
+                    "duration": selectedFieldType.value.duration,
                     "user": user_info.value?.id,
                     "paid": true
                 }
