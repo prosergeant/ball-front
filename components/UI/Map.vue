@@ -82,10 +82,11 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     gap: 11px;
+    width: calc(100% - 60px);
     z-index: 1234;
     border-radius: 22px;
     padding: 15px;
-    margin: 0 29px;
+    margin: 0 30px;
     background: #3A3A3A;
     backdrop-filter: blur(20px);
     color: white;
