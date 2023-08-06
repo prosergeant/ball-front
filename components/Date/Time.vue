@@ -45,10 +45,11 @@ const props = defineProps<{
         time: string | null
     },
 
-    startFrom?: number,
+    startFrom?: number
     endTo?: number
 
     fieldtype?: number
+    duration?: number
 }>()
 
 const emit = defineEmits<{
@@ -143,6 +144,13 @@ const setDate = (day: IDateTime) => {
     }
 }
 const setTime = (time: IDateTime) => {
+    if(props.duration && props.duration > 1) {
+        const index = times.value.findIndex(el => el.value === time.value)
+        for(let i = 0; i < props.duration; i++) {
+            if(times.value[index + i].Class === 'inactive')
+                return
+        }
+    }
     if(time.Class !== 'inactive') {
         currTime.value = time.value as string
         emit('update:modelValue', {date: props.modelValue.date as string, time: currTime.value})

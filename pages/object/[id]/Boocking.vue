@@ -58,7 +58,7 @@
                         <div class="modal-body-fixed">
                             <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
                                 <hr />
-                                <DateTime v-model="dateTime" :fieldtype="selectedFieldType?.id" :startFrom="selectedFieldType?.startFrom" :endTo="selectedFieldType?.endTo" @closeModal="() => {modalTime = false}" />
+                                <DateTime v-model="dateTime" :duration="selectedFieldType?.duration" :fieldtype="selectedFieldType?.id" :startFrom="selectedFieldType?.startFrom" :endTo="selectedFieldType?.endTo" @closeModal="() => {modalTime = false}" />
                             </div>
                         </div>
                     </UIModalBottom>
