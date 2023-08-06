@@ -9,6 +9,7 @@
                 @input="update"
                 :type="type"
                 :inputmode="type"
+                :placeholder="placeholder || (type === 'tel' ? '+7 (777) 777-77-77' : undefined )"
             >
         </div>
     </div>
@@ -21,6 +22,7 @@ const props = defineProps<{
     modelValue: string
     label?: string
     type?: string
+    placeholder?: string
 }>()
 
 const emit = defineEmits<{ (e: 'update:modelValue', value: string): void }>()
