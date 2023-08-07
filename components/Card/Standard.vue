@@ -1,6 +1,8 @@
 <template>
     <div class="card-wrapper">
-        <img src="/cover.png">
+        <div class="image" :style="`--image: url('${data?.photo || '/cover.png'}')`">
+            <div/>
+        </div>
         <div class="card-wrapper-info">
             <h3>{{ data?.name }}</h3>
             <p>{{ data?.text }}</p>
@@ -21,8 +23,33 @@ const props = defineProps<{
     border-radius: 30px;
     width: 294px;
 
-    img {
-        max-width: 294px;
+    .image {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
+        &:before {
+            content: '';
+            width: 294px;
+            height: 147px;
+            background-image: var(--image);
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            position: absolute;
+            display: block;
+            filter: blur(5px);
+        }
+
+        div {
+            width: 294px;
+            height: 147px;
+            background-image: var(--image);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            z-index: 1;
+        }
     }
 
     &-info {
