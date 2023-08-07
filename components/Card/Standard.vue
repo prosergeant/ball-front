@@ -21,7 +21,7 @@ const props = defineProps<{
     background: rgba(255, 255, 255, 0.22);
     color: white;
     border-radius: 30px;
-    width: 294px;
+    width: 100%;
 
     .image {
         position: relative;
@@ -29,7 +29,7 @@ const props = defineProps<{
         border-radius: 30px;
         &:before {
             content: '';
-            width: 294px;
+            width: 100%;
             height: 147px;
             background-image: var(--image);
             background-size: cover;
@@ -41,7 +41,7 @@ const props = defineProps<{
         }
 
         div {
-            width: 294px;
+            width: 100%;
             height: 147px;
             background-image: var(--image);
             background-size: contain;
