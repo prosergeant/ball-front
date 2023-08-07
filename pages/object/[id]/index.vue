@@ -7,7 +7,7 @@
             </div>
             <UIIcon icon="search" color="white" />
         </div>
-        <div class="object-info">
+        <div class="object-info" :style="`--image: url(${data?.photo || '/cover-big.png'})`">
             <h3>{{ data?.name }}</h3>
             <span>активна</span>
         </div>
@@ -101,7 +101,7 @@ const isMap = ref(false)
 
     border-radius: 28px;
     //background: url('/cover-big.png'), lightgray 50% / cover no-repeat;
-    background: linear-gradient(to top, black 5%, transparent 100%), url("/cover-big.png") no-repeat;
+    background: linear-gradient(to top, black 5%, transparent 100%), var(--image) no-repeat;
     background-size: cover;
 
     display: flex;
