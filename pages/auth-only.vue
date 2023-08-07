@@ -34,20 +34,22 @@ const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 const isAuthBtnDisabled = ref(false)
 
 const getPassCode = () => {
-    codeNotSent.value = false
-    // otp.value = Math.floor(Math.random() * (9999 - 1000) + 1000 )
-    // let phoneForOtp = phone.value
-    // phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
-    // phoneForOtp = phoneForOtp.replace('7', '8')
+    if(!phone.value)
+        return
 
-    // const {data: code} = useFetch(`${baseUrl}/send-otp/`, {
-    //     lazy: true,
-    //     method: 'POST',
-    //     body: {
-    //         otp: otp.value,
-    //         phone: phoneForOtp
-    //     }
-    // })
+    codeNotSent.value = false
+    otp.value = Math.floor(Math.random() * (9999 - 1000) + 1000 )
+    let phoneForOtp = phone.value
+    phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
+    phoneForOtp = phoneForOtp.replace('7', '8')
+
+    myFetch(`${baseUrl}/send-otp/`, {
+        method: 'POST',
+        body: {
+            otp: otp.value,
+            phone: phoneForOtp
+        }
+    })
 }
 
 const authorize = () => {

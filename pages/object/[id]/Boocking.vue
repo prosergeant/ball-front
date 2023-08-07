@@ -303,7 +303,7 @@ const isNeedAuth = ref(false)
 const login = ref('')
 const phone = ref('')
 const passcode = ref('')
-const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
+const otp = ref(Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
 const checkAccount = () => {
     myFetch(`/find-user/`, {
@@ -343,13 +343,13 @@ watch(() => step.value, (v) => {
         phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
         phoneForOtp = phoneForOtp.replace('7', '8')
 
-        // const {data: code} = useFetch(`${baseUrl}/send-otp/`, {
-        //     method: 'POST',
-        //     body: {
-        //         otp: otp.value,
-        //         phone: phoneForOtp
-        //     }
-        // })
+        myFetch(`${baseUrl}/send-otp/`, {
+            method: 'POST',
+            body: {
+                otp: otp.value,
+                phone: phoneForOtp
+            }
+        })
     }
 
     if(v === 5) {
