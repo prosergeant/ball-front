@@ -30,14 +30,14 @@
                                 <p>{{ fieldtype.title }}</p>
                                 <span>{{ hour }} час</span>
                             </div>
-                            <img src="/cover.png" alt="field-img" />
+                            <img :class="{active: !!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id}" src="/cover.png" alt="field-img" />
                         </div>
                     </template>
 
-                    <div class="select-card" @click.stop="modalTime = !modalTime">
+                    <div class="select-card" @click.stop="(!!selectedFieldType?.value) && (modalTime = !modalTime)">
                         <span>Выберите дату и время:</span>
                         <div class="card">
-                            <span class="circle" :class="{checked: dateTime.date && dateTime.time}"/>
+                            <span class="circle" :class="{checked: dateTime.date && dateTime.time, disabled: !selectedFieldType?.value}"/>
 
                             <div class="card-infos">
                                 <template v-if="!dateTime.date || !dateTime.time">
@@ -264,6 +264,10 @@ type TSelectedField = {
     endTo?: number
 }
 const selectedFieldType = ref<TSelectedField>({} as TSelectedField)
+watch(() => selectedFieldType.value, () => {
+    dateTime.value.date = null
+    dateTime.value.time = null
+}, {deep: true})
 const setFieldType = (id: number, duration: number) => {
     const temp_field_type = fields.value?.find(el => el.id === id)
     selectedFieldType.value.id = id
@@ -486,6 +490,10 @@ watch(() => step.value, (v) => {
         overflow: hidden;
         object-fit: cover;
         border: 2px solid $black2;
+
+        &.active {
+            border: 2px solid $green1;
+        }
     }
 
     //width: 319px;
@@ -578,6 +586,10 @@ watch(() => step.value, (v) => {
                         top: 7px;
                         left: 7px;
                     }
+                }
+
+                &.disabled {
+                    border: 2px solid #666;
                 }
             }
 
