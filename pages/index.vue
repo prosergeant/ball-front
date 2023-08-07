@@ -27,11 +27,11 @@
 
         <div class="available-fields">
             <div class="nav">
-                <h3>Ищем игроков</h3>
-                <div>
-                    <p>Смотреть все</p>
-                    <UIIcon icon="chevron-right" color="green1" />
-                </div>
+                <h3>Доступные поля</h3>
+<!--                <div>-->
+<!--                    <p>Смотреть все</p>-->
+<!--                    <UIIcon icon="chevron-right" color="green1" />-->
+<!--                </div>-->
             </div>
 
             <div style="display: flex; flex-direction: column; align-items: center; gap: 20px">
