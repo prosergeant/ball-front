@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="ellipse" />
-        <div class="mini-navigation-block">
+        <div v-if="step < 5" class="mini-navigation-block">
             <div class="mini-navigation" @click="navigationHandler">
                 <UIIcon icon="chevron-left" color="white" />
                 <p>Выберите параметры</p>
