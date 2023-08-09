@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="ellipse" />
-        <div v-if="step < 5" class="mini-navigation-block">
+        <div class="ellipse"/>
+        <div v-if="step < 4" class="mini-navigation-block">
             <div class="mini-navigation" @click="navigationHandler">
                 <UIIcon icon="chevron-left" color="white" />
                 <p>Выберите параметры</p>
@@ -77,7 +77,7 @@
                                 <UIIcon icon="clock" color="green1" />
                                 <div>
                                     <p>Время игры:</p>
-                                    <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
+                                    <span>{{ dateTime.time }}-{{ getTimeWithDuration(dateTime.time, selectedFieldType.duration) }}</span>
                                 </div>
                             </div>
 
@@ -111,7 +111,9 @@
                         </div>
                     </div>
 
-                    <UIButton style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 2">Продолжить бронирование</UIButton>
+                    <UIButton style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 2">
+                        Продолжить бронирование
+                    </UIButton>
                 </div>
             </template>
             <template v-if="step === 2">
@@ -129,28 +131,39 @@
                         <UIButton class="btn-green-demi-outline" @click.stop="isNeedAuth = !isNeedAuth">Авторизоваться</UIButton>
                     </div>
 
-                    <UIButton :disabled="!login || !phone" icon="arrow-right" icon-color="black" @click="checkAccount">Продолжить бронирование</UIButton>
+                    <UIButton :disabled="!login || !phone" icon="arrow-right" icon-color="black" @click="checkAccount">
+                        Продолжить бронирование
+                    </UIButton>
                 </div>
             </template>
             <template v-if="step === 3">
                 <div class="step-1">
                     <div class="header">
                         <h4>Введите код подтверждения</h4>
-                        <p>Мы отправили код подтверждения на номер + 7 ... .. {{phone.slice(-2)}}</p>
+                        <p>Мы отправили код подтверждения на номер + 7 ... .. {{ phone.slice(-2) }}</p>
                     </div>
 
                     <UIPasscode @get-value="(e) => {passcode = e}" />
 
                     <p style="text-align: center; color: #B9FD02; margin-top: auto">Выслать код еще раз</p>
-                    <UIButton :disabled="passcode !== `${otp}`" style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 4">Продолжить бронирование</UIButton>
+                    <UIButton
+                        :disabled="passcode !== `${otp}`"
+                        style="margin-top: unset"
+                        icon="arrow-right"
+                        icon-color="black"
+                        @click="step = 4"
+                    >
+                        Продолжить бронирование
+                    </UIButton>
                 </div>
             </template>
             <template v-if="step === 4">
                 <div class="step-1">
                     <div class="header">
-                        <h4>Эквайринг</h4>
+<!--                        <h4>Эквайринг</h4>-->
+                        <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>
                     </div>
-                    <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>
+<!--                    <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>-->
                 </div>
             </template>
             <template v-if="step === 5">
@@ -169,7 +182,7 @@
                                 <UIIcon icon="clock" color="green1" />
                                 <div>
                                     <p>Время игры:</p>
-                                    <span>{{dateTime.time}}-{{getTimeWithDuration(dateTime.time, selectedFieldType.duration)}}</span>
+                                    <span>{{ dateTime.time }}-{{ getTimeWithDuration(dateTime.time, selectedFieldType.duration) }}</span>
                                 </div>
                             </div>
 
@@ -183,7 +196,7 @@
                         </div>
                     </div>
                     <div class="price">
-                        <p> {{ resFieldType?.title }} ({{selectedFieldType.duration}} час):</p>
+                        <p> {{ resFieldType?.title }} ({{ selectedFieldType.duration }} час):</p>
                         <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
                     </div>
 
@@ -248,6 +261,81 @@ const id = route.params?.id || -1
 const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const data = ref((await myFetch(`/fields/${id}/`))._data)
 
+let widget: any = null
+
+useHead({
+    script: [
+        {
+            src: "https://widget.cloudpayments.ru/bundles/cloudpayments.js",
+            defer: true,
+            onload: () => {
+                // @ts-ignore
+                widget = new cp.CloudPayments()
+                console.log(widget)
+            }
+        }
+    ]
+})
+
+const pay = (amount: number) => {
+    // @ts-ignore
+    return new Promise((resolve, reject) => {
+        widget.pay('auth', // или 'charge'
+            { //options
+                publicId: 'test_api_00000000000000000000002', //id из личного кабинета
+                description: 'Оплата поля в BRONKZ.app', //назначение
+                amount: amount, //сумма
+                currency: 'KZT', //валюта
+                // accountId: 'user@example.com', //идентификатор плательщика (необязательно)
+                // invoiceId: '1234567', //номер заказа  (необязательно)
+                email: 'user@example.com', //email плательщика (необязательно)
+                skin: "mini", //дизайн виджета (необязательно)
+                autoClose: 3, //время в секундах до авто-закрытия виджета (необязательный)
+                // data: {
+                //     myProp: 'myProp value'
+                // },
+                // configuration: {
+                //     common: {
+                //         successRedirectUrl: "https://{ваш сайт}/success", // адреса для перенаправления
+                //         failRedirectUrl: "https://{ваш сайт}/fail"        // при оплате по Tinkoff Pay
+                //     }
+                // },
+                // payer: {
+                //     firstName: 'Тест',
+                //     lastName: 'Тестов',
+                //     middleName: 'Тестович',
+                //     birth: '1955-02-24',
+                //     address: 'тестовый проезд дом тест',
+                //     street: 'Lenina',
+                //     city: 'MO',
+                //     country: 'RU',
+                //     phone: '123',
+                //     postcode: '345'
+                // }
+            },
+            {
+                // @ts-ignore
+                onSuccess: (options) => { // success
+                    console.log('success', options)
+                    step.value = 5
+                    resolve(true)
+                    //действие при успешной оплате
+                },
+                // @ts-ignore
+                onFail: (reason, options) =>{ // fail
+                    console.log('fail', reason, options)
+                    reject(reason)
+                    //действие при неуспешной оплате
+                },
+                // @ts-ignore
+                onComplete: (paymentResult, options) => { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
+                    //например вызов вашей аналитики
+                }
+            }
+        )
+    })
+}
+
 const step = ref(0)
 const modalTime = ref(false)
 const modalType = ref(false)
@@ -278,7 +366,7 @@ const setFieldType = (id: number, duration: number) => {
     modalType.value = false
 }
 const resFieldType = computed(() => {
-    if(selectedFieldType.value?.value && (fields.value as any[])?.length) {
+    if (selectedFieldType.value?.value && (fields.value as any[])?.length) {
         return (fields.value as any[]).find(el => el?.id === selectedFieldType.value?.id)
     }
 
@@ -328,10 +416,10 @@ const navigationHandler = () => {
     if (step.value === 0)
         navigateTo(`/object/${route?.params?.id}/`)
     else {
-        if(!is_auth.value)
+        if (!is_auth.value)
             step.value--
-        else if(is_auth.value) {
-            if(step.value === 4)
+        else if (is_auth.value) {
+            if (step.value === 4)
                 step.value = 1
             else
                 step.value--
@@ -339,10 +427,10 @@ const navigationHandler = () => {
     }
 }
 watch(() => step.value, (v) => {
-    if(v === 2 && is_auth.value) {
+    if (v === 2 && is_auth.value) {
         step.value = 4
     }
-    if(v === 3) {
+    if (v === 3) {
         let phoneForOtp = phone.value
         phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
         phoneForOtp = phoneForOtp.replace('7', '8')
@@ -356,8 +444,9 @@ watch(() => step.value, (v) => {
         })
     }
 
-    if(v === 5) {
-        if(is_auth.value) {
+    if (v === 4) {
+        // todo: сделать тут лоадер
+        if (is_auth.value) {
             myFetch(`/requests/`, {
                 method: "POST",
                 body: {
@@ -366,9 +455,24 @@ watch(() => step.value, (v) => {
                     "field_type": selectedFieldType.value.id,
                     "duration": selectedFieldType.value.duration,
                     "user": user_info.value?.id,
-                    "paid": true
+                    "paid": false,
+                    "book": true
                 }
             })
+                .then(res => {
+                    pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1))
+                        .then(() => {
+                            myFetch(`/requests/${res._data?.id}/`, {
+                                method: 'PATCH',
+                                body: {
+                                    "paid": true,
+                                }
+                            })
+                        })
+                })
+                .catch(() => {
+                  // todo: обработать ошибку типа уже занято поля и тп
+                })
         } else {
             //create user
             myFetch(`/users/`, {
@@ -388,11 +492,25 @@ watch(() => step.value, (v) => {
                             "time": dateTime.value.time,
                             "field_type": selectedFieldType.value.id,
                             "user": res._data?.id,
-                            "paid": true
+                            "paid": false,
+                            "book": true
                         }
-                    }).then(() => {
-                        auth(phone.value, `${otp.value}`)
                     })
+                        .then(() => {
+                            auth(phone.value, `${otp.value}`)
+                            pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1))
+                                .then(() => {
+                                    myFetch(`/requests/${res._data?.id}/`, {
+                                        method: 'PATCH',
+                                        body: {
+                                            "paid": true,
+                                        }
+                                    })
+                                })
+                        })
+                        .catch(() => {
+                            // todo: обработать ошибку типа уже занято поля и тп
+                        })
                 })
         }
     }
@@ -465,6 +583,7 @@ watch(() => step.value, (v) => {
 
     .field-info {
         margin-right: auto;
+
         p {
             color: white;
             font-feature-settings: 'clig' off, 'liga' off;
@@ -473,6 +592,7 @@ watch(() => step.value, (v) => {
             font-weight: 700;
             line-height: normal;
         }
+
         span {
             color: white;
             font-feature-settings: 'clig' off, 'liga' off;
@@ -520,6 +640,7 @@ watch(() => step.value, (v) => {
         display: flex;
         flex-direction: column;
         gap: 4px;
+
         h4 {
             color: white;
             font-size: 24px;
@@ -527,6 +648,7 @@ watch(() => step.value, (v) => {
             font-weight: 700;
             line-height: normal;
         }
+
         P {
             color: #AFAFAF;
             font-size: 13px;
@@ -575,6 +697,7 @@ watch(() => step.value, (v) => {
                 border-radius: 50%;
 
                 position: relative;
+
                 &.checked {
                     &::after {
                         position: absolute;
@@ -606,6 +729,7 @@ watch(() => step.value, (v) => {
                     font-weight: 700;
                     line-height: normal;
                 }
+
                 p {
                     color: white;
                     font-size: 11px;
@@ -662,6 +786,7 @@ watch(() => step.value, (v) => {
 .price {
     display: flex;
     justify-content: space-between;
+
     p {
         color: white;
         font-size: 18px;
@@ -669,6 +794,7 @@ watch(() => step.value, (v) => {
         font-weight: 700;
         line-height: normal;
     }
+
     span {
         color: $green1;
         text-align: right;
@@ -836,6 +962,7 @@ watch(() => step.value, (v) => {
                     font-weight: 700;
                     line-height: normal;
                 }
+
                 span {
                     color: white;
                     font-size: 11px;

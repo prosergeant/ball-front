@@ -180,7 +180,7 @@ watch(() => currDay.value, async (v) => {
 
     if(bockedDays.value)
         for(const i of bockedDays.value as any[]) {
-            if(i?.paid) {
+            if(i?.paid || i?.book) {
                 const index = times.value.findIndex(el => el.value === i?.time)
                 const temp_time = times.value[index]
                 if(i?.duration > 1) {
@@ -201,7 +201,7 @@ onMounted(async () => {
         const bockedDays = ref((await myFetch(`/requests/?fieldtype=${props.fieldtype}&date=${currDay.value}.${currMonth.value+1}`))._data)
         if(bockedDays.value)
             for(const i of bockedDays.value as any[]) {
-                if(i?.paid) {
+                if(i?.paid || i?.book) {
                     const index = times.value.findIndex(el => el.value === i?.time)
                     const temp_time = times.value[index]
                     if(i?.duration > 1) {
