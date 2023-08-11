@@ -25,6 +25,7 @@ import { vOnClickOutside } from '@vueuse/components'
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
+import {useNotifyStore} from "~/store/useNotify";
 
 const props = defineProps<{
     noRedirect?: boolean
@@ -35,6 +36,8 @@ const emit = defineEmits<{
     (e: 'status', value: boolean): void
     (e: 'onOutside', value: boolean): void
 }>()
+
+const {addNotify} = useNotifyStore()
 
 const authHandler = () => {
     if(props.noReg)
@@ -82,7 +85,8 @@ const authorize = () => {
         .catch(() => {
             if(!props.noRedirect)
                 router.go(0)
-            emit('status', false)
+            addNotify('Не правильный номер или пароль')
+            // emit('status', false)
         })
 }
 </script>

@@ -47,7 +47,12 @@ export const myFetch = async <T>(request: FetchRequest, options?: FetchOptions) 
                 return resolve(response as FetchResponse<T>)
             } else if(error.response?.status === 401 && !localStorage.getItem('refresh')) {
                 _authStore.logout()
-                navigateTo('/')
+                if(process.client) {
+                    const pathname = window.location.pathname.split('/')
+                    if(pathname?.[pathname.length-2] !== 'boocking') {
+                        navigateTo('/')
+                    }
+                }
             }
             return reject(error.response as FetchResponse<T>)
         }
