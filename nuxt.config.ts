@@ -19,4 +19,6 @@ export default defineNuxtConfig({
     css: [
         '@/assets/scss/normalize.scss'
     ],
+
+    ssr: false
 })
