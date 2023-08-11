@@ -8,7 +8,7 @@ COPY . .
 # этап сборки (build stage)
 FROM develop-stage as build-stage
 #ENV API_URL "http://10.10.77.11:8086/api"
-RUN npm run generate
+RUN npm run build #generate
 
 # этап production (production-stage)
 FROM nginx:stable-alpine as production-stage
