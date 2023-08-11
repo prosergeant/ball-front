@@ -12,12 +12,11 @@ RUN npm run build #generate
 
 # этап production (production-stage)
 FROM nginx:stable-alpine as production-stage
+RUN npx browserslist@latest --update-db
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build-stage /app/.output/public /usr/share/nginx/html
-COPY --from=build-stage /app/deploy/index.html /usr/share/nginx/html/index.html
-EXPOSE 80
-#EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]
-#RUN npx browserslist@latest --update-db
+#COPY --from=build-stage /app/.output/public /usr/share/nginx/html
+#EXPOSE 80
+EXPOSE 3000
+#CMD ["nginx", "-g", "daemon off;"]
 #RUN npm run build
-#CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start"]
