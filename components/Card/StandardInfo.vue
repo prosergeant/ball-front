@@ -53,6 +53,9 @@
 
 <script setup lang="ts">
 import ModalBottom from "~/components/UI/ModalBottom.vue";
+import {useNotifyStore} from "~/store/useNotify";
+
+const {addNotify} = useNotifyStore()
 
 const props = defineProps<{
     data: {
@@ -78,6 +81,10 @@ const cancel = () => {
         .then(res => {
             console.log(res)
             props.data.paid = false
+        })
+        .catch(err => {
+            console.log(err?._data?.detail)
+            addNotify('Ошибка при отмене брони')
         })
         .finally(() => {
             isCancelModal.value = false

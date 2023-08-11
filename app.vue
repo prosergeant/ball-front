@@ -1,5 +1,6 @@
 <template>
     <div class="main-wrapper" :class="{greyground: isGreyground}">
+        <UINotify />
         <div
             class="maxwidth"
             :style="`--width: ${deviceWidth}px`"

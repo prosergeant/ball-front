@@ -251,9 +251,11 @@ import {computed} from "@vue/reactivity";
 import { vOnClickOutside } from '@vueuse/components'
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
+import {useNotifyStore} from "~/store/useNotify";
 
 const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())
+const {addNotify} = useNotifyStore()
 
 const route = useRoute()
 const id = route.params?.id || -1
@@ -408,7 +410,7 @@ const checkAccount = () => {
             step.value = 3
         })
         .catch(() => {
-            console.log('user already exist')
+            addNotify('Такой пользователь уже существует')
         })
 }
 
@@ -469,9 +471,14 @@ watch(() => step.value, (v) => {
                                 }
                             })
                         })
+                        .catch(err => {
+                            addNotify('Ошибка при создании заявки')
+                            console.log(err?.data?.detail)
+                        })
                 })
-                .catch(() => {
-                  // todo: обработать ошибку типа уже занято поля и тп
+                .catch((err) => {
+                    addNotify('Ошибка при создании заявки')
+                    console.log(err?.data?.detail)
                 })
         } else {
             //create user
@@ -507,10 +514,19 @@ watch(() => step.value, (v) => {
                                         }
                                     })
                                 })
+                                .catch(err => {
+                                    addNotify('Ошибка при создании заявки')
+                                    console.log(err?.data?.detail)
+                                })
                         })
-                        .catch(() => {
-                            // todo: обработать ошибку типа уже занято поля и тп
+                        .catch(err => {
+                            addNotify('Ошибка при создании заявки')
+                            console.log(err?.data?.detail)
                         })
+                })
+                .catch(err => {
+                    addNotify('Ошибка при создании заявки')
+                    console.log(err?.data?.detail)
                 })
         }
     }
