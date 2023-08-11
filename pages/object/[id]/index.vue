@@ -38,10 +38,10 @@
             <UIButton icon="arrow-right" icon-color="black" @click="navigateTo(`/object/${id}/boocking/`)">Забронировать поле</UIButton>
         </div>
 
-        <UIModalBottom v-if="isMap">
+        <UIModalBottom v-if="isMap" @close-modal="isMap = false">
             <div class="d-column">
                 <UINavigation :title="data?.name || ''" @click="isMap = false" :padding-x=28 no-search />
-                <div class="map" v-on-click-outside="() => {isMap = false}">
+                <div class="map">
                     <UIMap :field-data="fieldData" />
                 </div>
             </div>

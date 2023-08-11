@@ -54,9 +54,9 @@
 
                     <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
 
-                    <UIModalBottom v-if="modalTime">
+                    <UIModalBottom v-if="modalTime" @close-modal="modalTime = false">
                         <div class="modal-body-fixed">
-                            <div class="modal-body" v-on-click-outside.bubble="() => {modalTime = false}">
+                            <div class="modal-body"> <!-- v-on-click-outside.bubble="() => {modalTime = false}" -->
                                 <hr />
                                 <DateTime v-model="dateTime" :duration="selectedFieldType?.duration" :fieldtype="selectedFieldType?.id" :startFrom="selectedFieldType?.startFrom" :endTo="selectedFieldType?.endTo" @closeModal="() => {modalTime = false}" />
                             </div>

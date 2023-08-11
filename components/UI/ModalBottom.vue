@@ -1,12 +1,14 @@
 <template>
     <teleport to="body">
-        <div class="modal-wrapper">
+        <div class="modal-wrapper" @click.self="emit('closeModal', true)">
             <slot></slot>
         </div>
     </teleport>
 </template>
 
 <script setup lang="ts">
+
+const emit = defineEmits<{ (e: 'closeModal', value: boolean): void }>()
 const disableParentScroll = (e: Event) => {
     e.preventDefault();
 }
