@@ -4,9 +4,9 @@
             <div class="avatar-block">
                 <div class="avatar">
                     <div class="avatar-wrapper">
-                        <nuxt-img preload format="webp" :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
+                        <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
                     </div>
-                    <nuxt-img preload format="webp" src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
+                    <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
                     <input id="file" name="file" type="file" accept="image/*" @change="postAvatar" />
                 </div>
             </div>

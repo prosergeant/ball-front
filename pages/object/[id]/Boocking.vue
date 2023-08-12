@@ -30,7 +30,7 @@
                                 <p>{{ fieldtype.title }}</p>
                                 <span>{{ hour }} час</span>
                             </div>
-                            <nuxt-img preload format="webp" :class="{active: !!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id}" src="/cover.png" alt="field-img" />
+                            <img :class="{active: !!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id}" src="/cover.png" alt="field-img" />
                         </div>
                     </template>
 

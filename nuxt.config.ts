@@ -1,10 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+    // @ts-ignore
     devtools: { enabled: false },
-    modules: [
-        '@pinia/nuxt',
-        '@nuxt/image'
-    ],
+    modules: ['@pinia/nuxt'],
     components: {
         global: true,
         dirs: ['@/components']

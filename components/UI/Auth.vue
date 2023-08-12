@@ -3,7 +3,7 @@
         <div class="avatar-block" v-if="!noReg">
             <div class="avatar">
                 <div class="avatar-wrapper">
-                    <nuxt-img preload format="webp" src="/icons/logo-black.svg" alt="avatar" />
+                    <img src="/icons/logo-black.svg" alt="avatar" />
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
         <div id="map" class="map"></div>
         <div v-if="selectedMapCard !== -1" class="field-map-card">
             <div class="info">
-                <nuxt-img preload format="webp" src="/cover.png" />
+                <img src="/cover.png" alt="field" />
                 <div class="description">
                     <h4>{{ fieldData?.[selectedMapCard]?.field?.name }}</h4>
                     <p>{{ fieldData?.[selectedMapCard]?.field?.text }}</p>
