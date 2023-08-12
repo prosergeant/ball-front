@@ -1,6 +1,6 @@
 <template>
     <div class="card-wrapper">
-        <nuxt-img preload format="webp" src="/cover.png" />
+        <img src="/cover.png" alt="" />
         <span
             v-if="data?.is_ended !== undefined"
             class="is_ended"
