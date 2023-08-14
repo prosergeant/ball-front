@@ -1,6 +1,7 @@
 import type { FetchRequest, FetchOptions, FetchResponse } from 'ofetch';
 import { ofetch } from 'ofetch';
 import { authStore } from '~/store/auth'
+import {useNotifyStore} from "~/store/useNotify";
 
 const fetcher = ofetch.create({
     baseURL: baseUrl,
@@ -37,11 +38,14 @@ const fetcher = ofetch.create({
 
 export const myFetch = async <T>(request: FetchRequest, options?: FetchOptions) => {
     const _authStore = authStore()
+    const _notifyStore = useNotifyStore()
     return new Promise<FetchResponse<T>>(async (resolve, reject) => {
         try {
             const response = await fetcher.raw(request, options);
             return resolve(response as FetchResponse<T>)
         } catch (error: any) {
+            _notifyStore.addNotify(JSON.stringify(error))
+            _notifyStore.addNotify(JSON.stringify(error?.response))
             if (error.response?.status === 401 && localStorage.getItem('refresh')) {
                 const response = await fetcher.raw(request, options);
                 return resolve(response as FetchResponse<T>)
