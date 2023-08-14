@@ -56,7 +56,7 @@ const authorize = () => {
     if(!login.value || !password.value) return
 
     myFetch(`/api-token/`, {
-        method: 'post',
+        method: 'POST',
         body: {
             'phone': login.value,
             "password": password.value

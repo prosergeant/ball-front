@@ -16,7 +16,7 @@ export const authStore = defineStore('auth', () => {
         if(!phone || !password) return
 
         myFetch(`/api-token/`, {
-            method: 'post',
+            method: 'POST',
             body: {
                 'phone': phone,
                 "password": password

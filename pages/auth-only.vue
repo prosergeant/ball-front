@@ -55,7 +55,7 @@ const getPassCode = () => {
 const authorize = () => {
     isAuthBtnDisabled.value = true
     myFetch(`/change-password/`, {
-        method: 'post',
+        method: 'POST',
         body: {
             "phone": phone.value,
             "password": `${otp.value}`
@@ -63,7 +63,7 @@ const authorize = () => {
     })
         .then(() => {
             myFetch(`/api-token/`, {
-                method: 'post',
+                method: 'POST',
                 body: {
                     'phone': phone.value,
                     "password": otp.value

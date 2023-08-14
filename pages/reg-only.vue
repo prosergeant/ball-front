@@ -55,7 +55,7 @@ const getPassCode = () => {
 
 const authorize = () => {
     myFetch(`/users/`, {
-        method: 'post',
+        method: 'POST',
         body: {
             "phone": phone.value,
             "name": name.value,
@@ -64,7 +64,7 @@ const authorize = () => {
     })
         .then(() => {
             myFetch(`/api-token/`, {
-                method: 'post',
+                method: 'POST',
                 body: {
                     'phone': phone.value,
                     "password": otp.value
