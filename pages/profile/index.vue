@@ -72,7 +72,12 @@ const profileInfo = ref([
 const _logout = () => {
     addNotify('profile logout')
     logout()
-    navigateTo('/')
+    try {
+        navigateTo('/')
+    } catch (e) {
+        addNotify('catch ' + JSON.stringify(e || '{}'))
+        window.location.href = '/'
+    }
     addNotify('navigate to /')
 }
 
