@@ -9,15 +9,15 @@ export const authStore = defineStore('auth', () => {
     const _notifyStore = useNotifyStore()
 
     function logout() {
-        _notifyStore.addNotify('logout auth store')
         try {
             localStorage.clear()
-            is_auth.value = false
-            user_info.value = {}
-            access_token.value = ''
         } catch (e) {
-            _notifyStore.addNotify('auth logaut catch ' + JSON.stringify(e || '{}'))
+            _notifyStore.addNotify('Ошибка при очистке хранилища')
         }
+
+        is_auth.value = false
+        user_info.value = {}
+        access_token.value = ''
     }
 
     function auth(phone: string, password: string) {

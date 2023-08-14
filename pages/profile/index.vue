@@ -38,10 +38,8 @@
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
-import {useNotifyStore} from "~/store/useNotify";
 
 const {logout} = authStore()
-const {addNotify} = useNotifyStore()
 
 const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
@@ -70,19 +68,8 @@ const profileInfo = ref([
 ])
 
 const _logout = () => {
-    addNotify('profile logout')
     logout()
-    navigateTo(`/field/1/`)
-
-    try {
-        addNotify('try in')
-        navigateTo(`/`)
-        addNotify('try out')
-    } catch (e) {
-        addNotify('catch ' + JSON.stringify(e || '{}'))
-        window.location.href = '/'
-    }
-    addNotify('navigate to /')
+    navigateTo('/')
 }
 
 const uploadFile = () => {

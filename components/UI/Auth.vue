@@ -82,10 +82,10 @@ const authorize = () => {
                     emit('status', true)
                 })
         })
-        .catch((err) => {
+        .catch(() => {
             if(!props.noRedirect)
                 router.go(0)
-            addNotify('Не правильный номер или пароль' + `\n${JSON.stringify(err)}`)
+            addNotify('Не правильный номер или пароль')
             // emit('status', false)
         })
 }
