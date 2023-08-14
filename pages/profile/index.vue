@@ -38,8 +38,10 @@
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
+import {useNotifyStore} from "~/store/useNotify";
 
 const {logout} = authStore()
+const {addNotify} = useNotifyStore()
 
 const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
@@ -68,6 +70,7 @@ const profileInfo = ref([
 ])
 
 const _logout = () => {
+    addNotify('profile logout')
     logout()
     navigateTo('/')
 }

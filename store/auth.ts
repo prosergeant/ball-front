@@ -1,11 +1,15 @@
 import {defineStore} from 'pinia'
+import {useNotifyStore} from "~/store/useNotify";
 
 export const authStore = defineStore('auth', () => {
     const is_auth = ref(false)
     const user_info = ref({})
     const access_token = ref('')
 
+    const _notifyStore = useNotifyStore()
+
     function logout() {
+        _notifyStore.addNotify('logout auth store')
         localStorage.clear()
         is_auth.value = false
         user_info.value = {}
