@@ -10,10 +10,14 @@ export const authStore = defineStore('auth', () => {
 
     function logout() {
         _notifyStore.addNotify('logout auth store')
-        localStorage.clear()
-        is_auth.value = false
-        user_info.value = {}
-        access_token.value = ''
+        try {
+            localStorage.clear()
+            is_auth.value = false
+            user_info.value = {}
+            access_token.value = ''
+        } catch (e) {
+            _notifyStore.addNotify('auth logaut catch ' + JSON.stringify(e || '{}'))
+        }
     }
 
     function auth(phone: string, password: string) {
