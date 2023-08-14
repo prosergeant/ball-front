@@ -56,5 +56,6 @@ watch(() => messages.value, (v) => {
     padding: 10px;
     color: white;
     font-size: 18px;
+    white-space: pre;
 }
 </style>
