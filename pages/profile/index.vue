@@ -73,6 +73,7 @@ const _logout = () => {
     addNotify('profile logout')
     logout()
     navigateTo('/')
+    addNotify('navigate to /')
 }
 
 const uploadFile = () => {
