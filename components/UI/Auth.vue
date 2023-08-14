@@ -85,7 +85,7 @@ const authorize = () => {
         .catch((err) => {
             if(!props.noRedirect)
                 router.go(0)
-            addNotify('Не правильный номер или пароль' + `\nerr: ${err}`)
+            addNotify('Не правильный номер или пароль' + `\n${JSON.stringify(err)}`)
             // emit('status', false)
         })
 }
