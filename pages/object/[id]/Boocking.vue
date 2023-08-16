@@ -22,17 +22,24 @@
                     >
                         <div
                             class="field-type-card"
-                            v-for="hour in fieldtype.hours" :key="hour"
-                            @click="setFieldType(fieldtype.id, hour)"
+                            @click="setFieldType(fieldtype.id, fieldtype.hours)"
                         >
-                            <div class="field-checkbox" :class="{active: !!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id}" />
+<!--                            v-for="hour in fieldtype.hours" :key="hour"-->
+
+                            <div class="field-checkbox" :class="{active: !!selectedFieldType?.value && selectedFieldType.id === fieldtype.id}" />
                             <div class="field-info">
                                 <p>{{ fieldtype.title }}</p>
-                                <span>{{ hour }} час</span>
+                                <span>1 час - {{fieldtype.coast}}</span>
                             </div>
-                            <img :class="{active: !!selectedFieldType?.value && selectedFieldType.duration === hour && selectedFieldType.id === fieldtype.id}" src="/cover.png" alt="field-img" />
+                            <img :class="{active: !!selectedFieldType?.value && selectedFieldType.id === fieldtype.id}" src="/cover.png" alt="field-img" />
                         </div>
                     </template>
+
+                    <UISelect
+                        :items="Array.from(Array(selectedFieldType?.max_hours).keys()).map(el => ({name: `${el+1} час`, value: el+1} as ISelect))"
+                        :value="selectedFieldType.duration"
+                        @selected-item="(e) => {selectedFieldType.duration = e.value}"
+                    />
 
                     <div class="select-card" @click.stop="(!!selectedFieldType?.value) && (modalTime = !modalTime)">
                         <span>Выберите дату и время:</span>
@@ -52,7 +59,7 @@
                         </div>
                     </div>
 
-                    <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">Продолжить бронирование</UIButton>
+                    <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">{{ !dateTime.date || !dateTime.time ? 'Продолжить бронирование' : `Забронировать за ${resFieldType?.coast * selectedFieldType.duration} ₸` }}</UIButton>
 
                     <UIModalBottom v-if="modalTime" @close-modal="modalTime = false">
                         <div class="modal-body-fixed">
@@ -350,19 +357,22 @@ type TSelectedField = {
     id?: number
     value?: boolean
     duration?: number
+    max_hours?: number
     startFrom?: number
     endTo?: number
 }
 const selectedFieldType = ref<TSelectedField>({} as TSelectedField)
-watch(() => selectedFieldType.value, () => {
+watch(() => selectedFieldType.value?.id, () => {
     dateTime.value.date = null
     dateTime.value.time = null
+    selectedFieldType.value.duration = 1
 }, {deep: true})
-const setFieldType = (id: number, duration: number) => {
+const setFieldType = (id: number, max_hours: number) => {
     const temp_field_type = fields.value?.find(el => el.id === id)
     selectedFieldType.value.id = id
     selectedFieldType.value.value = true //selectedFieldType.value.value !== undefined ? !selectedFieldType.value.value : true
-    selectedFieldType.value.duration = duration
+    // selectedFieldType.value.duration = duration
+    selectedFieldType.value.max_hours = max_hours
     selectedFieldType.value.startFrom = parseInt(temp_field_type?.field.time_start.slice(0, 2) || '0')
     selectedFieldType.value.endTo = parseInt(temp_field_type?.field.time_end.slice(0, 2) || '0')
     modalType.value = false

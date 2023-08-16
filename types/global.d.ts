@@ -24,3 +24,8 @@ interface IField {
         name: string
     }[]
 }
+
+interface ISelect {
+    name: string
+    value: string | number
+}
