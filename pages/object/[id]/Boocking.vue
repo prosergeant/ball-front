@@ -438,6 +438,14 @@ const navigationHandler = () => {
         }
     }
 }
+
+const boockErrorHandler = (err: any, errorNum: number, req_id?: number) => {
+    addNotify(`Ошибка при создании заявки #${errorNum}`)
+    console.log(err?.data?.detail)
+    if(req_id)
+        myFetch(`/requests/${req_id}/`, {method: 'DELETE'})
+}
+
 watch(() => step.value, (v) => {
     if (v === 2 && is_auth.value) {
         step.value = 4
@@ -482,13 +490,11 @@ watch(() => step.value, (v) => {
                             })
                         })
                         .catch(err => {
-                            addNotify('Ошибка при создании заявки')
-                            console.log(err?.data?.detail)
+                            boockErrorHandler(err,  1, res?._data?.id)
                         })
                 })
                 .catch((err) => {
-                    addNotify('Ошибка при создании заявки')
-                    console.log(err?.data?.detail)
+                    boockErrorHandler(err,  2)
                 })
         } else {
             //create user
@@ -513,7 +519,7 @@ watch(() => step.value, (v) => {
                             "book": true
                         }
                     })
-                        .then(() => {
+                        .then((res) => {
                             auth(phone.value, `${otp.value}`)
                             pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1))
                                 .then(() => {
@@ -525,18 +531,15 @@ watch(() => step.value, (v) => {
                                     })
                                 })
                                 .catch(err => {
-                                    addNotify('Ошибка при создании заявки')
-                                    console.log(err?.data?.detail)
+                                    boockErrorHandler(err,  3, res._data?.id)
                                 })
                         })
                         .catch(err => {
-                            addNotify('Ошибка при создании заявки')
-                            console.log(err?.data?.detail)
+                            boockErrorHandler(err,  4)
                         })
                 })
                 .catch(err => {
-                    addNotify('Ошибка при создании заявки')
-                    console.log(err?.data?.detail)
+                    boockErrorHandler(err,  5)
                 })
         }
     }
