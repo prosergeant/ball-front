@@ -11,20 +11,20 @@ template(v-if="is_auth")
                 input(id="file" name="file" type="file" accept="image/*" @change="postAvatar")
         h3 {{ user_info?.name }}
 
-        UIProfileButton(icon="user" text="Личная информация")
-        UIProfileButton(icon="user" text="Данные карт")
+        //UIProfileButton(icon="user" text="Личная информация")
+        //UIProfileButton(icon="user" text="Данные карт")
         UIProfileButton(icon="user" text="Язык")
-        UIProfileButton(icon="user" text="Стать партнером")
+        UIProfileButton(icon="user" text="Стать партнером", link="/profile/partner/")
 
         .help
             h2 Поддержка
 
-        UIProfileButton(icon="user" text="Служба поддержки")
-        UIProfileButton(icon="user" text="Часто задаваемые вопросы")
+        UIProfileButton(icon="user" text="Служба поддержки", link="/profile/helpdesk/" )
+        //UIProfileButton(icon="user" text="Часто задаваемые вопросы")
         UIProfileButton(icon="user" text="Условия предоставления услуг")
         UIProfileButton(icon="user" text="Политика конфиденциальности")
 
-        UIButton(style="width: 100%; justify-content: center;" @click="_logout") Выйти
+        UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
 </template>
 
 <script setup lang="ts">
@@ -112,6 +112,7 @@ onMounted(() => {
     gap: 20px;
     padding: 20px 14px 0 14px;
     color: white;
+    height: calc(100dvh - 80px);
 
     .help {
         width: 100%;

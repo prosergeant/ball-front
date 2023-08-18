@@ -1,5 +1,5 @@
 <template lang="jade">
-.new-profile
+.new-profile(@click="navigateTo(link)")
     .new-profile-button
         div
             UIIcon(:icon="icon")
@@ -10,7 +10,8 @@
 <script setup lang="ts">
 const props = defineProps<{
     icon: string,
-    text: string
+    text: string,
+    link: string
 }>()
 </script>
 
