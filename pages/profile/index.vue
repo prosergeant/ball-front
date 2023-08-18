@@ -13,7 +13,7 @@ template(v-if="is_auth")
 
         //UIProfileButton(icon="user" text="Личная информация")
         //UIProfileButton(icon="user" text="Данные карт")
-        UIProfileButton(icon="user" text="Язык")
+        //UIProfileButton(icon="user" text="Язык")
         UIProfileButton(icon="user" text="Стать партнером", link="/profile/partner/")
 
         .help
