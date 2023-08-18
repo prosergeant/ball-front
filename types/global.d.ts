@@ -29,3 +29,23 @@ interface ISelect {
     name: string
     value: string | number
 }
+
+interface IUserInfo {
+    id: number
+    password: string
+    last_login: string
+    is_superuser: boolean
+    first_name: string
+    last_name: string
+    email: string
+    is_staff: boolean
+    is_active: boolean
+    date_joined: string
+    is_owner: boolean
+    name: string
+    phone: string
+    photo: string
+    cashback: number
+    money: number
+    date_birthday: string
+}

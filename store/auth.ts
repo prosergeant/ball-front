@@ -3,7 +3,7 @@ import {useNotifyStore} from "~/store/useNotify";
 
 export const authStore = defineStore('auth', () => {
     const is_auth = ref(false)
-    const user_info = ref({})
+    const user_info = ref<IUserInfo>({} as IUserInfo)
     const access_token = ref('')
 
     const _notifyStore = useNotifyStore()
@@ -16,7 +16,7 @@ export const authStore = defineStore('auth', () => {
         }
 
         is_auth.value = false
-        user_info.value = {}
+        user_info.value = {} as IUserInfo
         access_token.value = ''
     }
 
