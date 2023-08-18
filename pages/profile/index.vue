@@ -1,37 +1,30 @@
-<template>
-    <template v-if="is_auth">
-        <div class="profile-wrapper">
-            <div class="avatar-block">
-                <div class="avatar">
-                    <div class="avatar-wrapper">
-                        <img :src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar" />
-                    </div>
-                    <img src="/icons/edit-image.svg" alt="edit-image" class="edit-image" @click="uploadFile" />
-                    <input id="file" name="file" type="file" accept="image/*" @change="postAvatar" />
-                </div>
-            </div>
-            <div class="profile">
-                <h4>Обо мне</h4>
+<template lang="jade">
 
-                <div class="info-blocks">
-                    <div class="block"
-                         v-for="i in profileInfo"
-                         :key="i.id"
-                    >
-                        <span>{{ i.value }}</span>
-                        <p>{{ i.name }}</p>
-                    </div>
-                </div>
+template(v-if="is_auth")
+    .new-profile-head
+        h4 Профиль
+        .avatar-block
+            .avatar
+                .avatar-wrapper
+                    img(:src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar")
+                img.edit-image(src="/icons/edit-image.svg" alt="edit-image" @click="uploadFile")
+                input(id="file" name="file" type="file" accept="image/*" @change="postAvatar")
+        h3 {{ user_info?.name }}
 
-                <div class="logout" @click="_logout">
-                    <UIIcon icon="logout" color="green1" />
-                    <p>Выйти из аккаунта</p>
-                    <UIIcon icon="chevron-right" color="green1" />
-                </div>
-            </div>
-        </div>
-    </template>
-    <div v-else></div>
+        UIProfileButton(icon="user" text="Личная информация")
+        UIProfileButton(icon="user" text="Данные карт")
+        UIProfileButton(icon="user" text="Язык")
+        UIProfileButton(icon="user" text="Стать партнером")
+
+        .help
+            h2 Поддержка
+
+        UIProfileButton(icon="user" text="Служба поддержки")
+        UIProfileButton(icon="user" text="Часто задаваемые вопросы")
+        UIProfileButton(icon="user" text="Условия предоставления услуг")
+        UIProfileButton(icon="user" text="Политика конфиденциальности")
+
+        UIButton(style="width: 100%; justify-content: center;" @click="_logout") Выйти
 </template>
 
 <script setup lang="ts">
@@ -112,6 +105,25 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
+.new-profile-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0 0 0;
+    color: white;
+
+    .help {
+        width: 100%;
+        h2 {
+            font-weight: 500;
+            font-size: 20px;
+            padding: 10px 0 0 0;
+        }
+    }
+
+}
+
 #file {
     visibility: hidden;
     position: absolute;
@@ -121,8 +133,13 @@ onMounted(() => {
     width: 100%;
     height: calc(100% - var(--menu-block, 455px));
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    p {
+        font-weight: 600;
+    }
 
     .avatar {
         position: relative;
@@ -137,6 +154,7 @@ onMounted(() => {
             width: 110px;
             height: 110px;
             border-radius: 50%;
+            border: 2px solid $green1;
             overflow: hidden;
             img {
                 object-fit: cover;
@@ -146,7 +164,6 @@ onMounted(() => {
         }
     }
 }
-
 .profile-wrapper {
     padding: 0 28px;
     height: 100dvh;
@@ -192,7 +209,6 @@ onMounted(() => {
         }
     }
 }
-
 .info-blocks {
 
     display: grid;
@@ -229,7 +245,6 @@ onMounted(() => {
         }
     }
 }
-
 .logout {
     display: flex;
 

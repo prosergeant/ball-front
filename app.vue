@@ -1,17 +1,10 @@
-<template>
-    <div class="main-wrapper" :class="{greyground: isGreyground}">
-        <UINotify />
-        <div
-            class="maxwidth"
-            :style="`--width: ${deviceWidth}px`"
-        >
-            <NuxtPage />
-            <template v-if="isFooter">
-<!--                <div style="margin-bottom: -68px;" />-->
-                <UIFooter :width="deviceWidth" />
-            </template>
-        </div>
-    </div>
+<template lang="jade">
+.main-wrapper
+    UINotify
+    .maxwidth(:style="`--width: ${deviceWidth}px;`")
+        NuxtPage
+        template(v-if="isFooter")
+            UIFooter(:width="deviceWidth")
 </template>
 
 <style scoped lang="scss">
@@ -49,10 +42,10 @@ import {authStore} from "~/store/auth";
 const {is_auth, access_token, user_info} = storeToRefs(authStore())
 
 const route = useRoute()
-const greyground = ref(['/auth/', '/profile/', "/auth", "/profile"])
+// const greyground = ref(['/auth/', '/profile/', "/auth", "/profile"])
 const onlyIn = ref(['/', '/profile/', '/profile', '/profile/my-games/', '/profile/my-games', '/auth/', '/auth'])
 const isFooter = computed(() => onlyIn.value.includes(route.path))
-const isGreyground = computed(() => greyground.value.includes(route.path))
+// const isGreyground = computed(() => greyground.value.includes(route.path))
 const deviceWidth = ref(420)
 
 onMounted(() => {
