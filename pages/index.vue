@@ -1,6 +1,6 @@
 <template>
     <div class="main-page-new">
-        <div class="ellipse" />
+<!--        <div class="ellipse" />-->
         <div class="header">
             <div class="header-info">
                 <h3>Салам {{getName}}</h3>
