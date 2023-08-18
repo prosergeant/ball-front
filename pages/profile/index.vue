@@ -110,7 +110,7 @@ onMounted(() => {
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 20px 0 0 0;
+    padding: 20px 14px 0 14px;
     color: white;
 
     .help {
@@ -118,7 +118,7 @@ onMounted(() => {
         h2 {
             font-weight: 500;
             font-size: 20px;
-            padding: 10px 1px 0 10px;
+            padding: 10px 0 0 10px;
         }
     }
 

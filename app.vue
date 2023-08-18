@@ -20,7 +20,7 @@
 
     .maxwidth {
         max-width: var(--width, 420px);
-        width: var(--width);
+        width: 100%; //var(--width);
         position: relative;
     }
 
