@@ -4,7 +4,7 @@
         div
             UIIcon(:icon="icon")
             p {{ text }}
-        UIIcon(icon="arrow-right")
+        UIIcon(icon="chevron-right" class="right-icon")
 </template>
 
 <script setup lang="ts">
@@ -21,12 +21,15 @@ const props = defineProps<{
     &-button {
         display: flex;
         justify-content: space-between;
-        padding: 0 0 4px 0;
-        border-bottom: 1px solid #999;
 
         div {
             display: flex;
             gap: 12px;
+        }
+
+        .right-icon {
+            height: 10px;
+            margin: auto 0;
         }
     }
 }
