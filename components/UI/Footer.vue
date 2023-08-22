@@ -70,7 +70,7 @@ const icons = ref<TIcon[]>([
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 32px;
+    gap: 12px;
 
     .icon-item {
         cursor: pointer;
@@ -97,6 +97,7 @@ const icons = ref<TIcon[]>([
         flex-direction: column;
         align-items: center;
         gap: 5px;
+        width: 66px;
     }
 }
 </style>
