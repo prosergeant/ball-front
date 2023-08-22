@@ -121,11 +121,11 @@ onMounted(() => {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 10px;
 
         & > div {
             &:not(:last-child) {
-                padding-bottom: 4px;
+                padding-bottom: 10px;
                 border-bottom: 1px solid #333;
             }
         }
