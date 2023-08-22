@@ -3,7 +3,7 @@ UINavigation(title="Служба поддержки" go-to="/profile/", padding-
 .help-desk
     h3 Связаться с нами
     p В случае возникновения вопросов просим связать с нами по электронной почте
-    a(href="mailto: support@bronkz.app") support@bronkz.app
+    a(href="mailto:support@bronkz.app") support@bronkz.app
 </template>
 
 <script setup lang="ts">
