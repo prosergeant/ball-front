@@ -224,18 +224,18 @@
                             <add-to-calendar-button
                                 name="BRONKZ game"
                                 options="'Apple','Google'"
-                                :location="selectedFieldType.address"
-                                :startDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA')"
-                                :endDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA')"
-                                :startTime="dateTime.time || ''"
-                                :endTime="getTimeWithDuration(dateTime?.time || '', selectedFieldType?.duration || 0) || ''"
+                                :location="selectedFieldType.address || ''"
+                                :startDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA') || '2023-01-01'"
+                                :endDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA') || '2023-01-01'"
+                                :startTime="dateTime.time || '10:00'"
+                                :endTime="getTimeWithDuration(dateTime?.time || '', selectedFieldType?.duration || 0) || '11:00'"
                                 timeZone="Asia/Almaty"
                                 label="Добавить в календарь"
 
                                 trigger="click"
                                 listStyle="overlay"
                                 lightMode="bodyScheme"
-                                customCss="http://127.0.0.1:3000/css/addToCalendar.css"
+                                :customCss="`${justURL}/css/addToCalendar.css`"
                                 buttonStyle="custom"
                             />
                         </div>
@@ -275,6 +275,7 @@ import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useNotifyStore} from "~/store/useNotify";
 import 'add-to-calendar-button';
+import {justURL} from "../../../composables/baseUrl";
 
 const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())

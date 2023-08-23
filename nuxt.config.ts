@@ -1,5 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
+    vue: {
+        compilerOptions: {
+            isCustomElement: (tag) => tag.startsWith('add-')
+        }
+    },
     // @ts-ignore
     devtools: { enabled: false },
     modules: ['@pinia/nuxt'],
