@@ -221,7 +221,23 @@
                                 <UIIcon icon="calendar" color="black" />
                             </div>
                             <h3>В календарь</h3>
-                            <p>Добавить в Google-календарь</p>
+                            <add-to-calendar-button
+                                name="BRONKZ game"
+                                options="'Apple','Google'"
+                                :location="selectedFieldType.address"
+                                :startDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA')"
+                                :endDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA')"
+                                :startTime="dateTime.time || ''"
+                                :endTime="getTimeWithDuration(dateTime?.time || '', selectedFieldType?.duration || 0) || ''"
+                                timeZone="Asia/Almaty"
+                                label="Добавить в календарь"
+
+                                trigger="click"
+                                listStyle="overlay"
+                                lightMode="bodyScheme"
+                                customCss="http://127.0.0.1:3000/css/addToCalendar.css"
+                                buttonStyle="custom"
+                            />
                         </div>
 
                         <div @click="share">
@@ -255,10 +271,10 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import {computed} from "@vue/reactivity";
-import { vOnClickOutside } from '@vueuse/components'
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useNotifyStore} from "~/store/useNotify";
+import 'add-to-calendar-button';
 
 const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())
@@ -269,6 +285,8 @@ const id = route.params?.id || -1
 
 const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const data = ref((await myFetch(`/fields/${id}/`))._data)
+
+const makeDateFromMyDate = (date: string) => date.split('.').reverse().join('.') + `.${new Date().getFullYear()}`
 
 const share = async () => {
     try {
@@ -392,6 +410,7 @@ const setFieldType = (id: number, max_hours: number) => {
     selectedFieldType.value.lat = temp_field_type.lat
     selectedFieldType.value.lng = temp_field_type.lng
     selectedFieldType.value.field_id = temp_field_type.field.id
+    selectedFieldType.value.address = temp_field_type.field.address
     modalType.value = false
 }
 const resFieldType = computed(() => {
@@ -906,6 +925,10 @@ watch(() => step.value, (v) => {
     display: flex;
     gap: 24px;
     margin-top: auto;
+
+    &:deep(add-to-calendar-button) {
+        width: 100px;
+    }
 
     & > div, & > a {
         display: flex;

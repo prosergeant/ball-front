@@ -19,6 +19,7 @@
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
+    "add-to-calendar-button": "^2.3.4",
     "click-outside-vue3": "^4.0.1",
     "jade": "^1.11.0",
     "leaflet": "^1.9.4",

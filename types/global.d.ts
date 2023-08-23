@@ -7,6 +7,7 @@ interface IFieldType {
     lat: number
     lng: number
     field_id?: number
+    address?: string
 }
 interface IField {
     id: number
