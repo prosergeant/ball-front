@@ -224,7 +224,7 @@
                             <p>Добавить в Google-календарь</p>
                         </div>
 
-                        <div>
+                        <div @click="share">
                             <div class="icon-holder">
                                 <UIIcon icon="export" color="black" />
                             </div>
@@ -269,6 +269,18 @@ const id = route.params?.id || -1
 
 const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const data = ref((await myFetch(`/fields/${id}/`))._data)
+
+const share = async () => {
+    try {
+        await navigator.share({
+            title: 'Title',
+            text: 'Text',
+            url: window.location.href,
+        });
+    } catch (err: any) {
+        console.error(`${err?.name}: ${err?.message}`);
+    }
+}
 
 let widget: any = null
 
@@ -895,12 +907,10 @@ watch(() => step.value, (v) => {
     margin-top: auto;
 
     & > div, & > a {
-        text-decoration: none;
-        border: 1px solid red;
-
         display: flex;
         flex-direction: column;
         gap: 11px;
+        text-decoration: none;
 
         .icon-holder {
             border-radius: 10px;
