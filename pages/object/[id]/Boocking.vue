@@ -287,7 +287,10 @@ const id = route.params?.id || -1
 const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const data = ref((await myFetch(`/fields/${id}/`))._data)
 
-const makeDateFromMyDate = (date: string) => date.split('.').reverse().join('.') + `.${new Date().getFullYear()}`
+const makeDateFromMyDate = (date: string) => {
+    const [day, month] = date.split('.').map(Number)
+    return `${new Date().getFullYear()}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`
+}
 const dateForCalendar = computed(() => dateTime.value?.date ? new Date(makeDateFromMyDate(dateTime.value?.date)).toLocaleDateString('en-CA') : '2023-01-01')
 const share = async () => {
     try {
