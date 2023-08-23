@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="ellipse"/>
+<!--        <div class="ellipse"/>-->
         <div v-if="step < 4" class="mini-navigation-block">
             <div class="mini-navigation" @click="navigationHandler">
                 <UIIcon icon="chevron-left" color="white" />
@@ -208,13 +208,13 @@
                     </div>
 
                     <div class="icon-group">
-                        <div>
+                        <a :href="`https://maps.yandex.kz/?ll=${selectedFieldType.lng},${selectedFieldType.lat}&z=18&pt=${selectedFieldType.lng},${selectedFieldType.lat}`" target="_blank">
                             <div class="icon-holder">
                                 <UIIcon icon="map-pin" color="black" />
                             </div>
-                            <h3>2 GIS</h3>
+                            <h3>Yandex</h3>
                             <p>Посмотреть на карте</p>
-                        </div>
+                        </a>
 
                         <div>
                             <div class="icon-holder">
@@ -360,6 +360,8 @@ type TSelectedField = {
     max_hours?: number
     startFrom?: number
     endTo?: number
+    lat?: number
+    lng?: number
 }
 const selectedFieldType = ref<TSelectedField>({} as TSelectedField)
 watch(() => selectedFieldType.value?.id, () => {
@@ -375,6 +377,8 @@ const setFieldType = (id: number, max_hours: number) => {
     selectedFieldType.value.max_hours = max_hours
     selectedFieldType.value.startFrom = parseInt(temp_field_type?.field.time_start.slice(0, 2) || '0')
     selectedFieldType.value.endTo = parseInt(temp_field_type?.field.time_end.slice(0, 2) || '0')
+    selectedFieldType.value.lat = temp_field_type?.lat
+    selectedFieldType.value.lng = temp_field_type?.lng
     modalType.value = false
 }
 const resFieldType = computed(() => {
@@ -890,7 +894,10 @@ watch(() => step.value, (v) => {
     gap: 24px;
     margin-top: auto;
 
-    & > div {
+    & > div, & > a {
+        text-decoration: none;
+        border: 1px solid red;
+
         display: flex;
         flex-direction: column;
         gap: 11px;

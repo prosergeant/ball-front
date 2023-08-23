@@ -4,6 +4,8 @@ interface IFieldType {
     hours: number
     coast: number
     field: IField
+    lat: number
+    lng: number
 }
 interface IField {
     id: number
