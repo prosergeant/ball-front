@@ -38,7 +38,7 @@
                     <UISelect
                         :items="Array.from(Array(selectedFieldType?.max_hours).keys()).map(el => ({name: `${el+1} час`, value: el+1} as ISelect))"
                         :value="selectedFieldType.duration"
-                        @selected-item="(e) => {selectedFieldType.duration = e.value}"
+                        @selected-item="(e) => {selectedFieldType.duration = e.value as number}"
                     />
 
                     <div class="select-card" @click.stop="(!!selectedFieldType?.value) && (modalTime = !modalTime)">
@@ -273,9 +273,9 @@ const data = ref((await myFetch(`/fields/${id}/`))._data)
 const share = async () => {
     try {
         await navigator.share({
-            title: 'Title',
-            text: 'Text',
-            url: window.location.href,
+            title: 'BRONKZ.app',
+            text: 'Играть в футбол',
+            url: `${window.location.host}/object/${selectedFieldType.value.field_id}/`,
         });
     } catch (err: any) {
         console.error(`${err?.name}: ${err?.message}`);
@@ -366,15 +366,13 @@ const dateTime = ref({
 })
 
 type TSelectedField = {
-    id?: number
     value?: boolean
     duration?: number
     max_hours?: number
     startFrom?: number
     endTo?: number
-    lat?: number
-    lng?: number
-}
+} & IFieldType
+
 const selectedFieldType = ref<TSelectedField>({} as TSelectedField)
 watch(() => selectedFieldType.value?.id, () => {
     dateTime.value.date = null
@@ -383,14 +381,17 @@ watch(() => selectedFieldType.value?.id, () => {
 }, {deep: true})
 const setFieldType = (id: number, max_hours: number) => {
     const temp_field_type = fields.value?.find(el => el.id === id)
+    if(!temp_field_type) return
+
     selectedFieldType.value.id = id
     selectedFieldType.value.value = true //selectedFieldType.value.value !== undefined ? !selectedFieldType.value.value : true
     // selectedFieldType.value.duration = duration
     selectedFieldType.value.max_hours = max_hours
     selectedFieldType.value.startFrom = parseInt(temp_field_type?.field.time_start.slice(0, 2) || '0')
     selectedFieldType.value.endTo = parseInt(temp_field_type?.field.time_end.slice(0, 2) || '0')
-    selectedFieldType.value.lat = temp_field_type?.lat
-    selectedFieldType.value.lng = temp_field_type?.lng
+    selectedFieldType.value.lat = temp_field_type.lat
+    selectedFieldType.value.lng = temp_field_type.lng
+    selectedFieldType.value.field_id = temp_field_type.field.id
     modalType.value = false
 }
 const resFieldType = computed(() => {
