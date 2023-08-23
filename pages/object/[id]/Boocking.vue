@@ -225,8 +225,8 @@
                                 name="BRONKZ game"
                                 options="'Apple','Google'"
                                 :location="selectedFieldType.address || ''"
-                                :startDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA') || '2023-01-01'"
-                                :endDate="new Date(makeDateFromMyDate(dateTime?.date || '')).toLocaleDateString('en-CA') || '2023-01-01'"
+                                :startDate="dateForCalendar"
+                                :endDate="dateForCalendar"
                                 :startTime="dateTime.time || '10:00'"
                                 :endTime="getTimeWithDuration(dateTime?.time || '', selectedFieldType?.duration || 0) || '11:00'"
                                 timeZone="Asia/Almaty"
@@ -288,7 +288,7 @@ const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._d
 const data = ref((await myFetch(`/fields/${id}/`))._data)
 
 const makeDateFromMyDate = (date: string) => date.split('.').reverse().join('.') + `.${new Date().getFullYear()}`
-
+const dateForCalendar = computed(() => dateTime.value?.date ? new Date(makeDateFromMyDate(dateTime.value?.date)).toLocaleDateString('en-CA') : '2023-01-01')
 const share = async () => {
     try {
         await navigator.share({
