@@ -17,8 +17,9 @@ template(v-if="is_auth")
 
         .black-profile-btns
             UIProfileButton(icon="user" text="Служба поддержки", link="/profile/helpdesk/" )
-            UIProfileButton(icon="user" text="Условия предоставления услуг")
-            UIProfileButton(icon="user" text="Политика конфиденциальности")
+            UIProfileButton(icon="user" text="Агентский договор Вronkz" link="/pdf/agent-contract.pdf" is-pdf)
+            UIProfileButton(icon="user" text="Политика конфиденциальности" link="/pdf/privacy-policy.pdf" is-pdf )
+            UIProfileButton(icon="user" text="Публичная оферта" link="/pdf/public-offer.pdf" is-pdf )
 
         UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
 </template>

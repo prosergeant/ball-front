@@ -1,5 +1,5 @@
 <template lang="jade">
-.new-profile(@click="navigateTo(link)")
+.new-profile(@click="goTo(link, isPdf)")
     .new-profile-button
         div
             UIIcon(:icon="icon")
@@ -8,11 +8,22 @@
 </template>
 
 <script setup lang="ts">
+import {justURL} from "~/composables/baseUrl";
+
 const props = defineProps<{
     icon: string,
     text: string,
-    link: string
+    link: string,
+    isPdf?: boolean
 }>()
+
+const goTo = (link: string, isPdf = false) => {
+    if(isPdf) {
+        window.location.href = `${justURL}${link}`
+    } else {
+        navigateTo(link)
+    }
+}
 </script>
 
 <style scoped lang="scss">
