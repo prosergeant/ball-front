@@ -15,8 +15,8 @@ FROM nginx:stable-alpine as production-stage
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY domain.key /etc/nginx/domain.key
-COPY domain.crt /etc/nginx/domain.crt
+#COPY domain.key /etc/nginx/domain.key
+#COPY domain.crt /etc/nginx/domain.crt
 COPY --from=build-stage /app/.output/public /usr/share/nginx/html
 
 EXPOSE 80
