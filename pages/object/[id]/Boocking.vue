@@ -297,7 +297,7 @@ const share = async () => {
         await navigator.share({
             title: 'BRONKZ.app',
             text: 'Играть в футбол',
-            url: `${window.location.host}/object/${selectedFieldType.value.field_id}/`,
+            url: `${justURL}/object/${selectedFieldType.value.field_id}/`,
         });
     } catch (err: any) {
         console.error(`${err?.name}: ${err?.message}`);
