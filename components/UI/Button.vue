@@ -23,8 +23,8 @@ const props = defineProps<{
     width: fit-content;
     padding: 10px;
     border-radius: 10px;
-    background: $green-1;
-    color: white;
+    background: $green1;
+    color: black;
     outline: none;
     border: none;
 
