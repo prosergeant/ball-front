@@ -12,9 +12,15 @@ RUN npm run generate
 
 # этап production (production-stage)
 FROM nginx:stable-alpine as production-stage
+
+RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY domain.key /etc/nginx/domain.key
+COPY domain.crt /etc/nginx/domain.crt
 COPY --from=build-stage /app/.output/public /usr/share/nginx/html
+
 EXPOSE 80
+EXPOSE 443
 #EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
 #RUN npx browserslist@latest --update-db
