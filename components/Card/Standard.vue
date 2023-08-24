@@ -1,6 +1,6 @@
 <template>
     <div class="card-wrapper">
-        <div class="image" :style="`--image: url('${data?.photo || '/cover.png'}')`">
+        <div class="image" :style="`--image: url('${remakeUrl(data?.photo) || '/cover.png'}')`">
             <div/>
         </div>
         <div class="card-wrapper-info">
@@ -11,6 +11,8 @@
 </template>
 
 <script setup lang="ts">
+import remakeUrl from "~/composables/remakeUrl";
+
 const props = defineProps<{
     data: IField
 }>()

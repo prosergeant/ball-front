@@ -7,7 +7,7 @@
             </div>
             <UIIcon icon="search" color="white" />
         </div>
-        <div class="object-info" :style="`--image: url(${data?.photo || '/cover-big.png'})`">
+        <div class="object-info" :style="`--image: url(${remakeUrl(data?.photo) || '/cover-big.png'})`">
             <h3>{{ data?.name }}</h3>
             <span>активна</span>
         </div>
@@ -50,8 +50,8 @@
 </template>
 
 <script setup lang="ts">
-import { vOnClickOutside } from '@vueuse/components'
 import {useRoute} from "vue-router";
+import remakeUrl from "~/composables/remakeUrl";
 
 const route = useRoute()
 const id = route.params?.id || -1

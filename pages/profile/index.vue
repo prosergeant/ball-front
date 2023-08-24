@@ -7,7 +7,7 @@ template(v-if="is_auth")
         .avatar-block
             .avatar
                 .avatar-wrapper
-                    img(:src="user_info?.photo ? `${baseUrl}${user_info?.photo}` : '/images/avatar.png'" alt="avatar")
+                    img(:src="user_info?.photo ? remakeUrl(`${baseUrl}${user_info?.photo}`) : '/images/avatar.png'" alt="avatar")
                 img.edit-image(src="/icons/edit-image.svg" alt="edit-image" @click="uploadFile")
                 input(id="file" name="file" type="file" accept="image/*" @change="postAvatar")
         h3 {{ user_info?.name }}
