@@ -15,7 +15,7 @@
             .header
                 //UIIcon(icon="chevron-right" color="black" class="rotate")
                 div
-                h3 Август
+                h3 {{ getMontes[month] }}
                 //UIIcon(icon="chevron-right" color="black")
                 div
 
