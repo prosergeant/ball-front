@@ -136,3 +136,88 @@ body{
 .w-100 {
     width: 100%;
 }
+
+.field-type-card {
+    display: flex;
+    align-items: center;
+
+    .field-checkbox {
+        margin-right: 20px;
+        margin-left: 27px;
+        width: 20px;
+        height: 20px;
+        border-radius: 22px;
+        border: 2px solid #B9FD02;
+        background: #373C34;
+        position: relative;
+
+        &.active {
+            &:after {
+                position: absolute;
+                content: '';
+                width: 12px;
+                height: 12px;
+                background: $green1;
+                border-radius: 50%;
+                left: 2px;
+                top: 2px;
+            }
+        }
+    }
+
+    .field-info {
+        margin-right: auto;
+
+        p {
+            color: white;
+            font-feature-settings: 'clig' off, 'liga' off;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+
+        span {
+            color: white;
+            font-feature-settings: 'clig' off, 'liga' off;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+    }
+
+    img {
+        width: 68px;
+        height: 68px;
+        border-radius: 21px;
+        overflow: hidden;
+        object-fit: cover;
+        border: 2px solid $black2;
+
+        &.active {
+            border: 2px solid $green1;
+        }
+    }
+
+    //width: 319px;
+    height: 68px;
+
+    border-radius: 22px;
+    background: $black2;
+    backdrop-filter: blur(20px);
+}
+
+//scrollbar
+::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: $grey-200;
+    border: 1px solid $grey-200;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $grey-300;
+}

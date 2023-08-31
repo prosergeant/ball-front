@@ -1,11 +1,11 @@
 <template>
-    <div class="navigation" :style="`--padding-x: ${paddingX}px`">
+    <div class="navigation" :class="{black: black}" :style="`--padding-x: ${paddingX}px`">
         <div class="left" @click="(goTo) && (navigateTo(goTo))">
-            <UIIcon icon="chevron-left" color="white" />
+            <UIIcon icon="chevron-left" :color="black ? 'black' : 'white'" />
             <p>{{ title }}</p>
         </div>
         <div v-if="noSearch"/>
-        <UIIcon v-else icon="search" color="white" />
+        <UIIcon v-else icon="search" :color="black ? 'black' : 'white'" />
     </div>
 </template>
 
@@ -15,6 +15,7 @@ const props = defineProps<{
     goTo?: string
     paddingX?: number
     noSearch?: boolean
+    black?: boolean
 }>()
 </script>
 
@@ -28,6 +29,10 @@ const props = defineProps<{
     padding: 0 var(--padding-x, 0px);
 
     margin-top: 10px;
+
+    &.black .left p {
+        color: black;
+    }
 
     .left {
         z-index: 2;

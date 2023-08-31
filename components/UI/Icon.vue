@@ -107,6 +107,10 @@ i.icon {
     background-color: $green1 !important;
 }
 
+.grey999 {
+    background-color: #999 !important;
+}
+
 // HOVERS
 // MASKS FOR ICONS
 // Navigation
