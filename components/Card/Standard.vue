@@ -32,7 +32,7 @@ const props = defineProps<{
         &:before {
             content: '';
             width: 100%;
-            height: 147px;
+            height: 200px;
             background-image: var(--image);
             background-size: cover;
             background-position: center;
@@ -44,7 +44,7 @@ const props = defineProps<{
 
         div {
             width: 100%;
-            height: 147px;
+            height: 200px;
             background-image: var(--image);
             background-size: contain;
             background-repeat: no-repeat;
