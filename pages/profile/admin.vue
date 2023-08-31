@@ -169,7 +169,12 @@ type TBookedTimes = {
 }
 const bookedTimes = ref<TBookedTimes[]>([])
 const bookedUser = ref<null | IUserInfo>(null)
-const filteredData = computed(() => data.value?.filter(el => parseInt(el.date.split('.')?.[0] || '') === selectedDay.value) || [])
+const filteredData = computed(() =>
+    data.value?.filter((el) => {
+        const [d,m] = el.date.split('.').map(Number)
+        return d === selectedDay.value && m === month.value+1
+    }) || []
+)
 
 const getInfoFromDate = (day: number | string, Class: string) => {
     if(Class !== 'disabled')
@@ -223,7 +228,8 @@ const setSelectedFieldType = (id?: number | null) => {
 
             for(const day of allDays.value.filter(el => !el?.prevDay && !el?.nextDay)) {
                 for(const req of data.value) {
-                    if(parseInt(req.date.split('.')?.[0]) === day.value) {
+                    const [req_day, req_month] = req.date.split('.').map(Number)
+                    if(req_day === day.value && req_month === month.value+1) {
                         day.has_request = true
                         break
                     }
