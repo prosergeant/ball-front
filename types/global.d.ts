@@ -27,6 +27,7 @@ interface IField {
         icon: string
         name: string
     }[]
+    field_types: IFieldType[]
 }
 
 interface ISelect {
@@ -52,4 +53,25 @@ interface IUserInfo {
     cashback: number
     money: number
     date_birthday: string
+}
+
+interface IRequest {
+    id: number
+    field_type: IFieldType
+    is_ended: boolean
+    date: string
+    time: string
+    duration: number
+    paid: boolean
+    book: boolean
+    user: number
+}
+
+interface IDateTime {
+    id: number
+    value: number | string
+    Class?: string
+    prevDay?: boolean
+    nextDay?: boolean
+    has_request?: boolean
 }
