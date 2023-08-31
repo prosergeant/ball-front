@@ -21,6 +21,9 @@ template(v-if="is_auth")
             UIProfileButton(icon="user" text="Политика конфиденциальности" link="/pdf/privacy-policy.pdf" is-pdf )
             UIProfileButton(icon="user" text="Публичная оферта" link="/pdf/public-offer.pdf" is-pdf )
 
+            a(href="itms-services://?action=download-manifest&url=https://bronkz.app/ipa/manifest.plist" style="color: white; text-decoration: none;") Скачать приложение
+
+
         UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
 </template>
 
