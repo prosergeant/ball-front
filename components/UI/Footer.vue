@@ -46,7 +46,7 @@ const icons = ref<TIcon[]>([
     {
         id: 3,
         icon: 'user',
-        name: 'Мой профиль',
+        name: 'Профиль',
         key: '/profile'
     },
 ])
@@ -70,20 +70,24 @@ const icons = ref<TIcon[]>([
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    gap: 12px;
 
     .icon-item {
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80px;
+        gap: 4px;
 
         i {
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
         }
 
         p {
             color: rgba(255, 255, 255, 0.42);
             text-align: center;
-            font-size: 10px;
+            font-size: 14px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
@@ -92,12 +96,6 @@ const icons = ref<TIcon[]>([
         p.green {
             color: $green1
         }
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 5px;
-        width: 66px;
     }
 }
 </style>
