@@ -70,11 +70,7 @@ const lastDayInCurrMonth = ref(new Date(currYear.value, currMonth.value, currDay
 
 const weekDays = ref(['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'])
 const months = ref(getMontes)
-interface IDateTime {
-    id: number
-    value: number | string
-    Class?: string
-}
+
 const days = ref<IDateTime[]>([])
 const times = ref<IDateTime[]>([])
 const currDay = ref(parseInt(props.modelValue.date?.split('.')?.[0] || '0'))//props.modelValue.date || date.value.getDate() || 1)
