@@ -3,7 +3,7 @@
 <!--        <div class="ellipse" />-->
         <div class="header">
             <div class="header-info">
-                <h3>Салам {{getName}}</h3>
+                <h3>Здравствуй {{getName}}</h3>
                 <p>Забонируй поля для игры, найди людей
                     к себе в команду и много еще:)</p>
             </div>
