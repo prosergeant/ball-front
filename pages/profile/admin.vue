@@ -188,11 +188,11 @@ const getInfoFromDate = (day: number | string, Class: string) => {
         bookedTimes.value.push({
             id: 0,
             book: false,
-            hour: times.value[i],
+            hour: times.value[i] + Math.abs(offset),
             duration: 1
         })
         for(const req of filteredData.value) {
-            if(parseInt(req.time.split(':')?.[0]) === times.value[i]) {
+            if(parseInt(req.time.split(':')?.[0]) - Math.abs(offset) === times.value[i]) {
                 bookedTimes.value.pop()
                 bookedTimes.value.push({
                     id: req.id,
@@ -551,6 +551,10 @@ table {
 
                     &.disabled {
                         color: rgba(0, 0, 0, 0.5);
+
+                        &:hover {
+                            background: none;
+                        }
                     }
                 }
             }
