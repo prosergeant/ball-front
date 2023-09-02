@@ -177,8 +177,9 @@ const filteredData = computed(() =>
 )
 
 const getInfoFromDate = (day: number | string, Class: string) => {
-    if(Class !== 'disabled')
-        selectedDay.value = day
+    if(Class === 'disabled') return
+
+    selectedDay.value = day
 
     bookedTimes.value.length = 0
     selectedTime.value = null
