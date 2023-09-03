@@ -57,14 +57,37 @@
                     .body-info
                         p {{ bookedUser?.name }}
                         p {{ bookedUser?.phone }}
-                    UIButton cancel req
+                    UIButton(@click="isCancelModal = true") Отменить бронь
             .req-clear-info(v-if="selectedTime?.id === -1" )
                 p Выбранное время: {{ selectedTime?.hour }}:00
-                UIButton Забронировать
+                p На сколько часов:
+                select(v-model="adminSelectedHours")
+                    option 1
+                    option 2
+                    option 3
+                UIButton(@click="book") Забронировать
+
+    ModalBottom(v-if="isCancelModal")
+        .cancel-modal-wrapper
+            .cancel-modal
+                hr.green-hr
+                h3 Вы уверены что хотите отменить бронь?
+                hr
+                span Отменяя бронь вы рискуете упустить поле и его забронирует другая команда
+                p.green-bg(@click="cancelBook") Да, отменить бронь
+                p(@click="isCancelModal = false") Не отменять бронь
 
 </template>
 
 <script setup lang="ts">
+import {authStore} from "~/store/auth";
+import {storeToRefs} from "pinia";
+import ModalBottom from "~/components/UI/ModalBottom.vue";
+import {useNotifyStore} from "~/store/useNotify";
+
+const {addNotify} = useNotifyStore()
+const {user_info} = storeToRefs(authStore())
+const isCancelModal = ref(false)
 
 const maxwidth = ref<HTMLElement | null>(null)
 const mainwrapper = ref<HTMLElement | null>(null)
@@ -102,6 +125,7 @@ onUnmounted(() => {
 
 const selectedDay = ref<null | number|string>(null)
 const selectedTime = ref<null | TBookedTimes>(null)
+const adminSelectedHours = ref(1)
 
 const allDays = ref<IDateTime[]>([]) // тут должно быть 35 дней для квадратной таблицы
 const oldDays = ref<IDateTime[]>([]) // тут дни предыдущего месяца, могут быть пустыми
@@ -193,7 +217,7 @@ const getInfoFromDate = (day: number | string, Class: string) => {
             duration: 1
         })
         for(const req of filteredData.value) {
-            if(parseInt(req.time.split(':')?.[0]) - Math.abs(offset) === times.value[i]) {
+            if(req?.book && req?.paid && parseInt(req.time.split(':')?.[0]) - Math.abs(offset) === times.value[i]) {
                 bookedTimes.value.pop()
                 bookedTimes.value.push({
                     id: req.id,
@@ -215,28 +239,35 @@ const selectedFieldType = ref({
     value: 0
 })
 const setSelectedFieldType = (id?: number | null) => {
-    if(id === undefined || id === null) return
+    return new Promise((resolve, reject) => {
+        if(id === undefined || id === null) {
+            reject()
+            return
+        }
 
-    selectedDay.value = 0
-    selectedTime.value = null
-    for(const day of allDays.value)
-        day.has_request = false
+        selectedDay.value = 0
+        selectedTime.value = null
+        for(const day of allDays.value)
+            day.has_request = false
 
-    selectedFieldType.value.id = id
-    myFetch(`/requests/?fieldtype=${id}`)
-        .then(res => {
-            data.value = res._data as IRequest[]
+        selectedFieldType.value.id = id
+        myFetch(`/requests/?fieldtype=${id}`)
+            .then(res => {
+                data.value = res._data as IRequest[]
 
-            for(const day of allDays.value.filter(el => !el?.prevDay && !el?.nextDay)) {
-                for(const req of data.value) {
-                    const [req_day, req_month] = req.date.split('.').map(Number)
-                    if(req_day === day.value && req_month === month.value+1) {
-                        day.has_request = true
-                        break
+                for(const day of allDays.value.filter(el => !el?.prevDay && !el?.nextDay)) {
+                    for(const req of data.value) {
+                        const [req_day, req_month] = req.date.split('.').map(Number)
+                        if(req_day === day.value && req_month === month.value+1) {
+                            day.has_request = true
+                            break
+                        }
                     }
                 }
-            }
-        })
+
+                resolve(true)
+            })
+    })
 }
 
 const setSelectedTime = (time: TBookedTimes) => {
@@ -256,6 +287,63 @@ const setSelectedTime = (time: TBookedTimes) => {
     myFetch(`/find-user-by-id/?id=${user_id}`)
         .then(res => {
             bookedUser.value = res._data as IUserInfo
+        })
+}
+
+const book = () => {
+    if(!selectedTime.value) return
+
+    const hour = selectedTime.value.hour
+
+    myFetch(`/requests/`, {
+        method: "POST",
+        body: {
+            "date": `${selectedDay.value}.${month.value+1}`,
+            "time": `${hour < 10 ? '0' + `${hour}` : hour}:00`,
+            "field_type": selectedFieldType.value.id,
+            "duration": adminSelectedHours.value,
+            "user": user_info.value?.id,
+            "paid": true,
+            "book": true
+        }
+    })
+        .then(() => {
+            const temp_day = selectedDay.value
+            setSelectedFieldType(selectedFieldType.value.id)
+                .then(() => {
+                    if(temp_day)
+                        getInfoFromDate(temp_day, '')
+                })
+        })
+}
+
+const cancelBook = () => {
+    if(!selectedTime.value?.id) {
+        isCancelModal.value = false
+        return
+    }
+
+    myFetch(`/requests/${selectedTime.value.id}/`, {
+        method: 'PATCH',
+        body: {
+            paid: false,
+            book: false
+        }
+    })
+        .then(res => {
+            const temp_day = selectedDay.value
+            setSelectedFieldType(selectedFieldType.value.id)
+                .then(() => {
+                    if(temp_day)
+                        getInfoFromDate(temp_day, '')
+                })
+        })
+        .catch(err => {
+            console.log(err?._data?.detail)
+            addNotify('Ошибка при отмене брони')
+        })
+        .finally(() => {
+            isCancelModal.value = false
         })
 }
 </script>
