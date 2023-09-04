@@ -1,5 +1,3 @@
-<template>
-    <div>
-        <UIAuth />
-    </div>
+<template lang="jade">
+UIAuth
 </template>

@@ -1,24 +1,17 @@
-<template>
-    <div>
-        <div class="ellipse" />
-        <UINavigation title="Авторизоваться" go-to="/auth/" :padding-x="24" />
+<template lang="jade">
+div
+    UINavigation(title="Авторизоваться" go-to="/auth/" ":padding-x"="24")
 
-        <div class="auth-wrapper">
-            <div class="auth">
-                <template v-if="codeNotSent">
-                    <h3>Авторизоваться по:</h3>
-                    <UIInput type="tel" label="Номеру телефона:" v-model="phone" />
-                    <UIButton icon="arrow-right" color="black" @click.stop="getPassCode">Авторизоваться</UIButton>
-                </template>
-                <template v-else>
-                    <div class="auth-passcode">
-                        <UIPasscode @get-value="(e) => {passcode = e}" />
-                        <UIButton :disabled="passcode !== `${otp}` || isAuthBtnDisabled" icon="arrow-right" icon-color="black" @click.stop="authorize">Войти</UIButton>
-                    </div>
-                </template>
-            </div>
-        </div>
-    </div>
+    .auth-wrapper
+        .auth
+            template(v-if="codeNotSent")
+                h3 Авторизоваться по:
+                UIInput(type="tel" label="Номеру телефона:" v-model="phone")
+                UIButton(icon="arrow-right" color="black" @click.stop="getPassCode") Авторизоваться
+            template(v-if="!codeNotSent")
+                .auth-passcode
+                    UIPasscode(@get-value="(e) => {passcode = e}")
+                    UIButton(":disabled"="passcode !== `${otp}` || isAuthBtnDisabled" icon="arrow-right" icon-color="black" @click.stop="authorize") Войти
 </template>
 
 <script setup lang="ts">
@@ -82,6 +75,17 @@ const authorize = () => {
                         .then((res) => {
                             user_info.value = res._data as typeof user_info.value
                             localStorage.setItem('user', JSON.stringify(user_info.value))
+
+                            const fcmToken = localStorage.getItem('fcmToken')
+                            if(fcmToken) {
+                                myFetch(`/change-fcm-token/`, {
+                                    method: 'POST',
+                                    body: {
+                                        phone: phone.value,
+                                        fcmToken
+                                    }
+                                })
+                            }
 
                             // is_auth.value = true
                             navigateTo('/profile')
