@@ -1,13 +1,11 @@
-<template>
-    <div class="card-wrapper">
-        <div class="image" :style="`--image: url('${remakeUrl(data?.photo) || '/cover.png'}')`">
-            <div/>
-        </div>
-        <div class="card-wrapper-info">
-            <h3>{{ data?.name }}</h3>
-            <p>{{ data?.text }}</p>
-        </div>
-    </div>
+<template lang="jade">
+.card-wrapper
+    UICarousel(":photos"="[remakeUrl(data?.photo), remakeUrl(data?.photo), remakeUrl(data?.photo) || '/cover.png']")
+
+    .card-wrapper-info
+        h3 {{ data?.name }}
+        p {{ data?.text }}
+
 </template>
 
 <script setup lang="ts">
@@ -29,6 +27,8 @@ const props = defineProps<{
         position: relative;
         overflow: hidden;
         border-radius: 30px;
+        width: 100%;
+
         &:before {
             content: '';
             width: 100%;

@@ -1,45 +1,16 @@
-<template>
-    <div class="main-page-new">
-<!--        <div class="ellipse" />-->
-        <div class="header">
-            <div class="header-info">
-                <h3>Здравствуй {{getName}}</h3>
-                <p>Забонируй поля для игры, найди людей
-                    к себе в команду и много еще:)</p>
-            </div>
-            <UIIcon icon="search" color="white" />
-        </div>
+<template lang="jade">
+.main-page-new
+    .header
+        .header-info
+            h3 Здравствуй {{ getName }}
+            p Забонируй поля для игры, найди людей к себе в команду и много еще:)
+        UIIcon(icon="search" color="white")
 
-<!--        <CardNewOffer :ids="[0,1,2]" />-->
-
-<!--        <div class="available-fields">-->
-<!--            <div class="nav">-->
-<!--                <h3>Доступные поля</h3>-->
-<!--                <div>-->
-<!--                    <p>Смотреть все</p>-->
-<!--                    <UIIcon icon="chevron-right" color="green1" />-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="spinner">-->
-<!--                <CardStandard v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" :data="i" />-->
-<!--            </div>-->
-<!--        </div>-->
-
-        <div class="available-fields">
-            <div class="nav">
-                <h3>Доступные поля</h3>
-<!--                <div>-->
-<!--                    <p>Смотреть все</p>-->
-<!--                    <UIIcon icon="chevron-right" color="green1" />-->
-<!--                </div>-->
-            </div>
-
-            <div style="display: flex; flex-direction: column; align-items: center; gap: 20px">
-                <CardStandard v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" :data="i" />
-            </div>
-<!--            <CardStandardInfo v-for="i in data" :key="i.id" :data="i" />-->
-        </div>
-    </div>
+    .available-fields
+        .nav
+            h3 Доступные поля
+        div(style="display: flex; flex-direction: column; align-items: center; gap: 20px")
+            CardStandard(v-for="i in data" @click="navigateTo(`/object/${i.id}/`)" ":data"="i")
 </template>
 
 <script setup lang="ts">
