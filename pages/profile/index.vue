@@ -22,8 +22,6 @@ template(v-if="is_auth")
             UIProfileButton(icon="user" text="Публичная оферта" link="/pdf/public-offer.pdf" is-pdf )
             UIProfileButton(icon="user" text="Админ панель" link="/profile/admin" )
 
-            p(@click="sendFcmToken") send fcmToken
-
         UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
 </template>
 
@@ -36,17 +34,6 @@ const {logout} = authStore()
 
 const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
-
-const sendFcmToken = () => {
-    const fcmToken = localStorage.getItem('fcmToken')
-    myFetch(`/change-fcm-token/?token=${fcmToken}`, {
-        method: 'POST',
-        body: {
-            phone: 'test',
-            fcmToken
-        }
-    })
-}
 
 const _logout = () => {
     logout()
