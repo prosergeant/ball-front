@@ -38,7 +38,11 @@
                     <UISelect
                         :items="Array.from(Array(selectedFieldType?.max_hours).keys()).map(el => ({name: `${el+1} час`, value: el+1} as ISelect))"
                         :value="selectedFieldType.duration"
-                        @selected-item="(e) => {selectedFieldType.duration = e.value as number}"
+                        @selected-item="(e) => {
+                            dateTime.date = null;
+                            dateTime.time = null;
+                            selectedFieldType.duration = e.value as number;
+                        }"
                     />
 
                     <div class="select-card" @click.stop="(!!selectedFieldType?.value) && (modalTime = !modalTime)">
