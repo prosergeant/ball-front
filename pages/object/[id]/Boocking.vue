@@ -332,32 +332,9 @@ const pay = (amount: number) => {
                 description: 'Оплата поля в BRONKZ.app', //назначение
                 amount: amount, //сумма
                 currency: 'KZT', //валюта
-                // accountId: 'user@example.com', //идентификатор плательщика (необязательно)
-                // invoiceId: '1234567', //номер заказа  (необязательно)
                 email: 'user@example.com', //email плательщика (необязательно)
                 skin: "mini", //дизайн виджета (необязательно)
                 autoClose: 3, //время в секундах до авто-закрытия виджета (необязательный)
-                // data: {
-                //     myProp: 'myProp value'
-                // },
-                // configuration: {
-                //     common: {
-                //         successRedirectUrl: "https://{ваш сайт}/success", // адреса для перенаправления
-                //         failRedirectUrl: "https://{ваш сайт}/fail"        // при оплате по Tinkoff Pay
-                //     }
-                // },
-                // payer: {
-                //     firstName: 'Тест',
-                //     lastName: 'Тестов',
-                //     middleName: 'Тестович',
-                //     birth: '1955-02-24',
-                //     address: 'тестовый проезд дом тест',
-                //     street: 'Lenina',
-                //     city: 'MO',
-                //     country: 'RU',
-                //     phone: '123',
-                //     postcode: '345'
-                // }
             },
             {
                 // @ts-ignore
@@ -489,16 +466,17 @@ const boockErrorHandler = (err: any, errorNum: number, req_id?: number) => {
         myFetch(`/requests/${req_id}/`, {method: 'DELETE'})
 }
 
-watch(() => step.value, (v) => {
+watch(() => step.value, async (v) => {
     if (v === 2 && is_auth.value) {
         step.value = 4
     }
+
     if (v === 3) {
         let phoneForOtp = phone.value
         phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
         phoneForOtp = phoneForOtp.replace('7', '8')
 
-        myFetch(`${baseUrl}/send-otp/`, {
+        await myFetch(`${baseUrl}/send-otp/`, {
             method: 'POST',
             body: {
                 otp: otp.value,
@@ -509,84 +487,72 @@ watch(() => step.value, (v) => {
 
     if (v === 4) {
         // todo: сделать тут лоадер
-        if (is_auth.value) {
-            myFetch(`/requests/`, {
-                method: "POST",
-                body: {
-                    "date": dateTime.value.date,
-                    "time": dateTime.value.time,
-                    "field_type": selectedFieldType.value.id,
-                    "duration": selectedFieldType.value.duration,
-                    "user": user_info.value?.id,
-                    "paid": false,
-                    "book": true
-                }
-            })
-                .then(res => {
-                    pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1))
-                        .then(() => {
-                            myFetch(`/requests/${res._data?.id}/`, {
-                                method: 'PATCH',
-                                body: {
-                                    "paid": true,
-                                }
-                            })
-                        })
-                        .catch(err => {
-                            boockErrorHandler(err,  1, res?._data?.id)
-                        })
-                })
-                .catch((err) => {
-                    boockErrorHandler(err,  2)
-                })
-        } else {
-            //create user
-            myFetch(`/users/`, {
-                method: 'POST',
-                body: {
-                    "phone": phone.value,
-                    "password": otp.value,
-                    "name": login.value
-                }
-            })
-                .then((res) => {
-                    //create request
-                    myFetch(`/requests/`, {
-                        method: "POST",
-                        body: {
-                            "date": dateTime.value.date,
-                            "time": dateTime.value.time,
-                            "field_type": selectedFieldType.value.id,
-                            "user": res._data?.id,
-                            "paid": false,
-                            "book": true
-                        }
-                    })
-                        .then((res) => {
-                            auth(phone.value, `${otp.value}`)
-                            pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1))
-                                .then(() => {
-                                    myFetch(`/requests/${res._data?.id}/`, {
-                                        method: 'PATCH',
-                                        body: {
-                                            "paid": true,
-                                        }
-                                    })
-                                })
-                                .catch(err => {
-                                    boockErrorHandler(err,  3, res._data?.id)
-                                })
-                        })
-                        .catch(err => {
-                            boockErrorHandler(err,  4)
-                        })
-                })
-                .catch(err => {
-                    boockErrorHandler(err,  5)
-                })
-        }
+        await createRequest()
     }
 })
+
+async function createRequest() {
+    try {
+        const requestData = {
+            date: dateTime.value.date,
+            time: dateTime.value.time,
+            field_type: selectedFieldType.value.id,
+            duration: selectedFieldType.value.duration,
+            user: is_auth.value ? user_info.value?.id : undefined,
+            paid: false,
+            book: true,
+        };
+
+        const response = await myFetch(`/requests/`, {
+            method: "POST",
+            body: requestData,
+        });
+
+        if (!is_auth.value) {
+            // Создать пользователя и обновить user_info
+            const userResponse = await myFetch(`/users/`, {
+                method: 'POST',
+                body: {
+                    phone: phone.value,
+                    password: otp.value,
+                    name: login.value,
+                }
+            });
+
+            // Обновить user_info
+            user_info.value = userResponse._data as IUserInfo;
+
+            // Произвести оплату
+            await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
+
+            // Пометить запрос как оплаченный
+            await myFetch(`/requests/${(response._data as IRequest)?.id}/`, {
+                method: 'PATCH',
+                body: {
+                    "paid": true,
+                },
+            });
+        } else {
+            // Произвести оплату
+            await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
+
+            // Пометить запрос как оплаченный
+            await myFetch(`/requests/${(response._data as IRequest)?.id}/`, {
+                method: 'PATCH',
+                body: {
+                    "paid": true,
+                },
+            });
+        }
+    } catch (err) {
+        console.log(err)
+        if (!is_auth.value)
+            boockErrorHandler(err, 3, err?._data?.id);
+         else
+            boockErrorHandler(err, 1, err?._data?.id);
+    }
+}
+
 
 </script>
 
