@@ -279,7 +279,6 @@ import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useNotifyStore} from "~/store/useNotify";
 import 'add-to-calendar-button';
-import {justURL} from "../../../composables/baseUrl";
 
 const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())
@@ -433,17 +432,17 @@ const cases = ref([
     {
         id: 1,
         icon: 'clock',
-        name: 'Приходить заранее за 15 часов.'
+        name: 'Приходить за 30 минут до начала.'
     },
     {
         id: 2,
         icon: 'ball',
-        name: 'Предоставляется мяч/не предоставляется'
+        name: 'Курить и пить спиртные напитки на территории запрещается.'
     },
     {
         id: 3,
         icon: 'trash',
-        name: 'Не мусорить в раздевалке и тд'
+        name: 'Не забудьте убрать весь мусор за собой'
     }
 ])
 
