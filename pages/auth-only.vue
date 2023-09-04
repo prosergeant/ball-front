@@ -77,7 +77,7 @@ const authorize = () => {
                             localStorage.setItem('user', JSON.stringify(user_info.value))
 
                             const fcmToken = localStorage.getItem('fcmToken')
-                            // if(fcmToken) {
+                            if(fcmToken) {
                                 myFetch(`/change-fcm-token/?token=${fcmToken}`, {
                                     method: 'POST',
                                     body: {
@@ -85,7 +85,7 @@ const authorize = () => {
                                         fcmToken
                                     }
                                 })
-                            // }
+                            }
 
                             // is_auth.value = true
                             navigateTo('/profile')
