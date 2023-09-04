@@ -78,7 +78,7 @@ const authorize = () => {
 
                             const fcmToken = localStorage.getItem('fcmToken')
                             if(fcmToken) {
-                                myFetch(`/change-fcm-token/?token=${fcmToken}`, {
+                                myFetch(`/change-fcm-token/`, {
                                     method: 'POST',
                                     body: {
                                         phone: phone.value,
