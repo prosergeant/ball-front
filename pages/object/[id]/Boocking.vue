@@ -798,8 +798,15 @@ async function createRequest() {
 
         .case {
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             gap: 10px;
+
+            i {
+                min-width: 20px;
+                min-height: 20px;
+                max-width: 20px;
+                max-height: 20px;
+            }
         }
     }
 
