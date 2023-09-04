@@ -79,6 +79,7 @@ watch(() => props.value, (v) => {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            list-style-type: none;
         }
     }
 }
