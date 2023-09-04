@@ -23,7 +23,10 @@
         </div>
     </div>
 
-    <div class="times">
+    <div class="w-100 d-flex center jc" v-if="loading">
+        <div class="loader" />
+    </div>
+    <div class="times" v-else>
         <div
             v-for="time in times"
             :key="time.id"
@@ -60,6 +63,7 @@ const emit = defineEmits<{
     (e: 'closeModal', value: boolean): void
 }>()
 
+const loading = ref(false)
 const date = ref(new Date())
 const currYear = ref(date.value.getFullYear())
 const currMonth = ref(date.value.getMonth())
@@ -165,50 +169,50 @@ const prev = () => {
     calculateDays()
 }
 
+async function fetchBlockedDays(fieldtype: number, date: number): Promise<IRequest[]> {
+    loading.value = true
+    const res = (await myFetch(`/requests/?fieldtype=${fieldtype}&date=${date}.${currMonth.value + 1}`))._data as IRequest[]
+    await delay(200)
+    loading.value = false
+    return res
+}
+
+function handleBlockedDays(blockedDays?: IRequest[]) {
+    if(!blockedDays) return
+
+    for(const i of blockedDays) {
+        if(i?.paid || i?.book) {
+            const index = times.value.findIndex(el => el.value === i?.time)
+            const temp_time = times.value[index]
+            if(i?.duration > 1) {
+                for(let k = 0; k < i.duration-1; k++) {
+                    times.value[index + k + 1].Class = 'inactive'
+                }
+            }
+            if(temp_time)
+                temp_time.Class = 'inactive'
+        }
+    }
+}
+
 watch(() => currDay.value, async (v) => {
     if(!props.fieldtype)
         return
 
-    const bockedDays = ref((await myFetch(`/requests/?fieldtype=${props.fieldtype}&date=${v}.${currMonth.value+1}`))._data)
+    const bockedDays = ref(await fetchBlockedDays(props.fieldtype, v))
     resetTime()
     currTime.value = ''
     emit('update:modelValue', {date: props.modelValue.date as string, time: currTime.value})
 
-    if(bockedDays.value)
-        for(const i of bockedDays.value as any[]) {
-            if(i?.paid || i?.book) {
-                const index = times.value.findIndex(el => el.value === i?.time)
-                const temp_time = times.value[index]
-                if(i?.duration > 1) {
-                    for(let k = 0; k < i.duration-1; k++) {
-                        times.value[index + k + 1].Class = 'inactive'
-                    }
-                }
-                if(temp_time)
-                    temp_time.Class = 'inactive'
-            }
-        }
+    handleBlockedDays(bockedDays.value)
 })
 
 onMounted(async () => {
     calculateDays()
 
     if(props.fieldtype) {
-        const bockedDays = ref((await myFetch(`/requests/?fieldtype=${props.fieldtype}&date=${currDay.value}.${currMonth.value+1}`))._data)
-        if(bockedDays.value)
-            for(const i of bockedDays.value as any[]) {
-                if(i?.paid || i?.book) {
-                    const index = times.value.findIndex(el => el.value === i?.time)
-                    const temp_time = times.value[index]
-                    if(i?.duration > 1) {
-                        for(let k = 0; k < i.duration-1; k++) {
-                            times.value[index + k + 1].Class = 'inactive'
-                        }
-                    }
-                    if(temp_time)
-                        temp_time.Class = 'inactive'
-                }
-            }
+        const bockedDays = ref(await fetchBlockedDays(props.fieldtype, currDay.value))
+        handleBlockedDays(bockedDays.value)
     }
     if(props.modelValue?.date !== null) {
         isDaySet.value = true
@@ -332,5 +336,26 @@ onMounted(async () => {
             height: 11px;
         }
     }
+}
+
+.loader {
+    width: 80px; /* Ширина круга */
+    height: 80px; /* Высота круга */
+    border: 4px solid #ccc; /* Толщина границы */
+    border-top: 4px solid $green1; /* Толщина верхней границы (закрашенной части) */
+    border-radius: 50%; /* Превращаем в круг */
+    animation: spin 2s linear infinite; /* Анимация вращения */
+}
+
+.loader-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: transparent;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 </style>

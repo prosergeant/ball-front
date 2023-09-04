@@ -30,6 +30,10 @@ body{
     &.center {
         align-items: center;
     }
+
+    &.jc {
+        justify-content: center;
+    }
 }
 
 .d-column {
