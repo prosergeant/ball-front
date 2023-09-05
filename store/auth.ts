@@ -34,8 +34,11 @@ export const authStore = defineStore('auth', () => {
     }
 
     function logout() {
+        const fcmToken = localStorage.getItem('fcmToken')
         try {
             localStorage.clear()
+            if(fcmToken)
+                localStorage.setItem('fcmToken', fcmToken)
         } catch (e) {
             _notifyStore.addNotify('Ошибка при очистке хранилища')
         }
