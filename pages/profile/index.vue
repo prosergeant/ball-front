@@ -22,6 +22,8 @@ template(v-if="is_auth")
             UIProfileButton(icon="user" text="Публичная оферта" link="/pdf/public-offer.pdf" is-pdf )
             UIProfileButton(v-if="user_info?.is_owner" icon="user" text="Админ панель" link="/profile/admin" )
 
+            UIButton(v-if="user_info?.is_owner" icon="user" @click="fcm" ) fcm
+
         UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
 </template>
 
@@ -34,6 +36,13 @@ const {logout} = authStore()
 
 const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
+
+const fcm = () => {
+    const token = localStorage.getItem('fcmToken')
+    myFetch(`/change-fcm-token/?token=${token}`, {
+        method: 'POST',
+    })
+}
 
 const _logout = () => {
     logout()
