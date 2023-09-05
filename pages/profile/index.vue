@@ -22,8 +22,6 @@ template(v-if="is_auth")
             UIProfileButton(icon="user" text="Публичная оферта" link="/pdf/public-offer.pdf" is-pdf )
             UIProfileButton(v-if="user_info?.is_owner" icon="user" text="Админ панель" link="/profile/admin" )
 
-            UIButton(v-if="user_info?.is_owner" icon="user" @click="fcm" ) fcm
-
         UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
 </template>
 
