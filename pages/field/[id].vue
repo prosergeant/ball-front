@@ -4,6 +4,8 @@ div(style="color: white;")
 
     UIButton(@click="share") share
     p error: {{ error }}
+    a(href="https://google.com" target="_blank") lupa
+    UIButton(@click="fcm") send fcm token
 </template>
 
 <script setup lang="ts">
@@ -19,5 +21,12 @@ const share = async () => {
         console.error(`${err?.name}: ${err?.message}`);
         error.value = err
     }
+}
+
+const fcm = () => {
+    const token = localStorage.getItem('fcmToken')
+    myFetch(`/change-fcm-token/?token=${token}`, {
+        method: 'POST',
+    })
 }
 </script>
