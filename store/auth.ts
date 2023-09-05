@@ -5,8 +5,33 @@ export const authStore = defineStore('auth', () => {
     const is_auth = ref(false)
     const user_info = ref<IUserInfo>({} as IUserInfo)
     const access_token = ref('')
+    const data_ready = ref(false)
 
     const _notifyStore = useNotifyStore()
+
+    const saveData = async (data: {is_auth: boolean, user_info: IUserInfo, access_token: string}): Promise<void> => {
+        return new Promise((resolve) => {
+            is_auth.value = data.is_auth
+            user_info.value = data.user_info
+            access_token.value = data.access_token
+            data_ready.value = true
+            resolve()
+        })
+    }
+
+    const waitForData = () => {
+        return new Promise((resolve) => {
+            // Проверяйте доступность данных в цикле
+            const checkData = () => {
+                if (data_ready.value) {
+                    resolve(true)
+                } else {
+                    setTimeout(checkData, 1)
+                }
+            }
+            checkData()
+        })
+    }
 
     function logout() {
         try {
@@ -51,8 +76,11 @@ export const authStore = defineStore('auth', () => {
         is_auth,
         user_info,
         access_token,
+        data_ready,
 
         logout,
-        auth
+        auth,
+        saveData,
+        waitForData
     }
 })

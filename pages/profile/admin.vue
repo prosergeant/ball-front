@@ -1,5 +1,13 @@
 <template lang="jade">
 .dashboard-wrapper
+    .main-field-wrapper
+        template(v-for="field in allFields")
+            .field-type-card(@click="setSelectedField(field.id)")
+                .field-checkbox(":class"="{active: selectedField === field.id}")
+                .field-info
+                    p {{ field.name }}
+                img(":class"="{active: selectedField === field.id}" src="/cover.png" alt="field-img")
+
     .calendar-wrapper
         .select-field
             template(v-for="fieldtype in field_types")
@@ -86,11 +94,15 @@ import ModalBottom from "~/components/UI/ModalBottom.vue";
 import {useNotifyStore} from "~/store/useNotify";
 
 const {addNotify} = useNotifyStore()
+const {waitForData} = authStore()
 const {user_info} = storeToRefs(authStore())
 const isCancelModal = ref(false)
 
 const maxwidth = ref<HTMLElement | null>(null)
 const mainwrapper = ref<HTMLElement | null>(null)
+
+const allFields = ref<IField[]>([])
+const selectedField = ref(0)
 
 onMounted(() => {
     maxwidth.value = document.getElementsByClassName('maxwidth')[0] as HTMLElement
@@ -100,17 +112,9 @@ onMounted(() => {
     mainwrapper.value = document.getElementsByClassName('main-wrapper')[0] as HTMLElement
     mainwrapper.value.style.background = 'white'
 
-    myFetch(`/fields/?user_id=${user_info.value?.id}`)
-        .then(field_res => {
-            const data = field_res._data as IField[]
-            field_types.value = data?.[0]?.field_types as IFieldType[]
-            const time_start = parseInt(data?.[0]?.time_start.split(':')?.[0] || '')
-            const time_end = parseInt(data?.[0]?.time_end.split(':')?.[0] || '')
-
-            for(let i = time_start; i < time_end; i++) {
-                times.value.push(i)
-            }
-        })
+    waitForData().then(async () => {
+        allFields.value = (await myFetch(`/fields/?user_id=${user_info.value?.id}`))._data as IField[]
+    })
 })
 
 onUnmounted(() => {
@@ -238,6 +242,22 @@ const selectedFieldType = ref({
     id: 0,
     value: 0
 })
+
+const setSelectedField = (id: number) => {
+    selectedField.value = id
+    myFetch(`/fields/?field=${id}`)
+        .then(field_res => {
+            const data = field_res._data as IField[]
+            field_types.value = data?.[0]?.field_types as IFieldType[]
+            const time_start = parseInt(data?.[0]?.time_start.split(':')?.[0] || '')
+            const time_end = parseInt(data?.[0]?.time_end.split(':')?.[0] || '')
+
+            for(let i = time_start; i < time_end; i++) {
+                times.value.push(i)
+            }
+        })
+}
+
 const setSelectedFieldType = (id?: number | null) => {
     return new Promise((resolve, reject) => {
         if(id === undefined || id === null) {
@@ -258,7 +278,7 @@ const setSelectedFieldType = (id?: number | null) => {
                 for(const day of allDays.value.filter(el => !el?.prevDay && !el?.nextDay)) {
                     for(const req of data.value) {
                         const [req_day, req_month] = req.date.split('.').map(Number)
-                        if(req_day === day.value && req_month === month.value+1) {
+                        if(req?.book && req?.paid && req_day === day.value && req_month === month.value+1) {
                             day.has_request = true
                             break
                         }
@@ -389,6 +409,40 @@ table {
         gap: 16px;
     }
 
+    .main-field-wrapper {
+        background: white;
+        position: relative;
+        width: 100%;
+        max-width: 430px;
+        padding: 4px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+
+        & > div {
+            width: 100%;
+        }
+
+        &::before, &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            width: 12px;
+            height: 97%;
+            border-radius: 0 5px 5px 0;
+            background: #d3d5d6d7;
+            transform: translateY(-50%);
+        }
+        &::before {
+            height: 94%;
+            left: calc(100% + 12px);
+            background: rgb(153,153,153);
+        }
+    }
+
     .booking-info-wrapper {
         //border: 2px solid red;
         //width: 50%;
@@ -396,6 +450,12 @@ table {
         background: white;
         position: relative;
         max-width: 600px;
+        margin-right: 30px;
+
+        @media screen and (max-width: 1010px) {
+            max-width: 430px;
+            margin-right: unset;
+        }
 
         &::before, &::after {
             content: '';

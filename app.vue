@@ -36,16 +36,13 @@
 
 <script setup>
 import {useRoute} from "vue-router";
-import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 
-const {is_auth, access_token, user_info} = storeToRefs(authStore())
+const {saveData} = authStore()
 
 const route = useRoute()
-// const greyground = ref(['/auth/', '/profile/', "/auth", "/profile"])
 const onlyIn = ref(['/', '/profile/', '/profile', '/profile/my-games/', '/profile/my-games', '/auth/', '/auth'])
 const isFooter = computed(() => onlyIn.value.includes(route.path))
-// const isGreyground = computed(() => greyground.value.includes(route.path))
 const deviceWidth = ref(420)
 
 onMounted(() => {
@@ -57,7 +54,6 @@ useHead({
         {
             name: 'viewport',
             content: 'width=device-width, height=device-height, user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover'
-            // content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'
         },
         {
             name: 'theme-color',
@@ -66,11 +62,17 @@ useHead({
     ]
 })
 
-onMounted(() => {
+onMounted(async () => {
     if(window) {
-        is_auth.value = localStorage.getItem('is_auth') === 'true'
-        access_token.value = localStorage.getItem('access')
-        user_info.value = JSON.parse(localStorage.getItem('user') || '{}')
+        const is_auth = localStorage.getItem('is_auth') === 'true'
+        const access_token = localStorage.getItem('access')
+        const user_info = JSON.parse(localStorage.getItem('user') || '{}')
+
+        await saveData({
+            is_auth,
+            user_info,
+            access_token
+        })
 
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
