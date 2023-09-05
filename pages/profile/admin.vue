@@ -100,7 +100,7 @@ onMounted(() => {
     mainwrapper.value = document.getElementsByClassName('main-wrapper')[0] as HTMLElement
     mainwrapper.value.style.background = 'white'
 
-    myFetch(`/fields/?field=1`)
+    myFetch(`/fields/?user_id=${user_info.value?.id}`)
         .then(field_res => {
             const data = field_res._data as IField[]
             field_types.value = data?.[0]?.field_types as IFieldType[]
