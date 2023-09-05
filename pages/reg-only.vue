@@ -25,8 +25,10 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
+import {useNotifyStore} from "~/store/useNotify";
 
 const {is_auth, user_info, access_token} = storeToRefs(authStore())
+const {addNotify} = useNotifyStore()
 
 const codeNotSent = ref(true)
 const passcode = ref('')
@@ -34,23 +36,36 @@ const phone = ref('')
 const name = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
-const getPassCode = () => {
+const getPassCode = async () => {
     if(!name.value || !phone.value)
         return
 
-    codeNotSent.value = false
-    otp.value = Math.floor(Math.random() * (9999 - 1000) + 1000 )
-    let phoneForOtp = phone.value
-    phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
-    phoneForOtp = phoneForOtp.replace('7', '8')
+    try {
+        await myFetch(`/find-user/`, {
+            method: 'POST',
+            body: {phone: phone.value}
+        })
 
-    myFetch(`${baseUrl}/send-otp/`, {
-        method: 'POST',
-        body: {
-            otp: otp.value,
-            phone: phoneForOtp
-        }
-    })
+        codeNotSent.value = false
+        otp.value = Math.floor(Math.random() * (9999 - 1000) + 1000 )
+        let phoneForOtp = phone.value
+        phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
+        phoneForOtp = phoneForOtp.replace('7', '8')
+
+        await myFetch(`${baseUrl}/send-otp/`, {
+            method: 'POST',
+            body: {
+                otp: otp.value,
+                phone: phoneForOtp
+            }
+        })
+
+    } catch (e: any) {
+        if(e?.status === 400)
+            addNotify('Такой пользователь уже существует')
+        else
+            addNotify('Ошибки при создании пользователя')
+    }
 }
 
 const authorize = () => {
