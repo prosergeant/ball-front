@@ -252,7 +252,7 @@ const setSelectedField = (id: number) => {
             const time_start = parseInt(data?.[0]?.time_start.split(':')?.[0] || '')
             const time_end = parseInt(data?.[0]?.time_end.split(':')?.[0] || '')
 
-            for(let i = time_start; i < time_end; i++) {
+            for(let i = time_start; i <= time_end; i++) {
                 times.value.push(i)
             }
         })
