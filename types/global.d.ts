@@ -28,6 +28,7 @@ interface IField {
         name: string
     }[]
     field_types: IFieldType[]
+    owner_id: number | string
 }
 
 interface ISelect {
