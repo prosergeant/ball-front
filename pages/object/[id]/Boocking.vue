@@ -288,7 +288,7 @@ const route = useRoute()
 const id = route.params?.id || -1
 
 const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
-const data = ref((await myFetch(`/fields/${id}/`))._data)
+const data = ref<IField>((await myFetch(`/fields/${id}/`))._data as IField)
 
 const makeDateFromMyDate = (date: string) => {
     const [day, month] = date.split('.').map(Number)
@@ -487,6 +487,7 @@ watch(() => step.value, async (v) => {
 
     if (v === 4) {
         // todo: сделать тут лоадер
+        // если у эквайринга есть свой лоадер то его хватит
         await createRequest()
     }
 })
@@ -543,6 +544,18 @@ async function createRequest() {
                     "paid": true,
                 },
             });
+
+            const owner_of_field = (await myFetch(`/find-user-by-id/?id=${data.value?.owner_id}`))._data as IUserInfo
+            await myFetch(`/send-notify-to-user/`, {
+                method: 'POST',
+                body: {
+                    "phone": owner_of_field.phone,
+                    "title": "Новая бронь",
+                    "body": `Новая бронь на поле: ${data.value?.name}`,
+                    "sound": "default",
+                    "badge": 1
+                }
+            })
         }
     } catch (err) {
         console.log(err)
