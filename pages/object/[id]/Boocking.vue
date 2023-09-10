@@ -63,7 +63,7 @@
                         </div>
                     </div>
 
-                    <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="step = 1">{{ !dateTime.date || !dateTime.time ? 'Продолжить бронирование' : `Забронировать за ${resFieldType?.coast * selectedFieldType.duration} ₸` }}</UIButton>
+                    <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="() => {step = 1; isWarningModal=true}">{{ !dateTime.date || !dateTime.time ? 'Продолжить бронирование' : `Забронировать за ${resFieldType?.coast * selectedFieldType.duration} ₸` }}</UIButton>
 
                     <UIModalBottom v-if="modalTime" @close-modal="modalTime = false">
                         <div class="modal-body-fixed">
@@ -271,6 +271,19 @@
                 </div>
             </UIModalBottom>
         </div>
+
+        <ModalBottom v-if="isWarningModal && isWarningModalShowAgain">
+            <div class="cancel-modal-wrapper">
+                <div class="cancel-modal">
+                    <hr class="green-hr" />
+                    <h3>Важная информация</h3>
+                    <hr />
+                    <span>Отмена брони без списания средств с карты возможна только за 10 часов до игры</span>
+                    <p class="green-bg" @click="isWarningModal = false">Понятно</p>
+                    <p @click="hideWarning">Больше не показывать</p>
+                </div>
+            </div>
+        </ModalBottom>
     </div>
 </template>
 
@@ -281,6 +294,7 @@ import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useNotifyStore} from "~/store/useNotify";
 import 'add-to-calendar-button';
+import ModalBottom from "~/components/UI/ModalBottom.vue";
 
 const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())
@@ -361,6 +375,9 @@ const pay = (amount: number) => {
     })
 }
 
+const hideWarning = () => {localStorage.setItem('isWarningModalShowAgain', 'true')}
+const isWarningModal = ref(false)
+const isWarningModalShowAgain = ref(localStorage.getItem('isWarningModalShowAgain') !== 'true')
 const step = ref(0)
 const modalTime = ref(false)
 const modalType = ref(false)
