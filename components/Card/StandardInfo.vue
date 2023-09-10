@@ -54,6 +54,7 @@
 <script setup lang="ts">
 import ModalBottom from "~/components/UI/ModalBottom.vue";
 import {useNotifyStore} from "~/store/useNotify";
+import {getCurrDate} from "~/composables/getCurrDate";
 
 const {addNotify} = useNotifyStore()
 
@@ -75,7 +76,8 @@ const cancel = () => {
     myFetch(`/requests/${props.data.id}/`, {
         method: 'PATCH',
         body: {
-            paid: false
+            paid: false,
+            cancel_time: getCurrDate()
         }
     })
         .then(res => {
