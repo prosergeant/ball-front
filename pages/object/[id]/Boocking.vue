@@ -162,21 +162,22 @@
                         style="margin-top: unset"
                         icon="arrow-right"
                         icon-color="black"
-                        @click="step = 4"
+                        @click="step = 5"
                     >
+<!--                        step = 4-->
                         Продолжить бронирование
                     </UIButton>
                 </div>
             </template>
-            <template v-if="step === 4">
-                <div class="step-1">
-                    <div class="header">
-<!--                        <h4>Эквайринг</h4>-->
-                        <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>
-                    </div>
-<!--                    <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>-->
-                </div>
-            </template>
+<!--            <template v-if="step === 4">-->
+<!--                <div class="step-1">-->
+<!--                    <div class="header">-->
+<!--&lt;!&ndash;                        <h4>Эквайринг</h4>&ndash;&gt;-->
+<!--                        <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>-->
+<!--                    </div>-->
+<!--&lt;!&ndash;                    <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </template>-->
             <template v-if="step === 5">
                 <div class="step-1">
                     <div class="accepted">
@@ -260,10 +261,11 @@
 
             <UIModalBottom v-if="isNeedAuth">
                 <div class="modal-body-fixed">
+<!--                    step = 4-->
                     <UIAuth
                         no-redirect
                         no-reg
-                        @status="(e) => ((e) && ((step = 4) && (isNeedAuth = false))) || ((!e) && (isNeedAuth = false))"
+                        @status="(e) => ((e) && ((step = 5) && (isNeedAuth = false))) || ((!e) && (isNeedAuth = false))"
                         @onOutside="() => {isNeedAuth = false}"
                     />
                 </div>
@@ -524,7 +526,7 @@ async function createRequest() {
             user_info.value = userResponse._data as IUserInfo;
 
             // Произвести оплату
-            await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
+            // await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
 
             // Пометить запрос как оплаченный
             await myFetch(`/requests/${(response._data as IRequest)?.id}/`, {
@@ -535,7 +537,7 @@ async function createRequest() {
             });
         } else {
             // Произвести оплату
-            await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
+            // await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
 
             // Пометить запрос как оплаченный
             await myFetch(`/requests/${(response._data as IRequest)?.id}/`, {
@@ -556,6 +558,8 @@ async function createRequest() {
                     "badge": 1
                 }
             })
+
+            step.value = 5
         }
     } catch (err) {
         console.log(err)
