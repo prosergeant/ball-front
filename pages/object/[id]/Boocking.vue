@@ -487,7 +487,8 @@ const boockErrorHandler = (err: any, errorNum: number, req_id?: number) => {
 
 watch(() => step.value, async (v) => {
     if (v === 2 && is_auth.value) {
-        step.value = 4
+        // step.value = 4
+        step.value = 5
     }
 
     if (v === 3) {
@@ -576,6 +577,7 @@ async function createRequest() {
                 }
             })
 
+            // step.value = 4
             step.value = 5
         }
     } catch (err) {
