@@ -489,6 +489,7 @@ watch(() => step.value, async (v) => {
     if (v === 2 && is_auth.value) {
         // step.value = 4
         step.value = 5
+        await createRequest()
     }
 
     if (v === 3) {
