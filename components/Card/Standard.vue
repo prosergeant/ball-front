@@ -1,6 +1,8 @@
 <template lang="jade">
 .card-wrapper
-    UICarousel(":photos"="[remakeUrl(data?.photo), remakeUrl(data?.photo), remakeUrl(data?.photo) || '/cover.png']")
+    UICarousel(v-if="carousel_photos.length" ":photos"="carousel_photos" ref="_UICarousel")
+    .d-flex.center.jc(v-else="" style="height: 200px;")
+        .loader
 
     .card-wrapper-info
         h3 {{ data?.name }}
@@ -14,6 +16,20 @@ import remakeUrl from "~/composables/remakeUrl";
 const props = defineProps<{
     data: IField
 }>()
+
+const _UICarousel = ref()
+const carousel_photos = ref<string[]>([])
+
+onMounted(async () => {
+    const photos = (await myFetch(`/fieldsphotos/?field=${props.data?.id}`))._data as IFieldPhoto[]
+    if(props.data?.photo)
+        carousel_photos.value = [props.data.photo, ...photos.map(el => remakeUrl(el?.photo))]
+    else
+        carousel_photos.value = [...photos.map(el => remakeUrl(el?.photo))]
+    delay(150).then(() => {
+        _UICarousel.value.calculateCarousel()
+    })
+})
 </script>
 
 <style scoped lang="scss">

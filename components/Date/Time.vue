@@ -211,8 +211,7 @@ onMounted(async () => {
     calculateDays()
 
     if(props.fieldtype) {
-        const bockedDays = ref(await fetchBlockedDays(props.fieldtype, currDay.value))
-        handleBlockedDays(bockedDays.value)
+        handleBlockedDays(await fetchBlockedDays(props.fieldtype, currDay.value))
     }
     if(props.modelValue?.date !== null) {
         isDaySet.value = true
@@ -336,26 +335,5 @@ onMounted(async () => {
             height: 11px;
         }
     }
-}
-
-.loader {
-    width: 80px; /* Ширина круга */
-    height: 80px; /* Высота круга */
-    border: 4px solid #ccc; /* Толщина границы */
-    border-top: 4px solid $green1; /* Толщина верхней границы (закрашенной части) */
-    border-radius: 50%; /* Превращаем в круг */
-    animation: spin 2s linear infinite; /* Анимация вращения */
-}
-
-.loader-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: transparent;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 </style>

@@ -12,8 +12,9 @@ const props = defineProps<{
 const carouselRef = ref()
 let scrollingTimeout: any;
 
-onMounted(() => {
+const calculateCarousel = () => {
     const carouselEl = ref(document.getElementsByTagName('img')?.[0])
+    console.log(carouselEl.value)
 
     if(carouselEl.value) {
         carouselRef.value.addEventListener('scroll', () => {
@@ -36,8 +37,9 @@ onMounted(() => {
             }, 200)
         })
     }
-})
+}
 
+defineExpose({calculateCarousel})
 
 </script>
 

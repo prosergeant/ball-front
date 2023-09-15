@@ -303,3 +303,23 @@ body{
 ::-webkit-scrollbar-thumb:hover {
     background: $grey-300;
 }
+
+//loader
+.loader {
+    width: 80px; /* Ширина круга */
+    height: 80px; /* Высота круга */
+    border: 4px solid #ccc; /* Толщина границы */
+    border-top: 4px solid $green1; /* Толщина верхней границы (закрашенной части) */
+    border-radius: 50%; /* Превращаем в круг */
+    animation: spin 2s linear infinite; /* Анимация вращения */
+}
+.loader-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: transparent;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

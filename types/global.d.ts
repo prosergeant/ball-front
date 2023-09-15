@@ -31,6 +31,12 @@ interface IField {
     owner_id: number | string
 }
 
+interface IFieldPhoto {
+    field: number
+    id: number
+    photo: string
+}
+
 interface ISelect {
     name: string
     value: string | number
