@@ -9,6 +9,15 @@ interface IFieldType {
     field_id?: number
     address?: string
 }
+
+type TSelectedField = {
+    value?: boolean
+    duration?: number
+    max_hours?: number
+    startFrom?: number
+    endTo?: number
+} & IFieldType
+
 interface IField {
     id: number
     photo: any
@@ -82,3 +91,5 @@ interface IDateTime {
     nextDay?: boolean
     has_request?: boolean
 }
+
+type TDateTime = {date: string|null, time: string|null}

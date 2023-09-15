@@ -1,6 +1,5 @@
 <template>
     <div>
-<!--        <div class="ellipse"/>-->
         <div v-if="step < 4" class="mini-navigation-block">
             <div class="mini-navigation" @click="navigationHandler">
                 <UIIcon icon="chevron-left" color="white" />
@@ -9,144 +8,30 @@
             <UIIcon icon="search" color="white" />
         </div>
         <div style="padding: 0 10px">
-            <template v-if="step === 0">
-                <div class="step-1">
-                    <div class="header">
-                        <h4>{{ data.name }}</h4>
-                        <p>{{ data.text }}</p>
-                    </div>
-
-                    <template
-                        v-for="fieldtype in fields"
-                        :key="fieldtype.id"
-                    >
-                        <div
-                            class="field-type-card"
-                            @click="setFieldType(fieldtype.id, fieldtype.hours)"
-                        >
-<!--                            v-for="hour in fieldtype.hours" :key="hour"-->
-
-                            <div class="field-checkbox" :class="{active: !!selectedFieldType?.value && selectedFieldType.id === fieldtype.id}" />
-                            <div class="field-info">
-                                <p>{{ fieldtype.title }}</p>
-                                <span>1 час - {{fieldtype.coast}}</span>
-                            </div>
-                            <img :class="{active: !!selectedFieldType?.value && selectedFieldType.id === fieldtype.id}" src="/cover.png" alt="field-img" />
-                        </div>
-                    </template>
-
-                    <UISelect
-                        :items="Array.from(Array(selectedFieldType?.max_hours).keys()).map(el => ({name: `${el+1} час`, value: el+1} as ISelect))"
-                        :value="selectedFieldType.duration"
-                        @selected-item="(e) => {
-                            dateTime.date = null;
-                            dateTime.time = null;
-                            selectedFieldType.duration = e.value as number;
-                        }"
-                    />
-
-                    <div class="select-card" @click.stop="(!!selectedFieldType?.value) && (modalTime = !modalTime)">
-                        <span>Выберите дату и время:</span>
-                        <div class="card">
-                            <span class="circle" :class="{checked: dateTime.date && dateTime.time, disabled: !selectedFieldType?.value}"/>
-
-                            <div class="card-infos">
-                                <template v-if="!dateTime.date || !dateTime.time">
-                                    <h3>не выбрана дата и время</h3>
-                                    <p>выберите дату и время в календаре</p>
-                                </template>
-                                <template v-else>
-                                    <h3 class="filled">{{ dateTime.date.split('.')?.[0] }} {{ getMontes[new Date().getMonth()] }} {{ dateTime.time}}</h3>
-                                </template>
-                            </div>
-                            <UIIcon icon="chevron-right" color="green1" />
-                        </div>
-                    </div>
-
-                    <UIButton :disabled="!dateTime.date || !dateTime.time" icon="arrow-right" icon-color="black" @click="() => {step = 1; isWarningModal=true}">{{ !dateTime.date || !dateTime.time ? 'Продолжить бронирование' : `Забронировать за ${resFieldType?.coast * selectedFieldType.duration} ₸` }}</UIButton>
-
-                    <UIModalBottom v-if="modalTime" @close-modal="modalTime = false">
-                        <div class="modal-body-fixed">
-                            <div class="modal-body"> <!-- v-on-click-outside.bubble="() => {modalTime = false}" -->
-                                <hr />
-                                <DateTime v-model="dateTime" :duration="selectedFieldType?.duration" :fieldtype="selectedFieldType?.id" :startFrom="selectedFieldType?.startFrom" :endTo="selectedFieldType?.endTo" @closeModal="() => {modalTime = false}" />
-                            </div>
-                        </div>
-                    </UIModalBottom>
-                </div>
-            </template>
-            <template v-if="step === 1">
-                <div class="step-1">
-                    <div class="header">
-                        <h4>{{ data.name }}</h4>
-                        <p>{{ data.text }}</p>
-                    </div>
-
-                    <div class="playtime-info-wrapper">
-                        <div class="playtime-info">
-                            <div class="playtime-info-block">
-                                <UIIcon icon="clock" color="green1" />
-                                <div>
-                                    <p>Время игры:</p>
-                                    <span>{{ dateTime.time }}-{{ getTimeWithDuration(dateTime.time, selectedFieldType.duration) }}</span>
-                                </div>
-                            </div>
-
-                            <div class="playtime-info-block">
-                                <UIIcon icon="calendar" color="green1" />
-                                <div>
-                                    <p>Дата игры:</p>
-                                    <span>{{ getDateFromDateTime(dateTime.date) }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="price">
-                        <p>Сумма к оплате:</p>
-                        <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
-                    </div>
-
-                    <div class="important-info">
-                        <p class="red">Важная информация:</p>
-
-                        <div class="cases">
-                            <div
-                                v-for="_case in cases"
-                                :key="_case.id"
-                                class="case"
-                            >
-                                <UIIcon :icon="_case.icon" color="white" />
-                                <p>{{ _case.name }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <UIButton style="margin-top: unset" icon="arrow-right" icon-color="black" @click="step = 2">
-                        Продолжить бронирование
-                    </UIButton>
-                </div>
-            </template>
-            <template v-if="step === 2">
-                <div class="step-1">
-                    <div class="header">
-                        <h4>Контактная информация:</h4>
-                    </div>
-
-                    <UIInput v-model="login" label="Ваше имя:" />
-                    <UIInput v-model="phone" label="Номер телефона:" type="tel" />
-
-                    <div style="color: white; text-align: center;">
-                        <h3>Уже есть аккаунт?</h3>
-                        <p style="margin-bottom: 10px">Если у вас уже есть аккаунт перейдите на страницу авторизации</p>
-                        <UIButton class="btn-green-demi-outline" @click.stop="isNeedAuth = !isNeedAuth">Авторизоваться</UIButton>
-                    </div>
-
-                    <UIButton :disabled="!login || !phone" icon="arrow-right" icon-color="black" @click="checkAccount">
-                        Продолжить бронирование
-                    </UIButton>
-                </div>
-            </template>
+            <Step0
+                v-if="step === 0"
+                :data="data"
+                :fields="fields"
+                :selected-field-type="selectedFieldType"
+                :res-field-type="resFieldType"
+                v-model:is-warning-modal="isWarningModal"
+                v-model:step="step"
+                v-model:date-time="dateTime"
+            />
+            <Step1
+                v-if="step === 1"
+                :date-time="dateTime"
+                :data="data"
+                :selected-field-type="selectedFieldType"
+                :res-field-type="resFieldType"
+                v-model:step="step"
+            />
+            <Step2
+                v-if="step === 2"
+                v-model:phone="phone"
+                v-model:login="login"
+                v-model:step="step"
+            />
             <template v-if="step === 3">
                 <div class="step-1">
                     <div class="header">
@@ -162,117 +47,30 @@
                         style="margin-top: unset"
                         icon="arrow-right"
                         icon-color="black"
-                        @click="step = 5"
+                        @click="step = 4"
                     >
-<!--                        step = 4-->
                         Продолжить бронирование
                     </UIButton>
                 </div>
             </template>
-<!--            <template v-if="step === 4">-->
-<!--                <div class="step-1">-->
-<!--                    <div class="header">-->
-<!--&lt;!&ndash;                        <h4>Эквайринг</h4>&ndash;&gt;-->
-<!--                        <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>-->
-<!--                    </div>-->
-<!--&lt;!&ndash;                    <UIButton icon="arrow-right" icon-color="black" @click="step = 5">Продолжить бронирование</UIButton>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </template>-->
-            <template v-if="step === 5">
+            <!-- <template v-if="step === 4">
                 <div class="step-1">
-                    <div class="accepted">
-                        <UIIcon icon="arrow-accept" color="black" />
-                    </div>
                     <div class="header">
-                        <h4 style="text-align: center">Оплачено!</h4>
-                        <p style="text-align: center">Спасибо! Ваша бронь активна, вы сможете посмотреть данные о ней во вкладке “мои игры”</p>
+                        <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>
                     </div>
-
-                    <div class="playtime-info-wrapper">
-                        <div class="playtime-info">
-                            <div class="playtime-info-block">
-                                <UIIcon icon="clock" color="green1" />
-                                <div>
-                                    <p>Время игры:</p>
-                                    <span>{{ dateTime.time }}-{{ getTimeWithDuration(dateTime.time, selectedFieldType.duration) }}</span>
-                                </div>
-                            </div>
-
-                            <div class="playtime-info-block">
-                                <UIIcon icon="calendar" color="green1" />
-                                <div>
-                                    <p>Дата игры:</p>
-                                    <span>{{ getDateFromDateTime(dateTime.date) }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="price">
-                        <p> {{ resFieldType?.title }} ({{ selectedFieldType.duration }} час):</p>
-                        <span>{{ resFieldType?.coast * selectedFieldType.duration }} ₸</span>
-                    </div>
-
-                    <div class="icon-group">
-                        <a :href="`https://maps.yandex.kz/?ll=${selectedFieldType.lng},${selectedFieldType.lat}&z=18&pt=${selectedFieldType.lng},${selectedFieldType.lat}`" target="_blank">
-                            <div class="icon-holder">
-                                <UIIcon icon="map-pin" color="black" />
-                            </div>
-                            <h3>Yandex</h3>
-                            <p>Посмотреть на карте</p>
-                        </a>
-
-                        <div>
-                            <div class="icon-holder">
-                                <UIIcon icon="calendar" color="black" />
-                            </div>
-                            <h3>В календарь</h3>
-                            <add-to-calendar-button
-                                name="BRONKZ game"
-                                options="'Apple','Google'"
-                                :location="selectedFieldType.address || ''"
-                                :startDate="dateForCalendar"
-                                :endDate="dateForCalendar"
-                                :startTime="dateTime.time || '10:00'"
-                                :endTime="getTimeWithDuration(dateTime?.time || '', selectedFieldType?.duration || 0) || '11:00'"
-                                timeZone="Asia/Almaty"
-                                label="Добавить в календарь"
-
-                                trigger="click"
-                                listStyle="overlay"
-                                lightMode="bodyScheme"
-                                :customCss="`${justURL}/css/addToCalendar.css`"
-                                buttonStyle="custom"
-                            />
-                        </div>
-
-                        <div @click="share">
-                            <div class="icon-holder">
-                                <UIIcon icon="export" color="black" />
-                            </div>
-                            <h3>Поделиться</h3>
-                            <p>Поделиться с друзьями</p>
-                        </div>
-                    </div>
-
-                    <UIButton class="btn back-to-main" @click="navigateTo('/')">Перейти на главную</UIButton>
-                    <UIButton class="btn back-to-games" @click="navigateTo('/profile/my-games')">Перейти в мои игры</UIButton>
                 </div>
-            </template>
-
-            <UIModalBottom v-if="isNeedAuth">
-                <div class="modal-body-fixed">
-<!--                    step = 4-->
-                    <UIAuth
-                        no-redirect
-                        no-reg
-                        @status="(e) => ((e) && ((step = 5) && (isNeedAuth = false))) || ((!e) && (isNeedAuth = false))"
-                        @onOutside="() => {isNeedAuth = false}"
-                    />
-                </div>
-            </UIModalBottom>
+            </template> -->
+            <Step5
+                v-if="step === 5"
+                :date-time="dateTime"
+                :data="data"
+                :selected-field-type="selectedFieldType"
+                :res-field-type="resFieldType"
+            />
         </div>
 
-        <ModalBottom v-if="isWarningModal && isWarningModalShowAgain">
+
+        <UIModalBottom v-if="isWarningModal && isWarningModalShowAgain">
             <div class="cancel-modal-wrapper">
                 <div class="cancel-modal">
                     <hr class="green-hr" />
@@ -283,7 +81,7 @@
                     <p @click="hideWarning">Больше не показывать</p>
                 </div>
             </div>
-        </ModalBottom>
+        </UIModalBottom>
     </div>
 </template>
 
@@ -292,13 +90,14 @@ import {useRoute} from "vue-router";
 import {computed} from "@vue/reactivity";
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
-import {useNotifyStore} from "~/store/useNotify";
-import 'add-to-calendar-button';
-import ModalBottom from "~/components/UI/ModalBottom.vue";
+import {createRequest} from "~/pages/object/[id]/misc";
+import Step0 from "~/pages/object/[id]/steps/Step0.vue";
+import Step1 from "~/pages/object/[id]/steps/Step1.vue";
+import Step2 from "~/pages/object/[id]/steps/Step2.vue";
+import Step5 from "~/pages/object/[id]/steps/Step5.vue";
 
 const {auth} = authStore()
 const {is_auth, user_info} = storeToRefs(authStore())
-const {addNotify} = useNotifyStore()
 
 const route = useRoute()
 const id = route.params?.id || -1
@@ -306,162 +105,36 @@ const id = route.params?.id || -1
 const fields = ref((await myFetch<IFieldType[]>(`/fieldstypes/?field=${id}`))._data)
 const data = ref<IField>((await myFetch(`/fields/${id}/`))._data as IField)
 
-const makeDateFromMyDate = (date: string) => {
-    const [day, month] = date.split('.').map(Number)
-    return `${new Date().getFullYear()}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day}`
+const hideWarning = () => {
+    localStorage.setItem('isWarningModalShowAgain', 'true')
+    isWarningModal.value = false
 }
-const dateForCalendar = computed(() => dateTime.value?.date ? new Date(makeDateFromMyDate(dateTime.value?.date)).toLocaleDateString('en-CA') : '2023-01-01')
-const share = async () => {
-    try {
-        await navigator.share({
-            title: 'BRONKZ.app',
-            text: 'Играть в футбол',
-            url: `${justURL}/object/${selectedFieldType.value.field_id}/`,
-        });
-    } catch (err: any) {
-        console.error(`${err?.name}: ${err?.message}`);
-    }
-}
-
-let widget: any = null
-
-useHead({
-    script: [
-        {
-            src: "https://widget.cloudpayments.ru/bundles/cloudpayments.js",
-            defer: true,
-            onload: () => {
-                // @ts-ignore
-                widget = new cp.CloudPayments()
-                console.log(widget)
-            }
-        }
-    ]
-})
-
-const pay = (amount: number) => {
-    // @ts-ignore
-    return new Promise((resolve, reject) => {
-        widget.pay('auth', // или 'charge'
-            { //options
-                publicId: 'test_api_00000000000000000000002', //id из личного кабинета
-                description: 'Оплата поля в BRONKZ.app', //назначение
-                amount: amount, //сумма
-                currency: 'KZT', //валюта
-                email: 'user@example.com', //email плательщика (необязательно)
-                skin: "mini", //дизайн виджета (необязательно)
-                autoClose: 3, //время в секундах до авто-закрытия виджета (необязательный)
-            },
-            {
-                // @ts-ignore
-                onSuccess: (options) => { // success
-                    console.log('success', options)
-                    step.value = 5
-                    resolve(true)
-                    //действие при успешной оплате
-                },
-                // @ts-ignore
-                onFail: (reason, options) =>{ // fail
-                    console.log('fail', reason, options)
-                    reject(reason)
-                    //действие при неуспешной оплате
-                },
-                // @ts-ignore
-                onComplete: (paymentResult, options) => { //Вызывается как только виджет получает от api.cloudpayments ответ с результатом транзакции.
-                    //например вызов вашей аналитики
-                }
-            }
-        )
-    })
-}
-
-const hideWarning = () => {localStorage.setItem('isWarningModalShowAgain', 'true')}
 const isWarningModal = ref(false)
 const isWarningModalShowAgain = ref(localStorage.getItem('isWarningModalShowAgain') !== 'true')
 const step = ref(0)
-const modalTime = ref(false)
-const modalType = ref(false)
 const dateTime = ref({
     date: null, //10,
     time: null //'10:00'
 })
-
-type TSelectedField = {
-    value?: boolean
-    duration?: number
-    max_hours?: number
-    startFrom?: number
-    endTo?: number
-} & IFieldType
-
 const selectedFieldType = ref<TSelectedField>({} as TSelectedField)
-watch(() => selectedFieldType.value?.id, () => {
-    dateTime.value.date = null
-    dateTime.value.time = null
-    selectedFieldType.value.duration = 1
-}, {deep: true})
-const setFieldType = (id: number, max_hours: number) => {
-    const temp_field_type = fields.value?.find(el => el.id === id)
-    if(!temp_field_type) return
 
-    selectedFieldType.value.id = id
-    selectedFieldType.value.value = true //selectedFieldType.value.value !== undefined ? !selectedFieldType.value.value : true
-    // selectedFieldType.value.duration = duration
-    selectedFieldType.value.max_hours = max_hours
-    selectedFieldType.value.startFrom = parseInt(temp_field_type?.field.time_start.slice(0, 2) || '0')
-    selectedFieldType.value.endTo = parseInt(temp_field_type?.field.time_end.slice(0, 2) || '0')
-    selectedFieldType.value.lat = temp_field_type.lat
-    selectedFieldType.value.lng = temp_field_type.lng
-    selectedFieldType.value.field_id = temp_field_type.field.id
-    selectedFieldType.value.address = temp_field_type.field.address
-    modalType.value = false
-}
-const resFieldType = computed(() => {
-    if (selectedFieldType.value?.value && (fields.value as any[])?.length) {
-        return (fields.value as any[]).find(el => el?.id === selectedFieldType.value?.id)
-    }
-
-    return null
-})
-
-const cases = ref([
-    {
-        id: 1,
-        icon: 'clock',
-        name: 'Приходить за 30 минут до начала.'
-    },
-    {
-        id: 2,
-        icon: 'ball',
-        name: 'Курить и пить спиртные напитки на территории запрещается.'
-    },
-    {
-        id: 3,
-        icon: 'trash',
-        name: 'Не забудьте убрать весь мусор за собой'
-    }
-])
-
-const isNeedAuth = ref(false)
 const login = ref('')
 const phone = ref('')
 const passcode = ref('')
 const otp = ref(Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 
-const checkAccount = () => {
-    myFetch(`/find-user/`, {
-        method: 'POST',
-        body: {
-            phone: phone.value
-        }
-    })
-        .then((res) => {
-            step.value = 3
-        })
-        .catch(() => {
-            addNotify('Такой пользователь уже существует')
-        })
-}
+watch(() => selectedFieldType.value?.id, () => {
+    dateTime.value.date = null
+    dateTime.value.time = null
+    selectedFieldType.value.duration = 1
+}, {deep: true})
+
+const resFieldType = computed(() => {
+    if (selectedFieldType.value?.value && fields.value?.length) {
+        return fields.value.find(el => el?.id === selectedFieldType.value?.id)
+    }
+    return null
+})
 
 const navigationHandler = () => {
     if (step.value === 0)
@@ -478,18 +151,9 @@ const navigationHandler = () => {
     }
 }
 
-const boockErrorHandler = (err: any, errorNum: number, req_id?: number) => {
-    addNotify(`Ошибка при создании заявки #${errorNum}`)
-    console.log(err?.data?.detail)
-    if(req_id)
-        myFetch(`/requests/${req_id}/`, {method: 'DELETE'})
-}
-
 watch(() => step.value, async (v) => {
     if (v === 2 && is_auth.value) {
-        // step.value = 4
-        step.value = 5
-        await createRequest()
+        step.value = 4
     }
 
     if (v === 3) {
@@ -507,93 +171,22 @@ watch(() => step.value, async (v) => {
     }
 
     if (v === 4) {
-        // todo: сделать тут лоадер
-        // если у эквайринга есть свой лоадер то его хватит
-        await createRequest()
+        step.value = 5
+        await createRequest(
+            dateTime.value,
+            selectedFieldType.value,
+            is_auth.value,
+            user_info.value,
+            phone.value,
+            otp.value,
+            login.value,
+            data.value
+        )
     }
 })
-
-async function createRequest() {
-    try {
-        const requestData = {
-            date: dateTime.value.date,
-            time: dateTime.value.time,
-            field_type: selectedFieldType.value.id,
-            duration: selectedFieldType.value.duration,
-            user: is_auth.value ? user_info.value?.id : undefined,
-            paid: false,
-            book: true,
-        };
-
-        const response = await myFetch(`/requests/`, {
-            method: "POST",
-            body: requestData,
-        });
-
-        if (!is_auth.value) {
-            // Создать пользователя и обновить user_info
-            const userResponse = await myFetch(`/users/`, {
-                method: 'POST',
-                body: {
-                    phone: phone.value,
-                    password: otp.value,
-                    name: login.value,
-                }
-            });
-
-            // Обновить user_info
-            user_info.value = userResponse._data as IUserInfo;
-
-            // Произвести оплату
-            // await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
-
-            // Пометить запрос как оплаченный
-            await myFetch(`/requests/${(response._data as IRequest)?.id}/`, {
-                method: 'PATCH',
-                body: {
-                    "paid": true,
-                },
-            });
-        } else {
-            // Произвести оплату
-            // await pay(resFieldType.value?.coast * (selectedFieldType.value?.duration || 1));
-
-            // Пометить запрос как оплаченный
-            await myFetch(`/requests/${(response._data as IRequest)?.id}/`, {
-                method: 'PATCH',
-                body: {
-                    "paid": true,
-                },
-            });
-
-            const owner_of_field = (await myFetch(`/find-user-by-id/?id=${data.value?.owner_id}`))._data as IUserInfo
-            await myFetch(`/send-notify-to-user/`, {
-                method: 'POST',
-                body: {
-                    "phone": owner_of_field.phone,
-                    "title": "Новая бронь",
-                    "body": `Новая бронь на поле: ${data.value?.name}`,
-                    "sound": "default",
-                    "badge": 1
-                }
-            })
-
-            // step.value = 4
-            step.value = 5
-        }
-    } catch (err) {
-        console.log(err)
-        if (!is_auth.value)
-            boockErrorHandler(err, 3, err?._data?.id);
-         else
-            boockErrorHandler(err, 1, err?._data?.id);
-    }
-}
-
-
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .mini-navigation-block {
     display: flex;
     align-items: center;
