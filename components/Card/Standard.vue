@@ -23,7 +23,7 @@ const carousel_photos = ref<string[]>([])
 onMounted(async () => {
     const photos = (await myFetch(`/fieldsphotos/?field=${props.data?.id}`))._data as IFieldPhoto[]
     if(props.data?.photo)
-        carousel_photos.value = [props.data.photo, ...photos.map(el => remakeUrl(el?.photo))]
+        carousel_photos.value = [remakeUrl(props.data.photo), ...photos.map(el => remakeUrl(el?.photo))]
     else
         carousel_photos.value = [...photos.map(el => remakeUrl(el?.photo))]
     delay(150).then(() => {
