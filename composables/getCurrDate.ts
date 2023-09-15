@@ -1,4 +1,5 @@
 export const getCurrDate = () => {
     const date = new Date()
-    return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}T${date.toLocaleDateString()}`
+    const month = date.getMonth()+1
+    return `${date.getFullYear()}-${month < 10 ? `0${month}` : month}-${date.getDate()}T${date.toLocaleTimeString()}`
 }
