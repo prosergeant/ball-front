@@ -1,26 +1,17 @@
 <template lang="jade">
-UINavigation(title="Служба поддержки" go-to="/profile/", padding-x="20")
-.help-desk
-    h3 Связаться с нами
+.support
     p В случае возникновения вопросов просим связать с нами по электронной почте
     a(href="mailto:support@bronkz.app") bronkz.app@gmail.com
-    //support@bronkz.app
 </template>
 
-<script setup lang="ts">
-
-</script>
-
 <style scoped lang="scss">
-.help-desk {
+.support {
+    padding: 20px 8px;
     color: white;
-    padding: 24px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-
+    gap: 8px;
     a {
-        text-decoration: none;
         color: $green1;
     }
 }
