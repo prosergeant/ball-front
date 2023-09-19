@@ -8,16 +8,20 @@ div
                 h3 Авторизоваться по:
                 UIInput(type="tel" label="Номеру телефона:" v-model="phone")
                 UIButton(icon="arrow-right" color="black" @click.stop="getPassCode") Авторизоваться
-            template(v-if="!codeNotSent")
+            template(v-else="")
                 .auth-passcode
                     UIPasscode(@get-value="checkPassCode")
+                    .flex.j-center.a-center.h-100(v-if="loading")
+                        .loader
                     UIButton(":disabled"="passcode !== `${otp}` || isAuthBtnDisabled" icon="arrow-right" icon-color="black" @click.stop="authorize") Войти
 </template>
 
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
+import {useNotifyStore} from "~/store/useNotify";
 
+const {addNotify} = useNotifyStore()
 const {is_auth, user_info, access_token} = storeToRefs(authStore())
 
 const codeNotSent = ref(true)
@@ -25,6 +29,7 @@ const passcode = ref('')
 const phone = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 const isAuthBtnDisabled = ref(false)
+const loading = ref(false)
 
 const checkPassCode = (e: string) => {
     passcode.value = e
@@ -56,57 +61,60 @@ const getPassCode = () => {
     })
 }
 
-const authorize = () => {
-    isAuthBtnDisabled.value = true
-    myFetch(`/change-password/`, {
-        method: 'POST',
-        body: {
-            "phone": phone.value,
-            "password": `${otp.value}`
-        }
-    })
-        .then(() => {
-            myFetch(`/api-token/`, {
+const authorize = async () => {
+    try {
+        isAuthBtnDisabled.value = true;
+        loading.value = true;
+
+        await myFetch(`/change-password/`, {
+            method: 'POST',
+            body: {
+                "phone": phone.value,
+                "password": `${otp.value}`
+            }
+        });
+
+        const tokenResponse = await myFetch(`/api-token/`, {
+            method: 'POST',
+            body: {
+                'phone': phone.value,
+                "password": otp.value
+            }
+        });
+
+        const { access, refresh } = tokenResponse._data as {access: string, refresh: string}
+
+        access_token.value = access;
+        is_auth.value = true;
+        localStorage.setItem('access', access);
+        localStorage.setItem('refresh', refresh);
+        localStorage.setItem('is_auth', 'true');
+
+        const userInfoResponse = await myFetch(`/user-info/`);
+        user_info.value = userInfoResponse._data as IUserInfo
+        localStorage.setItem('user', JSON.stringify(user_info.value));
+
+        const fcmToken = localStorage.getItem('fcmToken');
+        if (fcmToken) {
+            await myFetch(`/change-fcm-token/`, {
                 method: 'POST',
                 body: {
-                    'phone': phone.value,
-                    "password": otp.value
+                    phone: phone.value,
+                    fcmToken
                 }
-            })
-                .then((res) => {
-                    const keys = res._data as {access: string, refresh: string}
+            });
+        }
 
-                    access_token.value = keys.access
-                    is_auth.value = true
-                    localStorage.setItem('access', access_token.value)
-                    localStorage.setItem('refresh', keys.refresh)
-                    localStorage.setItem('is_auth', 'true')
+        // Navigate to the profile page
+        navigateTo('/profile');
+    } catch (error) {
+        addNotify('Ошибка во время авторизации');
+        console.log(error)
+        isAuthBtnDisabled.value = false;
+        loading.value = false;
+    }
+};
 
-                    myFetch(`/user-info/`)
-                        .then((res) => {
-                            user_info.value = res._data as typeof user_info.value
-                            localStorage.setItem('user', JSON.stringify(user_info.value))
-
-                            const fcmToken = localStorage.getItem('fcmToken')
-                            if(fcmToken) {
-                                myFetch(`/change-fcm-token/`, {
-                                    method: 'POST',
-                                    body: {
-                                        phone: phone.value,
-                                        fcmToken
-                                    }
-                                })
-                            }
-
-                            // is_auth.value = true
-                            navigateTo('/profile')
-                        })
-                })
-        })
-        .finally(() => {
-            isAuthBtnDisabled.value = false
-        })
-}
 </script>
 
 <style scoped lang="scss">
