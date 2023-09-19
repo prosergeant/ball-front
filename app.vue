@@ -47,9 +47,14 @@ const deviceWidth = ref(420)
 
 onMounted(() => {
     deviceWidth.value = window.innerWidth < 420 ? window.innerWidth : 420
-    const userAgent = navigator.userAgent
-    if(userAgent.indexOf('iPhone')!==-1 || userAgent.indexOf('iPod')!==-1 || userAgent.indexOf('iPad')!==-1){
-        setTimeout(() => { window.location="bronkz://bronkz.app";}, 25);
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+    if (/iP(hone|od|ad)/.test(userAgent)) {
+        window.location="bronkz://bronkz.app"
+    } else if (/android/i.test(userAgent)) {
+        window.location="bronkz://bronkz.app"
+    } else {
+        window.location="bronkz://bronkz.app"
     }
 })
 
