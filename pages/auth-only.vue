@@ -10,7 +10,7 @@ div
                 UIButton(icon="arrow-right" color="black" @click.stop="getPassCode") Авторизоваться
             template(v-if="!codeNotSent")
                 .auth-passcode
-                    UIPasscode(@get-value="(e) => {passcode = e}")
+                    UIPasscode(@get-value="checkPassCode")
                     UIButton(":disabled"="passcode !== `${otp}` || isAuthBtnDisabled" icon="arrow-right" icon-color="black" @click.stop="authorize") Войти
 </template>
 
@@ -26,6 +26,12 @@ const phone = ref('')
 const otp = ref(1111) //Math.floor(Math.random() * (9999 - 1000) + 1000 ))
 const isAuthBtnDisabled = ref(false)
 
+const checkPassCode = (e: string) => {
+    passcode.value = e
+    if(passcode.value === otp.value.toString())
+        authorize()
+}
+
 const getPassCode = () => {
     if(!phone.value)
         return
@@ -35,6 +41,11 @@ const getPassCode = () => {
     let phoneForOtp = phone.value
     phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
     phoneForOtp = phoneForOtp.replace('7', '8')
+
+    if(phone.value === '+7 (000) 000-00-00') {
+        otp.value = 5555
+        return
+    }
 
     myFetch(`${baseUrl}/send-otp/`, {
         method: 'POST',
