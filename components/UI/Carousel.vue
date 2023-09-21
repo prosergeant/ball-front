@@ -1,8 +1,8 @@
 <template lang="jade">
 .carousel(ref="carouselRef")
-    .loader-wrapper(v-for="i in loaders" ).flex.j-center.a-center
+    .loader-wrapper(v-for="i in loaders" style="height: 200px;").flex.j-center.a-center
         .loader
-    img(v-for="i in photos" ref="imgRefV")
+    img(v-for="i in photos" ref="imgRefV").hidden
 </template>
 
 <script setup lang="ts">
@@ -25,6 +25,7 @@ const loadImgWithFetch = (img_url: string, index: number) => {
         .then(blob => {
             loaders.value.pop()
             imgRefV.value[index].src = URL.createObjectURL(blob);
+            imgRefV.value[index].classList.remove('hidden')
         })
         .catch(error => console.error('Failed to load image:', error));
 }
@@ -78,5 +79,9 @@ defineExpose({calculateCarousel})
         height: 200px;
         min-width: 100%;
     }
+}
+
+.hidden {
+    visibility: hidden;
 }
 </style>

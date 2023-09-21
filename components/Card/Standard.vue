@@ -1,6 +1,8 @@
 <template lang="jade">
 .card-wrapper
     UICarousel(v-if="carousel_photos.length" ":photos"="carousel_photos" ref="_UICarousel")
+    .d-flex.center.jc(v-else="" style="height: 200px;")
+    //    .loader
 
     .card-wrapper-info
         h3 {{ data?.name }}
