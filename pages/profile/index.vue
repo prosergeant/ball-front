@@ -21,19 +21,33 @@ template(v-if="is_auth")
             UIProfileButton(icon="user" text="Политика конфиденциальности" link="/pdf/privacy-policy.pdf" is-pdf )
             UIProfileButton(icon="user" text="Публичная оферта" link="/pdf/public-offer.pdf" is-pdf )
             UIProfileButton(v-if="user_info?.is_owner" icon="user" text="Админ панель" link="/profile/admin" )
+            p(@click="isDeleteAccountModal=true") Удалить учетную запись
 
         UIButton(style="width: 100%; justify-content: center; margin-top: auto;" @click="_logout") Выйти
+
+        UIModalBottom(v-if="isDeleteAccountModal")
+            .cancel-modal-wrapper
+                .cancel-modal
+                    hr.green-hr
+                    h3 Вы действительно хотите удалить учетную запись?
+                    hr
+                    span Это действие будет необратимо
+                    p.green-bg(@click="isDeleteAccountModal = false") Нет, оставить
+                    p(@click="deleteAccount") Да, удалить
 </template>
 
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {authStore} from "~/store/auth";
 import {useRouter} from "vue-router";
+import {useNotifyStore} from "~/store/useNotify";
 
 const {logout} = authStore()
+const {addNotify} = useNotifyStore()
 
 const {is_auth, user_info} = storeToRefs(authStore())
 const router = useRouter()
+const isDeleteAccountModal = ref(false)
 
 const fcm = () => {
     const token = localStorage.getItem('fcmToken')
@@ -45,6 +59,18 @@ const fcm = () => {
 const _logout = () => {
     logout()
     navigateTo('/')
+}
+
+const deleteAccount = async () => {
+    try {
+        const res = await myFetch(`/delete-user/`)
+        if(res?.status === 200)
+            _logout()
+    } catch (e) {
+        addNotify("Не удалось удалить аккаунт")
+    }
+
+    isDeleteAccountModal.value = false
 }
 
 const uploadFile = () => {
