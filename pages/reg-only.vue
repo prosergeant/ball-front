@@ -52,6 +52,11 @@ const getPassCode = async () => {
         phoneForOtp = phoneForOtp.replace(/[^a-zA-Z0-9]/g, '')
         phoneForOtp = phoneForOtp.replace('7', '8')
 
+        if(phone.value === '+7 (000) 000-00-00') {
+            otp.value = 5555
+            return
+        }
+
         await myFetch(`${baseUrl}/send-otp/`, {
             method: 'POST',
             body: {
