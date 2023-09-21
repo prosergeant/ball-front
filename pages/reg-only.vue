@@ -73,46 +73,42 @@ const getPassCode = async () => {
     }
 }
 
-const authorize = () => {
-    myFetch(`/users/`, {
-        method: 'POST',
-        body: {
-            "phone": phone.value,
-            "name": name.value,
-            "password": `${otp.value}`
-        }
-    })
-        .then(() => {
-            myFetch(`/api-token/`, {
-                method: 'POST',
-                body: {
-                    'phone': phone.value,
-                    "password": otp.value
-                }
-            })
-                .then((res) => {
-                    // if (res?.error?.value?.statusCode === 401) {
-                    //     console.log('user does not exist')
-                    //     return
-                    // }
+const authorize = async () => {
 
-                    const keys = res._data as {access: string, refresh: string}
-
-                    access_token.value = keys.access
-                    localStorage.setItem('access', access_token.value)
-                    localStorage.setItem('refresh', keys.refresh)
-                    localStorage.setItem('is_auth', 'true')
-
-                    myFetch(`/user-info/`)
-                        .then((res) => {
-                            user_info.value = res._data as typeof user_info.value
-                            localStorage.setItem('user', JSON.stringify(user_info.value))
-
-                            is_auth.value = true
-                            navigateTo('/profile')
-                        })
-                })
+    try {
+        await myFetch(`/users/`, {
+            method: 'POST',
+            body: {
+                "phone": phone.value,
+                "name": name.value,
+                "password": `${otp.value}`
+            }
         })
+
+        const keys = await myFetch<{access: string, refresh: string}>(`/api-token/`, {
+            method: 'POST',
+            body: {
+                'phone': phone.value,
+                "password": otp.value
+            }
+        })
+
+        access_token.value = keys?._data?.access || ''
+        localStorage.setItem('access', access_token.value)
+        localStorage.setItem('refresh', keys?._data?.refresh || '')
+        localStorage.setItem('is_auth', 'true')
+
+        const userInfo = await myFetch(`/user-info/`, {headers: {Authorization: `Bearer ${access_token.value}`}})
+
+        user_info.value = userInfo._data as typeof user_info.value
+        localStorage.setItem('user', JSON.stringify(user_info.value))
+        is_auth.value = true
+        navigateTo('/profile')
+
+    } catch (e: any) {
+        console.log(e)
+        addNotify(`Ошибка при регистрации(${e?.status})`)
+    }
 }
 </script>
 
